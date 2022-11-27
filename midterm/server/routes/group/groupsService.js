@@ -32,7 +32,7 @@ async function CreateGroup(req, res) {
 }
 async function EditGroup(req, res) {
   try {
-    const editGroupRes = await editGroup(req.params.id, req.body);
+    const editGroupRes = await editGroup(req.user, req.params.id, req.body);
     res.send(editGroupRes);
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ async function EditGroup(req, res) {
 }
 async function DeleteGroup(req, res) {
   try {
-    const deleteGroupRes = await deleteGroup(req.params.id);
+    const deleteGroupRes = await deleteGroup(req.user, req.params.id);
     res.send(deleteGroupRes);
   } catch (error) {
     throw error;
