@@ -25,7 +25,7 @@ async function myGroup({ userId }) {
     throw error;
   }
 }
-async function createGroup({ groupname, members }) {
+async function createGroup({ groupname, members, coowner }, owner) {
   try {
     if (!groupname) {
       return { status: false, message: 'Invalid Infomation!' };
@@ -35,7 +35,12 @@ async function createGroup({ groupname, members }) {
     if (!existsMember) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const myGroups = await Groups.create({ groupname, members });
+    const myGroups = await Groups.create({
+      groupname,
+      members,
+      owner,
+      coowner,
+    });
     if (!myGroups) {
       return { status: false, message: 'error Infomation!' };
     }

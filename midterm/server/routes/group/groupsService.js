@@ -24,7 +24,7 @@ async function MyGroup(req, res) {
 }
 async function CreateGroup(req, res) {
   try {
-    const createGroupRes = await createGroup(req.body);
+    const createGroupRes = await createGroup(req.body, req.user.id);
     res.send(createGroupRes);
   } catch (error) {
     throw error;
