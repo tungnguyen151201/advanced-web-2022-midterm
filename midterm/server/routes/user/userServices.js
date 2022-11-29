@@ -1,10 +1,13 @@
 const {
   Register,
-  Login, Activate,
+  Login,
+  Activate,
   Logout,
   MyProfile,
   EditProfile,
 } = require('./userController');
+const { sendVerifyEmail } = require('../utils/sendEmail');
+
 async function register(req, res) {
   try {
     const registerRes = await Register(req.body);
@@ -33,10 +36,11 @@ async function getHomePage(req, res) {
 
 async function activateUser(req, res) {
   try {
-    const {emailToken} = req.params;
-    console.log(emailToken);
+    const { emailToken } = req.params;
+    await Activate(emailToken);
+    res.send('Activate successful');
   } catch (error) {
-    throw error;
+    res.send('Activate failed');
   }
 }
 async function getProfile(req, res) {
@@ -63,6 +67,14 @@ async function logout(req, res) {
     throw error;
   }
 }
+async function sendVerifyEmailService(req, res) {
+  try {
+    await sendVerifyEmail(req.user.id, req.user.email);
+    res.redirect('/');
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
   register,
   login,
@@ -71,4 +83,5 @@ module.exports = {
   getProfile,
   editProfile,
   logout,
+  sendVerifyEmailService,
 };
