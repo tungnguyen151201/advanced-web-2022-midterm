@@ -7,6 +7,7 @@ const userSchema = new Schema({
   lastName: { type: String },
   password: { type: String, require: true },
   createdAt: { type: Date, default: Date.now() },
+  status: { type: String, enum: ['Active', 'Pending', 'Deactivated'] },
 });
 const user = mongoose.model('User', userSchema);
 module.exports = user;

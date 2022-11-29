@@ -1,4 +1,4 @@
-const { Register, Login } = require('./userController');
+const { Register, Login, Activate } = require('./userController');
 async function register(req, res) {
   try {
     const registerRes = await Register(req.body);
@@ -24,8 +24,18 @@ async function getHomePage(req, res) {
     throw error;
   }
 }
+
+async function activateUser(req, res) {
+  try {
+    const {emailToken} = req.params;
+    console.log(emailToken);
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
   register,
   login,
   getHomePage,
+  activateUser
 };

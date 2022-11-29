@@ -51,7 +51,16 @@ async function Login({ username, password }) {
   }
 }
 
+async function Activate(userId) {
+  try {
+    await User.findByIdAndUpdate(userId, { status: 'Active' });
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   Register,
   Login,
+  Activate,
 };
