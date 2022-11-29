@@ -67,7 +67,7 @@ module.exports = {
   register,
   login,
   getHomePage,
-  activateUser
+  activateUser,
   getProfile,
   editProfile,
   logout,
