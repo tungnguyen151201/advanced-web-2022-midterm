@@ -14,12 +14,14 @@ async function getGroup() {
     throw error;
   }
 }
-async function myGroup({ userId }) {
+async function myGroup(userId) {
   try {
     if (!userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const myGroups = await Groups.find({ members: userId });
+    const myGroups = await Groups.find({
+      $or: [{ members: userId }, { owner: userId }, { coowner: userId }],
+    }).lean();
     return { status: true, message: 'get success!', myGroups };
   } catch (error) {
     throw error;
@@ -71,15 +73,20 @@ async function editGroup(userInfo, groupId, groupInfo) {
       return { status: false, message: 'Invalid Credenticals!' };
     }
     //Kiểm tra id nhập vào có trong bảng user hay không?
-    const existsMember = await User.find({ _id: groupInfo.members }).lean();
+    const existsMember = await User.find({
+      $or: [{ _id: groupInfo.members }, { _id: groupInfo.members }],
+    }).lean();
     if (!existsMember) {
       return { status: false, message: 'Invalid Infomation!' };
     }
     //Update sau khi đã kiểm tra
-    const myGroups = await Groups.findOneAndUpdate({ groupId }, { groupInfo });
+    const myGroups = await Groups.findOneAndUpdate(
+      { _id: groupId },
+      { ...groupInfo }
+    );
     return { status: true, message: 'update successful!', myGroups };
   } catch (error) {
-    throw error;
+    return { status: false, message: 'Invalid Infomation!' };
   }
 }
 async function deleteGroup(userInfo, { groupId }) {

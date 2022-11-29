@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { callbackGoogle, logoutGoogle } = require('./authGoogleController');
+const { callbackGoogle } = require('./authGoogleController');
 // GET /auth/google
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 // GET /auth/google/callback'

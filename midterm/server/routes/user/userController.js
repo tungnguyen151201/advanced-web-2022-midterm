@@ -1,11 +1,14 @@
 const { User, Blacklist } = require('../../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const jwt = require('jsonwebtoken');
-const generateTokens = require('../untils/generateToken');
+const generateTokens = require('../utils/generateToken');
 // const tokenList = {};
-async function Register({ username, password }) {
+async function Register(req) {
   try {
+    if (!req) {
+      return { status: false, message: 'Invalid Infomation!' };
+    }
+    const { username, password, firstName, lastName } = req;
     if (!username || !password) {
       return { status: false, message: 'Invalid Infomation!' };
     }
@@ -15,8 +18,10 @@ async function Register({ username, password }) {
     }
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const infoUser = {
-      username: username,
+      username,
       password: passwordHash,
+      firstName,
+      lastName,
     };
 
     const newUser = await User.create(infoUser);
@@ -24,7 +29,7 @@ async function Register({ username, password }) {
     if (!newUser) {
       return { status: false, message: 'register fail!' };
     }
-    return { status: true, message: 'register success!', user: infoUser };
+    return { status: true, message: 'register success!' };
   } catch (error) {
     throw error;
   }
@@ -74,7 +79,10 @@ async function MyProfile(userId) {
     if (!userId) {
       return { status: false, message: 'Invalid Information!' };
     }
-    const myProfile = await User.findOne({ _id: userId });
+    const myProfile = await User.findOne(
+      { _id: userId },
+      'username createAt firstName lastName'
+    );
     if (!myProfile) {
       return { status: false, message: 'Invalid Information!' };
     }
@@ -89,16 +97,14 @@ async function EditProfile(userId, profileInfo) {
       return { status: false, message: 'Invalid Information!' };
     }
 
-
-
-    const editProfile = await User.findOneAndUpdate(
+    const editProfile = await User.updateOne(
       { _id: userId },
-      { profileInfo }
+      { ...profileInfo }
     );
     if (!editProfile) {
       return { status: false, message: 'Invalid Information!' };
     }
-    return { status: true, message: 'Get Profile successful!', editProfile };
+    return { status: true, message: 'Update Profile successful!' };
   } catch (error) {
     throw error;
   }

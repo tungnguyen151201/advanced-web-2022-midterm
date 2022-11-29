@@ -16,7 +16,7 @@ async function GetGroup(req, res) {
 
 async function MyGroup(req, res) {
   try {
-    const MyGroupRes = await myGroup(req.body);
+    const MyGroupRes = await myGroup(req.user.id);
     res.send(MyGroupRes);
   } catch (error) {
     throw error;
