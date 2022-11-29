@@ -1,32 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-
+const { callbackGoogle, logoutGoogle } = require('./authGoogleController');
 // GET /auth/google
 router.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 // GET /auth/google/callback'
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/home' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    const token = jwt.sign(
-      { username: req.session.username },
-      process.env.TOKEN_SECRET,
-      {
-        expiresIn: 60 * 60 * 24,
-      }
-    );
-    res.status(200).send({ status: true, message: 'login success!', token });
-  }
+  (req, res) => callbackGoogle(req, res)
 );
-router.get('/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      throw err;
-    }
-    res.status(200).send({ status: true, message: 'logout success!' });
-  });
-});
+// router.get('/logout', (req, res) => logoutGoogle(req, res));
 module.exports = router;
