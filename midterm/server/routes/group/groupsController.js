@@ -2,7 +2,11 @@ const { Groups, User } = require('../../models');
 
 async function getGroupById(groupId) {
   try {
-    const group = await Groups.findById(groupId).lean();
+    const group = await Groups.findById(groupId)
+      .populate('owner')
+      .populate('coowner')
+      .populate('members')
+      .lean();
     if (!group) {
       return null;
     }
@@ -18,7 +22,11 @@ async function myGroup(userId) {
     }
     const myGroups = await Groups.find({
       $or: [{ members: userId }, { owner: userId }, { coowner: userId }],
-    }).populate('members').populate('coowner').populate('owner').lean();
+    })
+      .populate('members')
+      .populate('coowner')
+      .populate('owner')
+      .lean();
     return { status: true, message: 'get success!', myGroups };
   } catch (error) {
     throw error;

@@ -33,6 +33,9 @@ const Header = () => {
             <NavLink to="/groups" className="nav-link">
               Groups
             </NavLink>
+            <NavLink to="/details" className="nav-link">
+              Details
+            </NavLink>
           </Nav>
           <Nav>
             <button className="btn-login" onClick={() => handleLogin()}>
