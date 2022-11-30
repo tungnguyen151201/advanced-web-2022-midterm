@@ -2,7 +2,7 @@ const { User, Blacklist, Groups } = require('../../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const generateTokens = require('../utils/generateToken');
-const { getGroupById, editGroup } = require('../group/groupsController');
+const { getGroupById } = require('../group/groupsController');
 // const tokenList = {};
 async function Register(req) {
   try {
