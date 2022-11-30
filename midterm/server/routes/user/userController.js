@@ -96,7 +96,7 @@ async function EditProfile(userId, profileInfo) {
     if (!userId) {
       return { status: false, message: 'Invalid Information!' };
     }
-
+    console.log(profileInfo);
     const editProfile = await User.updateOne(
       { _id: userId },
       { ...profileInfo }

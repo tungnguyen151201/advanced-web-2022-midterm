@@ -5,13 +5,16 @@ import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { useForm } from 'react-hook-form';
 
 import axios from 'axios';
 
 function Login() {
+  const nagative = useNavigate();
   const [alert, setAlert] = useState({
-    isSuccess: false,
+    status: false,
     message: null,
   });
 
@@ -22,27 +25,31 @@ function Login() {
         username,
         password,
       });
-      const { isSuccess, message } = res.data;
-      if (isSuccess) {
+      const { status, message, accessToken } = res.data;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      if (status) {
         setAlert({
-          isSuccess,
+          status,
           message,
         });
+        console.log(accessToken);
+
+        nagative('/profile');
       } else {
         setAlert({
-          isSuccess,
+          status,
           message,
         });
       }
     } catch (error) {
       setAlert({
-        isSuccess: false,
+        status: false,
         message: error,
       });
     }
   }
 
-  const variant = alert.isSuccess ? 'success' : 'danger';
+  const variant = alert.status ? 'success' : 'danger';
 
   const {
     register,
@@ -51,38 +58,38 @@ function Login() {
   } = useForm();
 
   return (
-    <Container fluid="md">
+    <Container fluid='md'>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group className="mb-3" controlId="username">
+        <Form.Group className='mb-3' controlId='username'>
           <Form.Label>Username</Form.Label>
           <Form.Control
             {...register('username', { required: 'Username is required' })}
-            type="text"
-            placeholder="Enter username"
+            type='text'
+            placeholder='Enter username'
           />
           {errors.username && (
-            <Form.Text className="text-danger">
+            <Form.Text className='text-danger'>
               {errors.username.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
+        <Form.Group className='mb-3' controlId='password'>
           <Form.Label>Password</Form.Label>
           <Form.Control
             {...register('password', { required: 'Password is required' })}
-            type="password"
-            placeholder="Password"
+            type='password'
+            placeholder='Password'
           />
           {errors.password && (
-            <Form.Text className="text-danger">
+            <Form.Text className='text-danger'>
               {errors.password.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant='primary' type='submit'>
           Log in
         </Button>
-        <Button variant="link" href="/">
+        <Button variant='link' href='/'>
           Not a member yet? Sign up
         </Button>
         <Alert key={variant} variant={variant} hidden={alert.message === null}>
