@@ -12,21 +12,27 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Groups from './components/Groups/Groups';
 
+import Profile from './user/profile';
+import { QueryClient, QueryClientProvider } from 'react-query';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient();
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<HomePage />} />
-          <Route path="about" element={<About />} />
-          <Route path="groups" element={<Groups />} />
-        </Route>
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<App />}>
+            <Route index element={<HomePage />} />
+            <Route path='about' element={<About />} />
+            <Route path='products' element={<Products />} />
+          </Route>
+          <Route path='login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/profile' element={<Profile />} />
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  </QueryClientProvider>
 );
 
 reportWebVitals();
