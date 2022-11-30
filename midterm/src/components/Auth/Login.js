@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
-// const UserContext = createContext();
+
 const Login = () => {
   const navigate = useNavigate();
   const [alert, setAlert] = useState({
@@ -19,19 +19,19 @@ const Login = () => {
   async function onSubmit(data) {
     try {
       const { username, password } = data;
-      const res = await axios.post('login', {
+      const res = await axios.post('http://localhost:3001/login', {
         username,
         password,
       });
+      console.log(res);
       const { status, message, accessToken } = res.data;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
       if (status) {
         setAlert({
           status,
           message,
         });
-        // console.log(accessToken);
-        // localStorage.setItem('token', accessToken);
+        localStorage.setItem('token', accessToken);
 
         navigate('/profile');
       } else {

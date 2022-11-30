@@ -12,7 +12,6 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Profile from './user/profile';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import './interceptor/axios';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 root.render(
