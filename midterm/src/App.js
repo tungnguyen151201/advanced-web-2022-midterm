@@ -1,20 +1,19 @@
-import SignUp from './authentication/SignUp';
-import Login from './authentication/Login';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient();
-
+import Header from './components/Header/Header';
+import { Outlet } from 'react-router-dom';
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <div className="app-container">
+      <div className="header-container">
+        <Header />
+      </div>
+
+      <div className="main-container">
+        <div className="sidenav-container"></div>
+        <div className="app-content">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 }
 
