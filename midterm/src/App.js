@@ -1,24 +1,21 @@
-import SignUp from './authentication/SignUp';
-import Login from './authentication/Login';
-import Profile from './user/profile';
-import Mygroup from './user/mygroups';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import Header from './components/Header/Header';
 
-const queryClient = new QueryClient();
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/mygroup' element={<Mygroup />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <div className='app-container'>
+      <div className='header-container'>
+        <Header />
+      </div>
+
+      <div className='main-container'>
+        <div className='sidenav-container'></div>
+        <div className='app-content'>
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 }
 
