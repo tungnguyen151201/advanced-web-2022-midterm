@@ -30,8 +30,11 @@ const Header = () => {
             <NavLink to="/about" className="nav-link">
               About
             </NavLink>
-            <NavLink to="/products" className="nav-link">
-              Products
+            <NavLink to="/groups" className="nav-link">
+              Groups
+            </NavLink>
+            <NavLink to="/details" className="nav-link">
+              Details
             </NavLink>
           </Nav>
           <Nav>

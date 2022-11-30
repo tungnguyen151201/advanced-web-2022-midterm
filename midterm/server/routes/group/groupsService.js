@@ -7,7 +7,7 @@ const {
 } = require('./groupsController');
 async function GetGroupById(req, res) {
   try {
-    const getGroupRes = await getGroupById(req.body);
+    const getGroupRes = await getGroupById(req.params.id);
     res.send(getGroupRes);
   } catch (error) {
     throw error;
