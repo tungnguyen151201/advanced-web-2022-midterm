@@ -38,6 +38,22 @@ const sendVerifyEmail = async (userId, email) => {
   });
 };
 
+const sendInviteEmail = async (email, groupId) => {
+  const mailOptions = {
+    from: 'advancedweb2022.project@gmail.com',
+    to: email,
+    subject: 'Join a group',
+    html: `Please click this <a href="${hostname}/join/${groupId}">link</a> to join a group`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    }
+  });
+};
+
 module.exports = {
   sendVerifyEmail,
+  sendInviteEmail,
 };

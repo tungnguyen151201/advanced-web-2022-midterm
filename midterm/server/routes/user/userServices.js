@@ -5,8 +5,9 @@ const {
   Logout,
   MyProfile,
   EditProfile,
+  JoinGroup,
 } = require('./userController');
-const { sendVerifyEmail } = require('../utils/sendEmail');
+const { sendVerifyEmail, sendInviteEmail} = require('../utils/sendEmail');
 
 async function register(req, res) {
   try {
@@ -75,6 +76,22 @@ async function sendVerifyEmailService(req, res) {
     throw error;
   }
 }
+async function sendInviteEmailService(req, res) {
+  try {
+    await sendInviteEmail(req.body.email, req.params.groupId);
+    res.redirect('/');
+  } catch (error) {
+    throw error;
+  }
+}
+async function joinGroup(req, res) {
+  try {
+    const msg = await JoinGroup(req.user.id, req.params.groupId);
+    res.send(msg);
+  } catch (error) {
+    res.send('Join failed');
+  }
+}
 module.exports = {
   register,
   login,
@@ -84,4 +101,6 @@ module.exports = {
   editProfile,
   logout,
   sendVerifyEmailService,
+  sendInviteEmailService,
+  joinGroup,
 };

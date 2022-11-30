@@ -1,15 +1,12 @@
 const { Groups, User } = require('../../models');
 
-async function getGroup() {
+async function getGroupById(groupId) {
   try {
-    // if (!url) {
-    //   return { status: false, message: 'Invalid Infomation!' };
-    // }
-    const existsUrls = await Groups.find().lean();
-    if (!existsUrls) {
-      return { status: false, message: 'Invalid Infomation!' };
+    const group = await Groups.findById(groupId).lean();
+    if (!group) {
+      return null;
     }
-    return { status: true, message: 'get successful!', groupInfo: existsUrls };
+    return group;
   } catch (error) {
     throw error;
   }
@@ -21,7 +18,7 @@ async function myGroup(userId) {
     }
     const myGroups = await Groups.find({
       $or: [{ members: userId }, { owner: userId }, { coowner: userId }],
-    }).lean();
+    }).populate('members').populate('coowner').populate('owner').lean();
     return { status: true, message: 'get success!', myGroups };
   } catch (error) {
     throw error;
@@ -107,7 +104,7 @@ async function deleteGroup(userInfo, { groupId }) {
   }
 }
 module.exports = {
-  getGroup,
+  getGroupById,
   myGroup,
   createGroup,
   editGroup,

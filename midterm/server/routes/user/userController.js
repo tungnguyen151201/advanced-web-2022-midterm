@@ -1,7 +1,8 @@
-const { User, Blacklist } = require('../../models');
+const { User, Blacklist, Groups } = require('../../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const generateTokens = require('../utils/generateToken');
+const { getGroupById, editGroup } = require('../group/groupsController');
 // const tokenList = {};
 async function Register(req) {
   try {
@@ -114,7 +115,10 @@ async function EditProfile(userId, profileInfo) {
 }
 async function Activate(token) {
   try {
-    await User.updateOne({ emailToken: token }, { emailToken: '', status: 'Active' });
+    await User.updateOne(
+      { emailToken: token },
+      { emailToken: '', status: 'Active' }
+    );
   } catch (error) {
     throw error;
   }
@@ -122,6 +126,35 @@ async function Activate(token) {
 async function UpdateEmailToken(userId, emailToken) {
   try {
     await User.findByIdAndUpdate(userId, { emailToken });
+  } catch (error) {
+    throw error;
+  }
+}
+async function JoinGroup(userId, groupId) {
+  try {   
+    const group = await getGroupById(groupId);
+    if (!group) return { message: 'group not found'};
+    let { members, owner, coowner } = group;
+    members = members.map(member => member.toString());
+    coowner = coowner.map(coowner => coowner.toString());
+
+    if (
+      owner.toString() === userId ||
+      members.includes(userId) ||
+      coowner.includes(userId)
+    ) {
+      return { message: 'user already been in this group'};
+    }
+
+    members.push(userId);
+    await Groups.updateOne(
+      { _id: groupId },
+      {
+        ...group,
+        members,
+      }
+    );
+    return { message: 'join success'};
   } catch (error) {
     throw error;
   }
@@ -134,4 +167,5 @@ module.exports = {
   MyProfile,
   EditProfile,
   UpdateEmailToken,
+  JoinGroup,
 };

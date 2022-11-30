@@ -4,7 +4,7 @@ const GroupSchema = new Schema({
   groupname: { type: String, require: true },
   url: { type: String },
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  owner: { type: Schema.Types.ObjectId, require: true },
+  owner: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
   coowner: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now() },
 });
