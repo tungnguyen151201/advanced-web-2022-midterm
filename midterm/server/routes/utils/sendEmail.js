@@ -50,7 +50,9 @@ const sendInviteEmail = async (email, groupId) => {
     if (error) {
       console.log(error);
     }
+    return { status: true, message: 'send email successful!' };
   });
+  return { status: true, message: 'send email successful!' };
 };
 
 module.exports = {

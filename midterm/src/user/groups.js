@@ -1,14 +1,17 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
+// import DetailGroup from '../components/Groups/Details';
 import { useNavigate } from 'react-router-dom';
 function GroupInfo({ idGroup, name, members, coowner }) {
   const nagative = useNavigate();
+
   const handleOnclick = async (e) => {
     try {
       //   console.log(2);
       nagative(`/getGroups/${idGroup}`);
+
+      //   DetailGroup(idGroup);
     } catch (error) {
       console.log(error);
     }

@@ -14,6 +14,10 @@ import Groups from './components/Groups/Groups';
 import Details from './components/Groups/Details';
 
 import Mygroup from './user/mygroups';
+import Creategroup from './components/Group/CreateGroup';
+import Detailgroup from './components/Groups/Details';
+import Joingroup from './components/Groups/JoinGroup';
+import SendInviteEmail from './components/Groups/SendInviteEmail';
 import Profile from './user/profile';
 // import HeaderHomePage from '../components/Header/HeaderHomepage';
 
@@ -33,6 +37,11 @@ root.render(
           </Route>
           <Route path='login' element={<Login />} />
           <Route path='/mygroup' element={<Mygroup />} />
+          <Route path='/createGroup' element={<Creategroup />} />
+          <Route path='/join/:id' element={<Joingroup />} />
+          <Route path='/getGroups/:id' element={<Detailgroup />} />
+          <Route path='/sendInviteEmail/:id' element={<SendInviteEmail />} />
+          {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
 
           <Route path='/register' element={<Register />} />
           <Route path='/profile' element={<Profile />} />

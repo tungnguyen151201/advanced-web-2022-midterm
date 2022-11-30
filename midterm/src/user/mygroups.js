@@ -4,10 +4,12 @@ import Container from 'react-bootstrap/Container';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import ModalcreateGroup from '../components/Group/CreateGroup';
+import { useNavigate } from 'react-router-dom';
+// import ModalcreateGroup from '../components/Group/CreateGroup';
 function Mygroup() {
   //   const nagative = useNavigate();
-  const [modalShow, setModalShow] = useState(false);
+  const nagative = useNavigate();
+  //   const [modalShow, setModalShow] = useState(false);
   const [listGroup, setList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -26,14 +28,26 @@ function Mygroup() {
     };
     fetchData();
   }, []);
+  const handleOnclick = async (e) => {
+    try {
+      //   console.log(2);
+      nagative(`/createGroup`);
 
+      //   DetailGroup(idGroup);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Container>
-      <Button variant='primary' onClick={() => setModalShow(true)}>
+      <Button variant='primary' onClick={() => handleOnclick()}>
+        Create Group
+      </Button>
+      {/* <Button variant='primary' onClick={() => setModalShow(true)}>
         Launch vertically centered modal
       </Button>
 
-      <ModalcreateGroup show={modalShow} onHide={() => setModalShow(false)} />
+      <ModalcreateGroup show={modalShow} onHide={() => setModalShow(false)} /> */}
 
       {listGroup.map((e, index) => {
         return (

@@ -7,7 +7,7 @@ const {
   EditProfile,
   JoinGroup,
 } = require('./userController');
-const { sendVerifyEmail, sendInviteEmail} = require('../utils/sendEmail');
+const { sendVerifyEmail, sendInviteEmail } = require('../utils/sendEmail');
 
 async function register(req, res) {
   try {
@@ -78,8 +78,8 @@ async function sendVerifyEmailService(req, res) {
 }
 async function sendInviteEmailService(req, res) {
   try {
-    await sendInviteEmail(req.body.email, req.params.groupId);
-    res.redirect('/');
+    const msg = await sendInviteEmail(req.body.email, req.params.groupId);
+    res.send(msg);
   } catch (error) {
     throw error;
   }
