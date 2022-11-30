@@ -28,25 +28,5 @@ router.get('/sendVerifyEmail', verifyToken, (req, res) =>
 router.get('/sendInviteEmail/:groupId', verifyToken, (req, res) =>
   sendInviteEmailService(req, res)
 );
-// router.post('/refresh', (req,res) => {
-//   // refresh the damn token
-//   const postData = req.body
-//   // if refresh token exists
-//   if((postData.refreshToken) && (postData.refreshToken in tokenList)) {
-//       const user = {
-//           "email": postData.email,
-//           "name": postData.name
-//       }
-//       const token = jwt.sign(user, config.secret, { expiresIn: config.tokenLife})
-//       const response = {
-//           "token": token,
-//       }
-//       // update the token in the list
-//       tokenList[postData.refreshToken].token = token
-//       res.status(200).json(response);
-//   } else {
-//       res.status(404).send('Invalid request')
-//   }
-// })
 
 module.exports = router;

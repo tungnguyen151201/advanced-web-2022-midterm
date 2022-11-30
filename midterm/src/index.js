@@ -10,7 +10,10 @@ import About from './components/About/About';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import Mygroup from './user/mygroups';
 import Profile from './user/profile';
+// import HeaderHomePage from '../components/Header/HeaderHomepage';
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
@@ -25,6 +28,8 @@ root.render(
             <Route path='products' element={<Products />} />
           </Route>
           <Route path='login' element={<Login />} />
+          <Route path='/mygroup' element={<Mygroup />} />
+
           <Route path='/register' element={<Register />} />
           <Route path='/profile' element={<Profile />} />
         </Routes>

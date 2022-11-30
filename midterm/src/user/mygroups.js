@@ -1,27 +1,25 @@
 import GroupInfo from './groups';
 import Container from 'react-bootstrap/Container';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Button from 'react-bootstrap/Button';
+import ModalcreateGroup from '../components/Group/CreateGroup';
 function Mygroup() {
-  const nagative = useNavigate();
-  const [infoGroup, setInfo] = useState({
-    id: null,
-    groupname: null,
-    members: null,
-    coowner: null,
-    owner: null,
-  });
+  //   const nagative = useNavigate();
+  const [modalShow, setModalShow] = useState(false);
   const [listGroup, setList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/groups/mygroup');
-        console.log(res);
-        const { id, groupname, members, coowner, owner } = res.data.myGroups;
+        const token = 'Bearer ' + localStorage.getItem('token');
+        const res = await axios.get('http://localhost:3001/groups/mygroup', {
+          headers: {
+            Authorization: token,
+          },
+        });
+
         setList(res.data.myGroups);
-        setInfo({ id, groupname, members, coowner, owner });
       } catch (error) {
         console.error(error.message);
       }
@@ -29,23 +27,22 @@ function Mygroup() {
     fetchData();
   }, []);
 
-  const handleOnclick = async (e) => {
-    try {
-      nagative(`/getGroups/${infoGroup.id}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
-    <Container className='d-flex justify-content-center'>
+    <Container>
+      <Button variant='primary' onClick={() => setModalShow(true)}>
+        Launch vertically centered modal
+      </Button>
+
+      <ModalcreateGroup show={modalShow} onHide={() => setModalShow(false)} />
+
       {listGroup.map((e, index) => {
         return (
           <GroupInfo
             key={index}
+            idGroup={e._id}
             name={e.groupname}
             members={e.members}
             coowner={e.coowner}
-            onClick={handleOnclick}
           ></GroupInfo>
         );
       })}

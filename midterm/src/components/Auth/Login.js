@@ -33,7 +33,7 @@ const Login = () => {
         });
         localStorage.setItem('token', accessToken);
 
-        navigate('/profile');
+        navigate('/mygroup');
       } else {
         setAlert({
           status,
