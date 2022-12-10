@@ -2,15 +2,16 @@
   margin-right: auto !important;
 }
 
-.quiz__container {
-  background-color: yellow;
+.black {
+  color: black !important;
 }
 
 .quiz__header {
-  background-color: grey;
   padding: 8px 15px;
   display: flex;
   align-items: center;
+  border-top: 1px solid rgb(231, 232, 235);
+  border-bottom: 1px solid rgb(231, 232, 235);
 }
 
 .quiz__btn {
@@ -18,60 +19,39 @@
   border-radius: 3px;
   margin: 0 3px;
   padding: 10px;
-  color: white;
   font-weight: 600;
   background-color: transparent;
 }
 
 .quiz__btn--b {
   background-color: rgb(20, 86, 204);
+  color: white;
 }
 
 .quiz__btn--g {
   background-color: rgb(175, 176, 180);
+  color: black;
 }
 
-.active-modal {
-  overflow-y: hidden;
+.quiz__content {
+  height: 1000px;
+  width: 100%;
+  background: rgb(175, 176, 180);
+  display: flex;
 }
 
-.btn-modal {
-  padding: 10px 20px;
-  display: block;
-  margin: 100px auto 0;
-  font-size: 18px;
+.quiz__slide,
+.quiz__edit {
+  background-color: white;
 }
 
-.modal,
-.overlay {
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
+.quiz__slide {
+  flex: 1.4;
+}
+.quiz__present {
+  flex: 2.8;
+}
+.quiz__edit {
+  flex: 3;
 }
 
-.overlay {
-  background: rgba(49, 49, 49, 0.8);
-}
-.modal-content {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1.4;
-  background: #f1f1f1;
-  padding: 14px 28px;
-  border-radius: 3px;
-  max-width: 600px;
-  min-width: 300px;
-}
-
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px 7px;
-}
