@@ -1,0 +1,36 @@
+.present {
+  height: 80%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 30px;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.answers {
+  align-self: stretch;
+  padding: 0 60px;
+}
+
+.answer {
+  background-color: rgb(175, 176, 180, 0.6);
+  align-self: stretch;
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.btn__present {
+  background-color: white;
+  padding: 10px;
+  border: none;
+  color: rgb(20, 86, 204);
+  font-weight: 600;
+}
