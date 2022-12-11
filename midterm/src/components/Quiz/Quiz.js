@@ -1,7 +1,8 @@
 import './Quiz.css';
-import Slide from '../Slide/Slide';
 import React, { useState } from 'react';
+import Slide from '../Slide/Slide';
 import Present from '../Present/Present';
+import Edit from '../Edit/Edit';
 const Quiz = (props) => {
   return (
     <div className="quiz__container">
@@ -19,7 +20,9 @@ const Quiz = (props) => {
         <div className="quiz__present">
           <Present />
         </div>
-        <div className="quiz__edit"></div>
+        <div className="quiz__edit">
+          <Edit />
+        </div>
       </main>
     </div>
   );

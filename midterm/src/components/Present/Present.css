@@ -1,11 +1,12 @@
 .present {
-  height: 80%;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 30px;
+  margin-top: 80px;
+  padding: 10px;
 }
 
 .question {
