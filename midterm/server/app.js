@@ -9,13 +9,20 @@ const mongoose = require('mongoose');
 const config = require('./config');
 const passport = require('passport');
 const session = require('express-session');
+const http = require('http');
 const usersRouter = require('./routes/user/users');
 const groupRouter = require('./routes/group/groups');
+const slideRouter = require('./routes/slides/slides');
+const presentationRouter = require('./routes/presentation/');
 const authRouter = require('./routes/auth/authGoogle');
+const chatServer = require('./routes/chat/createServer');
 const app = express();
+const server = http.createServer(app);
 dotenv.config();
 
 const { verifyToken } = require('./middleware/auth');
+
+chatServer.attach(server);
 async function connectDB() {
   try {
     await mongoose.connect(config.mongodb.urls);
@@ -46,10 +53,15 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/presentation', verifyToken, presentationRouter);
 app.use('/groups/', verifyToken, groupRouter);
+app.use('/slide/', verifyToken, slideRouter);
 app.use('/', usersRouter);
 // app.use('/', usersRouter);
 app.use('/auth/', authRouter);
+app.get('/chat', (__, res) => {
+  res.send('box chat');
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
