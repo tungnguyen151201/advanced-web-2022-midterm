@@ -11,6 +11,7 @@
   width: 90%;
   padding: 0 15px;
   height: inherit;
+  overflow-y: hidden;
   background: yellow;
   display: flex;
   flex-direction: column;
@@ -56,4 +57,9 @@
 
 .demo__question {
   align-self: flex-start;
+}
+
+.demo__chart {
+  width: 1000px;
+  height: 400px;
 }
