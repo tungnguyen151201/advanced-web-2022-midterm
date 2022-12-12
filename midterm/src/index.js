@@ -11,6 +11,7 @@ import HomePage from './components/HomePage/HomePage';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Quiz from './components/Quiz/Quiz';
+import Demo from './components/Demo/Demo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,6 +25,7 @@ root.render(
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="Demo" element={<Demo />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
