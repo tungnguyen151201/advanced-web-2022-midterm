@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BarChart from '../BarChart/BarChart';
 import './Demo.css';
 
 const Demo = () => {
   const navigate = useNavigate();
-  const link = 'haha/test';
+
+  const link = 'http://localhost:3000/voting';
   const handleCopy = () => {
     navigator.clipboard.writeText(link);
     alert('Link copied to the clipboard');
