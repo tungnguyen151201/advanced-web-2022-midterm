@@ -1,4 +1,4 @@
-const { Presentation } = require('../../models');
+const { Presentation, Room } = require('../../models');
 async function getPresentations(userId) {
   try {
     if (!userId) {
@@ -45,18 +45,35 @@ async function getPresentationById(presentationId, userId) {
 }
 async function creatPresentation(presentationInfo, userId) {
   try {
-    // console.log(presentationInfo, userId);
+    // Tao Presentation
     if (!presentationInfo || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
 
-    const { name } = presentationInfo;
+    const { name, slides } = presentationInfo;
 
     const newPresentation = await Presentation.create({
       name,
+      slides,
       owner: userId,
     });
-    if (!newPresentation) {
+    // Tao Room chat sau khi tao presentation
+    const presentationId = newPresentation._id;
+    const existedRoom = await Room.findOne(
+      { presentation: presentationId },
+      '_id'
+    ).lean();
+
+    if (existedRoom) {
+      return {
+        status: false,
+        message: 'Room existed',
+      };
+    }
+
+    const room = await Room.create({ presentation: presentationId });
+
+    if (!newPresentation || !room) {
       return { status: false, message: 'error Infomation!' };
     }
     return { status: true, message: 'create successful!', newPresentation };
@@ -93,6 +110,7 @@ async function deletePresentation(userId, presentationId) {
       return { status: false, message: 'Invalid Credencials!' };
     }
     await Presentation.findOneAndDelete({ _id: presentationId });
+    await Room.findOneAndDelete({ presentation: presentationId });
     return { status: true, message: 'delete successful!' };
   } catch (error) {
     throw error;
