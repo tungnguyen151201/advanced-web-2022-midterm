@@ -24,40 +24,43 @@ import Profile from './user/profile';
 import Quiz from './components/Quiz/Quiz';
 import Demo from './components/Demo/Demo';
 import Voting from './components/Voting/Voting';
+import { SocketContext, socket } from './context/socket';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <React.StrictMode>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<App />}>
-            <Route index element={<HomePage />} />
-            <Route path='about' element={<About />} />
-            <Route path='groups' element={<Groups />} />
-            <Route path='details' element={<Details />} />
-            <Route path='about' element={<About />} />
-            <Route path='quiz' element={<Quiz />} />
-          </Route>
-          <Route path='login' element={<Login />} />
-          <Route path='/mygroup' element={<Mygroup />} />
-          <Route path='/createGroup' element={<Creategroup />} />
-          <Route path='/join/:id' element={<Joingroup />} />
-          <Route path='/getGroups/:id' element={<Detailgroup />} />
-          <Route path='/sendInviteEmail/:id' element={<SendInviteEmail />} />
-          {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
+  <SocketContext.Provider value={socket}>
+    <QueryClientProvider client={queryClient}>
+      <React.StrictMode>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route index element={<HomePage />} />
+              <Route path="about" element={<About />} />
+              <Route path="groups" element={<Groups />} />
+              <Route path="details" element={<Details />} />
+              <Route path="about" element={<About />} />
+              <Route path="quiz" element={<Quiz />} />
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="/mygroup" element={<Mygroup />} />
+            <Route path="/createGroup" element={<Creategroup />} />
+            <Route path="/join/:id" element={<Joingroup />} />
+            <Route path="/getGroups/:id" element={<Detailgroup />} />
+            <Route path="/sendInviteEmail/:id" element={<SendInviteEmail />} />
+            {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
 
-          <Route path='/register' element={<Register />} />
-          <Route path='/chat/:id' element={<Chat />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='demo' element={<Demo />} />
-          <Route path='voting' element={<Voting />} />
-        </Routes>
-      </BrowserRouter>
-    </React.StrictMode>
-  </QueryClientProvider>
+            <Route path="/register" element={<Register />} />
+            <Route path="/chat/:id" element={<Chat />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="demo" element={<Demo />} />
+            <Route path="voting" element={<Voting />} />
+          </Routes>
+        </BrowserRouter>
+      </React.StrictMode>
+    </QueryClientProvider>
+  </SocketContext.Provider>
 );
 
 reportWebVitals();

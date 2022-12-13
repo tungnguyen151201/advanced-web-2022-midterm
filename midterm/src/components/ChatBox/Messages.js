@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-const socket = io('http://localhost:3001', {
-  auth: {
-    token: localStorage.getItem('token'),
-  },
+import {SocketContext} from '../../context/socket';
 
-  // rejectUnauthorized: false,
-});
 const Message = () => {
+  const socket = useContext(SocketContext);
   // if form was submitted, notify parent component
   let { id } = useParams();
-  // console.log(socket.on('connect'));
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [MessageReceive, setMessageReceive] = useState(['']);
-  // console.log(socket);
+  const [MessageReceive, setMessageReceive] = useState({});
+  // socket.emit('join-room', id);
 
   useEffect(() => {
-    socket.emit('join-room', id);
-
     socket.on('chat-message', (data) => {
       console.log(data);
-      setMessageReceive(data.message);
+      // setMessageReceive(data.message);
     });
     socket.on('connect_error', (err) => {
       if (err.message === 'xhr poll error') return;
@@ -33,13 +25,13 @@ const Message = () => {
     });
   }, []);
   const handleSendMessage = () => {
-    socket.emit('chat-message', { message });
+    socket.emit('chat-message', message);
   };
   return error ? (
-    <div className='chat-composer'>error</div>
+    <div className='chat-composer'>{error}</div>
   ) : (
     <div className='chat-composer'>
-      <div>{MessageReceive}</div>
+      {/* <div>{MessageReceive}</div> */}
       <form onSubmit={handleSendMessage}>
         <input
           className='form-control'

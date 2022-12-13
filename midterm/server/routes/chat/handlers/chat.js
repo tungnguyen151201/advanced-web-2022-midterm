@@ -7,14 +7,13 @@ module.exports = async (io, socket) => {
   let room;
   async function joinRoom(roomId) {
     try {
-      console.log(12331);
       if (!roomId) {
         socket.emit('handle-error', 'Invalid room!');
         socket.disconnect(true);
         return;
       }
 
-      const roomDb = await Room.findById(
+      const roomDb = await Room.findOne(
         { presentation: roomId },
         'users presentation'
       ).lean();
@@ -56,11 +55,11 @@ module.exports = async (io, socket) => {
         socket.disconnect(true);
         return;
       }
-
-      io.to(room).emit('chat-message', { user: username, message });
+      console.log(message);
+      io.to(room).emit('chat-message', { user: _id, message });
 
       await Room.updateOne(
-        { _id: room },
+        { presentation: room },
         {
           $push: { messages: { user: _id, message, createAt: Date.now() } },
         }
@@ -71,7 +70,7 @@ module.exports = async (io, socket) => {
       socket.disconnect(true);
     }
   }
-  console.log(socket);
+
   socket.on('join-room', joinRoom);
   socket.on('chat-message', chatMessage);
 };
