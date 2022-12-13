@@ -21,6 +21,9 @@ import Chat from './components/ChatBox/Messages';
 import SendInviteEmail from './components/Groups/SendInviteEmail';
 import Profile from './user/profile';
 // import HeaderHomePage from '../components/Header/HeaderHomepage';
+import Quiz from './components/Quiz/Quiz';
+import Demo from './components/Demo/Demo';
+import Voting from './components/Voting/Voting';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 const root = ReactDOM.createRoot(document.getElementById('root'));
