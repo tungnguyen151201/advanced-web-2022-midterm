@@ -38,6 +38,8 @@ root.render(
             <Route path='about' element={<About />} />
             <Route path='groups' element={<Groups />} />
             <Route path='details' element={<Details />} />
+            <Route path='about' element={<About />} />
+            <Route path='quiz' element={<Quiz />} />
           </Route>
           <Route path='login' element={<Login />} />
           <Route path='/mygroup' element={<Mygroup />} />
@@ -50,6 +52,8 @@ root.render(
           <Route path='/register' element={<Register />} />
           <Route path='/chat/:id' element={<Chat />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='demo' element={<Demo />} />
+          <Route path='voting' element={<Voting />} />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

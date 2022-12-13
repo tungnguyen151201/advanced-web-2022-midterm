@@ -2,10 +2,12 @@ const { Room, Presentation, User } = require('../../../models');
 
 module.exports = async (io, socket) => {
   const { _id } = socket.signature;
+
   const user = await User.findById({ _id }).lean();
   let room;
   async function joinRoom(roomId) {
     try {
+      console.log(12331);
       if (!roomId) {
         socket.emit('handle-error', 'Invalid room!');
         socket.disconnect(true);
@@ -69,7 +71,7 @@ module.exports = async (io, socket) => {
       socket.disconnect(true);
     }
   }
-
+  console.log(socket);
   socket.on('join-room', joinRoom);
   socket.on('chat-message', chatMessage);
 };

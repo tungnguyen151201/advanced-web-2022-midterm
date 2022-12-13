@@ -42,9 +42,7 @@ async function Verifytoken(token) {
     if (!user) {
       throw new Error();
     }
-    req.user = user;
-    req.refreshToken = token;
-    next();
+    return { status: true, message: 'Verify sucessful!', _id: user._id };
   } catch (err) {
     return { status: false, message: 'Invalid Token' };
   }

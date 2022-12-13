@@ -5,10 +5,7 @@ const socket = io('http://localhost:3001', {
   auth: {
     token: localStorage.getItem('token'),
   },
-  cors: {
-    origin: 'http://localhost:3000',
-  },
-  transports: ['websocket'],
+
   // rejectUnauthorized: false,
 });
 const Message = () => {
@@ -18,13 +15,10 @@ const Message = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [MessageReceive, setMessageReceive] = useState(['']);
+  // console.log(socket);
 
   useEffect(() => {
-    // console.log(id);
     socket.emit('join-room', id);
-    socket.on('join-room', (mess) => {
-      console.log(mess);
-    });
 
     socket.on('chat-message', (data) => {
       console.log(data);
@@ -35,7 +29,6 @@ const Message = () => {
       console.log(`connect_error :${err.message}`);
     });
     socket.on('handle-error', (error) => {
-      console.log(error);
       setError(error);
     });
   }, []);

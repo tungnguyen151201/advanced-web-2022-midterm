@@ -8,7 +8,7 @@ module.exports = async (socket) => {
       if (!token) {
         console.log('can find token');
       }
-      const { exp } = jwt.verify(token, process.env.TOKEN_SECRET);
+      const { exp } = jwt.verify(token, process.env.ACCESS_TOKEN_PRIVATE_KEY);
 
       if (Date.now() > exp) {
         socket.disconnect(true);
