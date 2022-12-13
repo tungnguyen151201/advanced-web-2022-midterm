@@ -6,7 +6,6 @@ module.exports = async (socket, next) => {
     const { token } = socket.handshake.auth;
     // console.log(token);
     const verifyResult = await Verifytoken(token);
-    console.log();
     if (!verifyResult) {
       next(new Error('Invalid Credentials!'));
       return;
