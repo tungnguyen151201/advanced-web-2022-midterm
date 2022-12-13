@@ -7,8 +7,8 @@ const {
 const { ioMiddlewares } = require('./middlewares');
 
 const io = new Server();
+
 const onConnection = (socket) => {
-  console.log(1213);
   console.log(`User connect:${socket.id}`);
   connectionHandlers(socket);
   chatHandlers(io, socket);

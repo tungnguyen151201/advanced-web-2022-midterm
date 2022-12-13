@@ -12,7 +12,10 @@ module.exports = async (io, socket) => {
         return;
       }
 
-      const roomDb = await Room.findById(roomId, 'users presentation').lean();
+      const roomDb = await Room.findById(
+        { presentation: roomId },
+        'users presentation'
+      ).lean();
       if (!roomDb) {
         socket.emit('handle-error', 'Invalid room!');
         socket.disconnect(true);
@@ -21,7 +24,9 @@ module.exports = async (io, socket) => {
 
       const { users, presentation } = roomDb;
 
-      const presentDB = await Presentation.findById(presentation).lean();
+      const presentDB = await Presentation.findById({
+        _id: presentation,
+      }).lean();
       if (!presentDB) {
         socket.emit('handle-error', 'Invalid room!');
         socket.disconnect(true);
@@ -59,7 +64,7 @@ module.exports = async (io, socket) => {
         }
       );
     } catch (error) {
-      logger.error('chatHandler - chatMessage error', error);
+      console.log('chatHandler - chatMessage error', error);
       socket.emit('handle-error', error.message);
       socket.disconnect(true);
     }

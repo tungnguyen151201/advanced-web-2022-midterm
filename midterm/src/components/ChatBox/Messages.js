@@ -1,43 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
-const socket = io.connect('http://locahost:3001', {
+const socket = io('http://localhost:3001', {
   auth: {
     token: localStorage.getItem('token'),
   },
-  path: 'http://localhost:3000',
+  cors: {
+    origin: 'http://localhost:3000',
+  },
   transports: ['websocket'],
+  // rejectUnauthorized: false,
 });
 const Message = () => {
   // if form was submitted, notify parent component
   let { id } = useParams();
+  // console.log(socket.on('connect'));
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [MessageReceive, setMessageReceive] = useState(['']);
-  const handleSendMessage = () => {
-    console.log(123);
 
-    // socket.emit('chat-message', { message });
-  };
   useEffect(() => {
-    // console.log(io);
-    socket.on('error', (error) => {
-      console.log(`error:${error}`);
+    // console.log(id);
+    socket.emit('join-room', id);
+    socket.on('join-room', (mess) => {
+      console.log(mess);
+    });
+
+    socket.on('chat-message', (data) => {
+      console.log(data);
+      setMessageReceive(data.message);
     });
     socket.on('connect_error', (err) => {
-      console.log(`connect_error due to ${err.message}`);
+      if (err.message === 'xhr poll error') return;
+      console.log(`connect_error :${err.message}`);
     });
     socket.on('handle-error', (error) => {
       console.log(error);
       setError(error);
     });
-    // socket.emit('join-room', id);
-    // socket.on('chat-message', (data) => {
-    //   console.log(data);
-    //   setMessageReceive(data.message);
-    // });
   }, []);
-
+  const handleSendMessage = () => {
+    socket.emit('chat-message', { message });
+  };
   return error ? (
     <div className='chat-composer'>error</div>
   ) : (

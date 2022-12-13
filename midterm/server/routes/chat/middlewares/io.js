@@ -1,21 +1,21 @@
-const { verifyToken } = require('../../../middleware/auth');
+const { Verifytoken } = require('../../../middleware/auth');
 
 module.exports = async (socket, next) => {
   try {
     // console.log(socket);
     const { token } = socket.handshake.auth;
     // console.log(token);
-    const verifyResult = await verifyToken(token);
-
-    if (!verifyResult.isSuccess) {
+    const verifyResult = await Verifytoken(token);
+    console.log();
+    if (!verifyResult) {
       next(new Error('Invalid Credentials!'));
       return;
     }
-    socket.signature = verifyResult.signature;
+    socket.signature = verifyResult;
 
     next();
   } catch (error) {
-    logger.error('server middleware error:', error);
+    console.log('server middleware error:', error);
     next(error);
   }
 };

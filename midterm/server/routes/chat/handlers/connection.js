@@ -5,6 +5,9 @@ module.exports = async (socket) => {
   const timer = setInterval(async () => {
     try {
       const { token } = socket.handshake.auth;
+      if (!token) {
+        console.log('can find token');
+      }
       const { exp } = jwt.verify(token, process.env.TOKEN_SECRET);
 
       if (Date.now() > exp) {
