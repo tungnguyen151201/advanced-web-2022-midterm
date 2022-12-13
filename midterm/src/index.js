@@ -17,6 +17,7 @@ import Mygroup from './user/mygroups';
 import Creategroup from './components/Group/CreateGroup';
 import Detailgroup from './components/Groups/Details';
 import Joingroup from './components/Groups/JoinGroup';
+import Chat from './components/ChatBox/Messages';
 import SendInviteEmail from './components/Groups/SendInviteEmail';
 import Profile from './user/profile';
 // import HeaderHomePage from '../components/Header/HeaderHomepage';
@@ -44,6 +45,7 @@ root.render(
           {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
 
           <Route path='/register' element={<Register />} />
+          <Route path='/chat/:id' element={<Chat />} />
           <Route path='/profile' element={<Profile />} />
         </Routes>
       </BrowserRouter>

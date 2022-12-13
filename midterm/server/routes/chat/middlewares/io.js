@@ -2,7 +2,9 @@ const { verifyToken } = require('../../../middleware/auth');
 
 module.exports = async (socket, next) => {
   try {
+    // console.log(socket);
     const { token } = socket.handshake.auth;
+    // console.log(token);
     const verifyResult = await verifyToken(token);
 
     if (!verifyResult.isSuccess) {
