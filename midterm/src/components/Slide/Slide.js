@@ -1,5 +1,4 @@
 import './Slide.css';
-import Present from '../Present/Present';
 import Edit from '../Edit/Edit';
 
 export default function Slide() {
@@ -9,7 +8,7 @@ export default function Slide() {
         <p>1</p>
         <div className="slide__demo">Demo</div>
       </div>
-      <Present />
+      <Edit />
     </div>
   );
 }

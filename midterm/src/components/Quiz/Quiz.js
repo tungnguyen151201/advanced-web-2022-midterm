@@ -21,12 +21,6 @@ const Quiz = (props) => {
       </div>
       <main className="quiz__content">
         <Slide />
-        {/* <div className="quiz__present">
-          <Present />
-        </div>
-        <div className="quiz__edit">
-          <Edit />
-        </div> */}
       </main>
     </div>
   );

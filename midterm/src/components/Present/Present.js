@@ -14,7 +14,6 @@ export default function Present() {
         </div>
         <button className="btn__present">Pressent notes</button>
       </div>
-      <Edit />
     </div>
   );
 }
