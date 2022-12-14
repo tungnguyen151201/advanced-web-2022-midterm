@@ -1,0 +1,24 @@
+.message{
+ 
+    background-color: rgb(114, 156, 255);
+    color: white;
+    border-radius: 20%;
+    width: fit-content;
+    padding: 10px;
+}
+.btn-Message{
+    margin: 20px;
+}
+.chat-canvas{
+    margin: 20px;
+    border: 1px solid rgb(181, 181, 181);
+    border-radius: 20px;
+}
+.input-message{
+    display: flex;
+    margin: 20px;
+}
+.sendmessage{
+    border-radius: 20px;
+    height: 50px;
+}

@@ -40,6 +40,7 @@ module.exports = async (io, socket) => {
         user: user.username,
         message: 'joined room',
       });
+      // console.log(roomId);
       room = roomId;
     } catch (error) {
       console.log('chatHandler - joinRoom error', error);
@@ -55,13 +56,14 @@ module.exports = async (io, socket) => {
         socket.disconnect(true);
         return;
       }
-      console.log(message);
-      io.to(room).emit('chat-message', { user: _id, message });
+      io.to(room).emit('chat-message', { user: user.username, message });
 
       await Room.updateOne(
         { presentation: room },
         {
-          $push: { messages: { user: _id, message, createAt: Date.now() } },
+          $push: {
+            messages: { user: _id, message, createAt: Date.now() },
+          },
         }
       );
     } catch (error) {
