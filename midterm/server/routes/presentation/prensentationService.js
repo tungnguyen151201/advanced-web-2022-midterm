@@ -15,7 +15,7 @@ async function GetPresentations(req, res) {
 }
 async function GetPresentationById(req, res) {
   try {
-    const getGroupRes = await getPresentationById(req.params.slideId);
+    const getGroupRes = await getPresentationById(req.params.id, req.user.id);
     res.send(getGroupRes);
   } catch (error) {
     throw error;
@@ -33,8 +33,8 @@ async function CreatPresentation(req, res) {
 async function EditPresentaion(req, res) {
   try {
     const editGroupRes = await editPresentaion(
+      req.params.id,
       req.body,
-      req.params.slideId,
       req.user.id
     );
     res.send(editGroupRes);
