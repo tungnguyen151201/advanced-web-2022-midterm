@@ -5,18 +5,18 @@ const Voting = () => {
   const navigate = useNavigate();
   const answers = document.querySelectorAll('.voting__answer');
 
+  function removeAllActiveClass() {
+    answers.forEach((answer) => {
+      answer.classList.remove('active');
+    });
+  }
+
   answers.forEach((answer) => {
     answer.addEventListener('click', () => {
       removeAllActiveClass();
       answer.classList.add('active');
     });
   });
-
-  function removeAllActiveClass() {
-    answers.forEach((answer) => {
-      answer.classList.remove('active');
-    });
-  }
 
   return (
     <div className="voting__container">
