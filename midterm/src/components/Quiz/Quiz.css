@@ -36,30 +36,4 @@
 .quiz__content {
   width: 100%;
   background: rgb(175, 176, 180);
-  display: flex;
-}
-
-.quiz__slide,
-.quiz__edit {
-  background-color: white;
-}
-
-.quiz__slide {
-  flex: 1.4;
-}
-.quiz__present {
-  flex: 2.8;
-  background-color: #e7e8eb;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-left: 1px solid rgb(231, 232, 235);
-  border-right: 1px solid rgb(231, 232, 235);
-}
-.quiz__edit {
-  flex: 2.6;
-  padding: 20px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 }

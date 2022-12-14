@@ -1,3 +1,15 @@
+.edit__container {
+  display: flex;
+  flex-direction: row-reverse;
+  flex: 1;
+}
+.edit {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  flex: 1;
+  padding: 10px 20px 10px;
+}
 .edit__title {
   font-size: 17px;
   font-weight: 600;
