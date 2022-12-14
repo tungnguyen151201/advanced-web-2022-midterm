@@ -1,11 +1,12 @@
 import './Quiz.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slide from '../Slide/Slide';
 import Present from '../Present/Present';
 import Edit from '../Edit/Edit';
 import { useNavigate } from 'react-router-dom';
 
-const Quiz = (props) => {
+const Quiz = () => {
+  
   const navigate = useNavigate();
   const handleDemo = () => {
     navigate('/demo');
