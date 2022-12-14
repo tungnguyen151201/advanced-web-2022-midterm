@@ -73,7 +73,37 @@ module.exports = async (io, socket) => {
       socket.disconnect(true);
     }
   }
-
+  async function changeSlide(slideIndex) {
+    try {
+      if (!slideIndex) {
+        socket.emit('handle-error', 'Error next index!');
+        socket.disconnect(true);
+        return;
+      }
+      io.to(room).emit('change-slide', { slideIndex });
+    } catch (error) {
+      console.log('chatHandler - chatMessage error', error);
+      socket.emit('handle-error', error.message);
+      socket.disconnect(true);
+    }
+  }
+  async function submitAnswer(answer) {
+    try {
+      if (!answer) {
+        socket.emit('handle-error', 'Error answer!');
+        socket.disconnect(true);
+        return;
+      }
+      console.log();
+      io.to(room).emit('submit-answer', { answer });
+    } catch (error) {
+      console.log('chatHandler - chatMessage error', error);
+      socket.emit('handle-error', error.message);
+      socket.disconnect(true);
+    }
+  }
   socket.on('join-room', joinRoom);
+  socket.on('submit-answer', submitAnswer);
+  socket.on('change-slide', changeSlide);
   socket.on('chat-message', chatMessage);
 };

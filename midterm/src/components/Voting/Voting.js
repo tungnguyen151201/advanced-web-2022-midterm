@@ -1,15 +1,20 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './Voting.css';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import BoxChat from '../ChatBox/BoxChat';
+import { SocketContext } from '../../context/socket';
+
 const Voting = () => {
+  const { id } = useParams();
+  const socket = useContext(SocketContext);
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
   const answers = document.querySelectorAll('.voting__answer');
+  socket.emit('join-room', id);
 
   function removeAllActiveClass() {
     answers.forEach((answer) => {
@@ -23,7 +28,14 @@ const Voting = () => {
       answer.classList.add('active');
     });
   });
-
+  const handleAnswer = () => {
+    answers.forEach((answer) => {
+      if (answer.classList.contains('active')) {
+        console.log(answer.id);
+        socket.emit('submit-answer', { answer: answer.id });
+      }
+    });
+  };
   const [presentation, setPresentation] = useState({
     name: 'test',
     owner: 'test',
@@ -52,6 +64,19 @@ const Voting = () => {
       .then((res) => {
         setPresentation(res.data.presentation);
       });
+
+    socket.on('connect_error', (err) => {
+      if (err.message === 'xhr poll error') return;
+      console.log(`connect_error :${err.message}`);
+    });
+    socket.on('handle-error', (error) => {
+      // setError(error);
+      console.log(error);
+    });
+
+    return () => {
+      socket.off('submit-anwser');
+    };
   }, []);
 
   return (
@@ -61,13 +86,15 @@ const Voting = () => {
       <div className='voting__answers'>
         {presentation.slides[slide].options.map((value, index) => {
           return (
-            <div className='voting__answer' key={index}>
+            <div className='voting__answer' key={index} id={index}>
               {value}
             </div>
           );
         })}
       </div>
-      <div className='voting__submit'>Submit</div>
+      <div className='voting__submit' onClick={handleAnswer}>
+        Submit
+      </div>
       <Button
         onClick={() => setOpen(!open)}
         aria-controls='example-collapse-text'
