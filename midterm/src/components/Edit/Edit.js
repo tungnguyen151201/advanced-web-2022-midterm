@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Present from '../Present/Present';
 import './Edit.css';
-export default function Edit() {
+export default function Edit({ setSlideDetail }) {
   const [questions, setQuestions] = useState('');
   const [options, setOptions] = useState('');
   const [newoptions, createOptions] = useState([]);
@@ -9,8 +9,14 @@ export default function Edit() {
   const handleNewOptions = () => {
     createOptions((arr) => [...arr, `${options}`]);
   };
+  const handleChangeDetail = () => {
+    setSlideDetail({
+      question: questions,
+      options,
+    });
+  };
   return (
-    <div className='edit__container'>
+    <div className='edit__container' onChange={handleChangeDetail}>
       <div className='edit'>
         <p className='edit__title'>Slide type</p>
         <select className='edit__select'>

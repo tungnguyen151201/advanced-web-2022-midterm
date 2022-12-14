@@ -75,7 +75,7 @@ const Voting = () => {
     });
 
     return () => {
-      socket.off('submit-anwser');
+      socket.off('submit-answer');
     };
   }, []);
 

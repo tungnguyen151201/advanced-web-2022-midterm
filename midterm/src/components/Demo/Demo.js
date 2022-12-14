@@ -10,7 +10,6 @@ import { SocketContext } from '../../context/socket';
 const Demo = () => {
   const { id } = useParams();
   const socket = useContext(SocketContext);
-  const [answers, setAnswer] = useState([0, 0, 0, 0]);
   const [open, setOpen] = useState(false);
   const [presentation, setPresentation] = useState({
     name: 'test',
@@ -18,14 +17,21 @@ const Demo = () => {
     slides: [
       {
         question: "What's your name?",
-        options: ['anwser 1', 'anwser 2', 'anwser 3', 'anwser 4'],
+        options: ['anwser 1', 'anwser 2', 'anwser 3'],
       },
       {
         question: 'Slide 2',
-        options: ['anwser 1', 'anwser 2', 'anwser 3', 'anwser 4'],
+        options: ['anwser 1', 'anwser 2', 'anwser 3'],
       },
     ],
   });
+  const [slide, setSlide] = useState(0);
+  const [answers, setAnswers] = useState(
+    Array.from(
+      { length: presentation.slides[slide].options.length },
+      (v) => (v = 0)
+    )
+  );
 
   const link = `http://localhost:3000/voting/${id}`;
   socket.emit('join-room', id);
@@ -35,8 +41,6 @@ const Demo = () => {
     alert('Link copied to the clipboard');
   };
 
-  const [slide, setSlide] = useState(0);
-  const [array, setArr] = useState([]);
   const token = 'Bearer ' + localStorage.getItem('token');
 
   useEffect(() => {
@@ -50,18 +54,17 @@ const Demo = () => {
         setPresentation(res.data.presentation);
       });
     socket.on('submit-answer', (data) => {
-      const arr = answers.map((value, index) => {
-        if (index === parseInt(data.answer.answer)) return value + 1;
-      });
-
-      setArr(arr);
-      console.log(array);
-      // setAnswer(arr);
+      let arr = Array.from(
+        { length: presentation.slides[slide].options.length },
+        (v, i) => (v = answers[i])
+      );
+      arr[data.answer.answer] += 1;
+      setAnswers(arr);
     });
     return () => {
-      socket.off('submit-anwser');
+      socket.off('submit-answer');
     };
-  }, [answers]);
+  }, [answers, id, presentation.slides, slide, socket, token]);
 
   return (
     <div className='demo__container'>
@@ -80,7 +83,7 @@ const Demo = () => {
         <div className='demo__chart'>
           <BarChart
             options={presentation.slides[slide].options}
-            answers={array}
+            answers={answers}
           />
         </div>
         <Button
