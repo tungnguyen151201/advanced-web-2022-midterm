@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BarChart from '../BarChart/BarChart';
@@ -6,15 +6,12 @@ import BoxChat from '../ChatBox/BoxChat';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import './Demo.css';
+import { SocketContext } from '../../context/socket';
 const Demo = () => {
-  const [open, setOpen] = useState(false);
   const { id } = useParams();
-  const link = `http://localhost:3000/voting/${id}`;
-  const handleCopy = () => {
-    navigator.clipboard.writeText(link);
-    alert('Link copied to the clipboard');
-  };
-
+  const socket = useContext(SocketContext);
+  const [answers, setAnswer] = useState([0, 0, 0, 0]);
+  const [open, setOpen] = useState(false);
   const [presentation, setPresentation] = useState({
     name: 'test',
     owner: 'test',
@@ -30,6 +27,14 @@ const Demo = () => {
     ],
   });
 
+  const link = `http://localhost:3000/voting/${id}`;
+  socket.emit('join-room', id);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link);
+    alert('Link copied to the clipboard');
+  };
+
   const [slide, setSlide] = useState(0);
   const token = 'Bearer ' + localStorage.getItem('token');
 
@@ -43,6 +48,11 @@ const Demo = () => {
       .then((res) => {
         setPresentation(res.data.presentation);
       });
+    socket.on('submit-answer', (data) => {
+      let arr = [...answers];
+      arr[parseInt(data.answer.answer)] += 1;
+      setAnswer(arr);
+    });
   }, []);
 
   return (
@@ -60,7 +70,10 @@ const Demo = () => {
         </h1>
 
         <div className='demo__chart'>
-          <BarChart options={presentation.slides[slide].options} />
+          <BarChart
+            options={presentation.slides[slide].options}
+            answers={answers}
+          />
         </div>
         <Button
           onClick={() => setOpen(!open)}
