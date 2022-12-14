@@ -16,7 +16,6 @@ const BoxChat = () => {
   };
   useEffect(() => {
     socket.on('chat-message', (data) => {
-      console.log(data);
       setMessageReceive((MessageReceive) => MessageReceive.concat(data));
     });
     socket.on('connect_error', (err) => {
