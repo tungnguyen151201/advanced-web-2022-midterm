@@ -53,6 +53,9 @@ const Demo = () => {
       arr[parseInt(data.answer.answer)] += 1;
       setAnswer(arr);
     });
+    return () => {
+      socket.off('submit-anwser');
+    };
   }, []);
 
   return (
