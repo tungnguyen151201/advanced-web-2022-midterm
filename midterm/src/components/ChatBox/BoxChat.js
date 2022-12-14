@@ -12,7 +12,6 @@ const BoxChat = () => {
   socket.emit('join-room', id);
 
   const handleSendMessage = () => {
-    console.log(message);
     socket.emit('chat-message', message);
   };
   useEffect(() => {
@@ -26,11 +25,15 @@ const BoxChat = () => {
     socket.on('handle-error', (error) => {
       setError(error);
     });
+
+    return () => {
+      socket.off('chat-message');
+    };
   }, []);
 
   return (
-    <div className='chat-composer'>
-      <div className='chat-canvas'>
+    <div className="chat-composer">
+      <div className="chat-canvas">
         {MessageReceive.map((value, index) => {
           return (
             <Messages
@@ -41,22 +44,22 @@ const BoxChat = () => {
           );
         })}
       </div>
-      <div className='input-message'>
-        <form className='w-100 m-2 input-message'>
+      <div className="input-message">
+        <form className="w-100 m-2 input-message">
           <input
-            className='form-control'
-            placeholder='Enter message...'
+            className="form-control"
+            placeholder="Enter message..."
             onChange={(e) => {
               setMessage(e.target.value);
             }}
           />
         </form>
         <button
-          className='btn btn-primary m-2 sendmessage'
-          onClick={handleSendMessage}
-        >
-          Send
-        </button>
+            className="btn btn-primary m-2 sendmessage"
+            onClick={handleSendMessage}
+          >
+            Send
+          </button>
       </div>
     </div>
   );

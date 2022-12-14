@@ -56,6 +56,7 @@ module.exports = async (io, socket) => {
         socket.disconnect(true);
         return;
       }
+
       io.to(room).emit('chat-message', { user: user.username, message });
 
       await Room.updateOne(
