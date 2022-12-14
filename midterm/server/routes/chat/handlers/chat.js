@@ -3,7 +3,7 @@ const { Room, Presentation, User } = require('../../../models');
 module.exports = async (io, socket) => {
   const { _id } = socket.signature;
 
-  const user = await User.findById({ _id }).lean();
+  const user = await User.findById(_id).lean();
   let room;
   async function joinRoom(roomId) {
     try {
@@ -25,9 +25,7 @@ module.exports = async (io, socket) => {
 
       const { users, presentation } = roomDb;
 
-      const presentDB = await Presentation.findById({
-        _id: presentation,
-      }).lean();
+      const presentDB = await Presentation.findById(presentation).lean();
       if (!presentDB) {
         socket.emit('handle-error', 'Invalid room!');
         socket.disconnect(true);

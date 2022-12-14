@@ -12,7 +12,10 @@ async function getGroupById(groupId) {
     }
     return group;
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function myGroup(userId) {
@@ -29,7 +32,10 @@ async function myGroup(userId) {
       .lean();
     return { status: true, message: 'get success!', myGroups };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function createGroup({ groupname, members, coowner }, owner) {
@@ -51,13 +57,16 @@ async function createGroup({ groupname, members, coowner }, owner) {
     if (!myGroups) {
       return { status: false, message: 'error Infomation!' };
     }
-    await Groups.findByIdAndUpdate(
+    await Groups.findOneAndUpdate(
       { _id: myGroups._id },
       { url: myGroups._id }
     );
     return { status: true, message: 'create successful!' };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function editGroup(userInfo, groupId, groupInfo) {
@@ -108,7 +117,10 @@ async function deleteGroup(userInfo, { groupId }) {
     await Groups.findOneAndDelete({ groupId });
     return { status: true, message: 'delete successful!' };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 module.exports = {

@@ -63,7 +63,10 @@ async function Login({ username, password }) {
       refreshToken,
     };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function Logout(userId, refreshToken) {
@@ -75,7 +78,10 @@ async function Logout(userId, refreshToken) {
     await Blacklist.create({ userId: userId, token: refreshToken });
     return { status: true, message: 'Logged Out Sucessfully' };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function MyProfile(userId) {
@@ -92,7 +98,10 @@ async function MyProfile(userId) {
     }
     return { status: true, message: 'Get Profile successful!', myProfile };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function EditProfile(userId, profileInfo) {
@@ -110,7 +119,10 @@ async function EditProfile(userId, profileInfo) {
     }
     return { status: true, message: 'Update Profile successful!' };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function Activate(token) {
@@ -120,14 +132,20 @@ async function Activate(token) {
       { emailToken: '', status: 'Active' }
     );
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function UpdateEmailToken(userId, emailToken) {
   try {
     await User.findByIdAndUpdate(userId, { emailToken });
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function JoinGroup(userId, groupId) {
@@ -156,7 +174,10 @@ async function JoinGroup(userId, groupId) {
     );
     return { message: 'join success'};
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 module.exports = {
