@@ -20,15 +20,13 @@ const Quiz = (props) => {
         </button>
       </div>
       <main className="quiz__content">
-        <div className="quiz__slide">
-          <Slide />
-        </div>
-        <div className="quiz__present">
+        <Slide />
+        {/* <div className="quiz__present">
           <Present />
         </div>
         <div className="quiz__edit">
           <Edit />
-        </div>
+        </div> */}
       </main>
     </div>
   );

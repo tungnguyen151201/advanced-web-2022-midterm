@@ -1,9 +1,16 @@
+.slide__container {
+  display: flex;
+  background-color: white;
+}
+
 .slide {
   display: flex;
   align-items: flex-start;
   font-size: 16px;
   background-color: rgb(209, 226, 255);
   padding: 6px;
+  height: max-content;
+  width: 22%;
 }
 
 .slide p {

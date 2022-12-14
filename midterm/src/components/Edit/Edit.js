@@ -1,7 +1,7 @@
 import './Edit.css';
 export default function Edit() {
   return (
-    <>
+    <div className="edit__container">
       <p className="edit__title">Slide type</p>
       <select className="edit__select">
         <option value="multiple">Multiple Choice</option>
@@ -18,6 +18,6 @@ export default function Edit() {
         <input type="text" value={'Answer 4'} className="edit__input" />
       </div>
       <button className="btn__add quiz__btn--g">+ Add option</button>
-    </>
+    </div>
   );
 }
