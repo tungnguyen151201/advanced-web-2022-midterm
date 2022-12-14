@@ -6,7 +6,8 @@
 
 const app = require('../app');
 const http = require('http');
-
+// const { Server } = require('socket.io');
+const chatServer = require('../routes/chat/createServer');
 /**
  * Get port from environment and store in Express.
  */
@@ -20,6 +21,13 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
+chatServer.attach(server, {
+  //<<==domain name for the nodejs server
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['POST', 'GET'],
+  },
+});
 /**
  * Listen on provided port, on all network interfaces.
  */

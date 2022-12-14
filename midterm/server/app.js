@@ -9,13 +9,18 @@ const mongoose = require('mongoose');
 const config = require('./config');
 const passport = require('passport');
 const session = require('express-session');
+
 const usersRouter = require('./routes/user/users');
 const groupRouter = require('./routes/group/groups');
+const presentationRouter = require('./routes/presentation/');
 const authRouter = require('./routes/auth/authGoogle');
+
 const app = express();
+
 dotenv.config();
 
 const { verifyToken } = require('./middleware/auth');
+
 async function connectDB() {
   try {
     await mongoose.connect(config.mongodb.urls);
@@ -34,6 +39,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,10 +52,14 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/presentation', verifyToken, presentationRouter);
 app.use('/groups/', verifyToken, groupRouter);
 app.use('/', usersRouter);
 // app.use('/', usersRouter);
 app.use('/auth/', authRouter);
+app.get('/chat', (__, res) => {
+  res.sendFile();
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

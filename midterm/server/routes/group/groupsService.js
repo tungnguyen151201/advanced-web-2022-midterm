@@ -1,13 +1,13 @@
 const {
-  getGroup,
+  getGroupById,
   myGroup,
   createGroup,
   editGroup,
   deleteGroup,
 } = require('./groupsController');
-async function GetGroup(req, res) {
+async function GetGroupById(req, res) {
   try {
-    const getGroupRes = await getGroup(req.body);
+    const getGroupRes = await getGroupById(req.params.id);
     res.send(getGroupRes);
   } catch (error) {
     throw error;
@@ -47,7 +47,7 @@ async function DeleteGroup(req, res) {
   }
 }
 module.exports = {
-  GetGroup,
+  GetGroupById,
   MyGroup,
   CreateGroup,
   EditGroup,

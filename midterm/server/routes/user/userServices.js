@@ -1,10 +1,14 @@
 const {
   Register,
-  Login, Activate,
+  Login,
+  Activate,
   Logout,
   MyProfile,
   EditProfile,
+  JoinGroup,
 } = require('./userController');
+const { sendVerifyEmail, sendInviteEmail } = require('../utils/sendEmail');
+
 async function register(req, res) {
   try {
     const registerRes = await Register(req.body);
@@ -24,7 +28,7 @@ async function login(req, res) {
 }
 async function getHomePage(req, res) {
   try {
-    const homePageRes = await Login(req.body);
+    await Login(req.body);
     res.send('home');
   } catch (error) {
     throw error;
@@ -33,10 +37,11 @@ async function getHomePage(req, res) {
 
 async function activateUser(req, res) {
   try {
-    const {emailToken} = req.params;
-    console.log(emailToken);
+    const { emailToken } = req.params;
+    await Activate(emailToken);
+    res.send('Activate successful');
   } catch (error) {
-    throw error;
+    res.send('Activate failed');
   }
 }
 async function getProfile(req, res) {
@@ -63,6 +68,30 @@ async function logout(req, res) {
     throw error;
   }
 }
+async function sendVerifyEmailService(req, res) {
+  try {
+    await sendVerifyEmail(req.user.id, req.user.email);
+    res.redirect('/');
+  } catch (error) {
+    throw error;
+  }
+}
+async function sendInviteEmailService(req, res) {
+  try {
+    const msg = await sendInviteEmail(req.body.email, req.params.groupId);
+    res.send(msg);
+  } catch (error) {
+    throw error;
+  }
+}
+async function joinGroup(req, res) {
+  try {
+    const msg = await JoinGroup(req.user.id, req.params.groupId);
+    res.send(msg);
+  } catch (error) {
+    res.send('Join failed');
+  }
+}
 module.exports = {
   register,
   login,
@@ -71,4 +100,7 @@ module.exports = {
   getProfile,
   editProfile,
   logout,
+  sendVerifyEmailService,
+  sendInviteEmailService,
+  joinGroup,
 };

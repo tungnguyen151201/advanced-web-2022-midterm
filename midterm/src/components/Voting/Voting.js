@@ -1,8 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Voting.css';
-
+import Collapse from 'react-bootstrap/Collapse';
+import Button from 'react-bootstrap/Button';
+import BoxChat from '../ChatBox/BoxChat';
 const Voting = () => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
   const answers = document.querySelectorAll('.voting__answer');
 
   function removeAllActiveClass() {
@@ -18,17 +24,62 @@ const Voting = () => {
     });
   });
 
+  const [presentation, setPresentation] = useState({
+    name: 'test',
+    owner: 'test',
+    slides: [
+      {
+        question: "What's your name?",
+        options: ['anwser 1', 'anwser 2', 'anwser 3', 'anwser 4'],
+      },
+      {
+        question: 'Slide 2',
+        options: ['anwser 1', 'anwser 2', 'anwser 3', 'anwser 4'],
+      },
+    ],
+  });
+
+  const [slide, setSlide] = useState(0);
+  const token = 'Bearer ' + localStorage.getItem('token');
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/presentation/${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setPresentation(res.data.presentation);
+      });
+  }, []);
+
   return (
-    <div className="voting__container">
-      <h1 className="voting__logo">THT</h1>
-      <p className="voting__question">What's your name?</p>
-      <div className="voting__answers">
-        <div className="voting__answer">Answer 1</div>
-        <div className="voting__answer">Answer 2</div>
-        <div className="voting__answer">Answer 3</div>
-        <div className="voting__answer">Answer 4</div>
+    <div className='voting__container'>
+      <h1 className='voting__logo'>THT</h1>
+      <p className='voting__question'>{presentation.slides[slide].question}</p>
+      <div className='voting__answers'>
+        {presentation.slides[slide].options.map((value, index) => {
+          return (
+            <div className='voting__answer' key={index}>
+              {value}
+            </div>
+          );
+        })}
       </div>
-      <div className="voting__submit">Submit</div>
+      <div className='voting__submit'>Submit</div>
+      <Button
+        onClick={() => setOpen(!open)}
+        aria-controls='example-collapse-text'
+        aria-expanded={open}
+      >
+        Box Chat
+      </Button>
+      <Collapse in={open}>
+        <div id='example-collapse-text'>
+          <BoxChat></BoxChat>
+        </div>
+      </Collapse>
     </div>
   );
 };

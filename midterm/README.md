@@ -1,3 +1,19 @@
+---Submit option--- (Tùng)
+server: socket.emit('changeSlide', '1');
+client: socket.on('changeSlide', (i) => {update UI sang slide thứ i}
+client: socket.emit('submit', 'option 1');
+server: socket.on('submit', (option) => {cập nhật biểu đồ});
+---Chat--- (Tiệp)
+server: onmessage (emit, on)
+client: onmessage (emit, on)
+
+admin: (kiểm tra auth)
+new presentation (edit) -> /presentations/:presentationId/edit
+present -> GET /presentations/:presentationId/:slideId
+guest:
+join -> localhost/presentationId (không cần auth)
+
+CRUD: presentation (Tùng), slides (Tiệp)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
