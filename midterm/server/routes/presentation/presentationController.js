@@ -15,7 +15,10 @@ async function getPresentations(userId) {
       presentations,
     };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function getPresentationById(presentationId, userId) {
@@ -40,7 +43,10 @@ async function getPresentationById(presentationId, userId) {
     }
     return { status: true, message: 'Get presentation Success!', presentation };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function creatPresentation(presentationInfo, userId) {
@@ -78,7 +84,10 @@ async function creatPresentation(presentationInfo, userId) {
     }
     return { status: true, message: 'create successful!', newPresentation };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 async function editPresentaion(presentationId, presentationInfo, userId) {
@@ -114,7 +123,10 @@ async function deletePresentation(userId, presentationId) {
     await Room.findOneAndDelete({ presentation: presentationId });
     return { status: true, message: 'delete successful!' };
   } catch (error) {
-    throw error;
+    return {
+      status: false,
+      message: error,
+    };
   }
 }
 module.exports = {
