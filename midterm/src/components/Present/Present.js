@@ -2,18 +2,21 @@ import { useState } from 'react';
 import './Present.css';
 import Edit from '../Edit/Edit';
 
-export default function Present() {
+export default function Present({ question, options }) {
   return (
-    <div className="present__container">
-      <div className="present">
-        <p className="question">Question 1: What's your name?</p>
-        <div className="answers">
-          <div className="answer">Answer 1</div>
-          <div className="answer">Answer 2</div>
-          <div className="answer">Answer 3</div>
-          <div className="answer">Answer 4</div>
+    <div className='present__container'>
+      <div className='present'>
+        <p className='question'>Question 1: {question}</p>
+        <div className='answers'>
+          {options.map((value, index) => {
+            return (
+              <div key={index} className='answer'>
+                {value}
+              </div>
+            );
+          })}
         </div>
-        <button className="btn__present">Pressent notes</button>
+        <button className='btn__present'>Pressent notes</button>
       </div>
     </div>
   );

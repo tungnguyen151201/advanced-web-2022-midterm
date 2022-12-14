@@ -36,6 +36,7 @@ const Demo = () => {
   };
 
   const [slide, setSlide] = useState(0);
+  const [array, setArr] = useState([]);
   const token = 'Bearer ' + localStorage.getItem('token');
 
   useEffect(() => {
@@ -49,14 +50,18 @@ const Demo = () => {
         setPresentation(res.data.presentation);
       });
     socket.on('submit-answer', (data) => {
-      let arr = [...answers];
-      arr[parseInt(data.answer.answer)] += 1;
-      setAnswer(arr);
+      const arr = answers.map((value, index) => {
+        if (index === parseInt(data.answer.answer)) return value + 1;
+      });
+
+      setArr(arr);
+      console.log(array);
+      // setAnswer(arr);
     });
     return () => {
       socket.off('submit-anwser');
     };
-  }, []);
+  }, [answers]);
 
   return (
     <div className='demo__container'>
@@ -75,7 +80,7 @@ const Demo = () => {
         <div className='demo__chart'>
           <BarChart
             options={presentation.slides[slide].options}
-            answers={answers}
+            answers={array}
           />
         </div>
         <Button

@@ -6,7 +6,6 @@ import Edit from '../Edit/Edit';
 import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
-  
   const navigate = useNavigate();
   const [slide, newSlide] = useState([0]);
   const handleDemo = () => {
@@ -33,9 +32,9 @@ const Quiz = () => {
           })}
         </div>
 
-        <div className='quiz__edit'>
+        {/* <div className='quiz__edit'>
           <Edit />
-        </div>
+        </div> */}
       </main>
     </div>
   );
