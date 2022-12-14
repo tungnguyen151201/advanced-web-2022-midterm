@@ -1,6 +1,6 @@
 import Plot from 'react-plotly.js';
 
-const BarChart = () => {
+const BarChart = ({options}) => {
   return (
     <>
       <Plot
@@ -9,7 +9,7 @@ const BarChart = () => {
             type: 'bar',
             // y ở index nào tương ứng ở x sẽ có giá trị bao nhiêu đó
             y: [20, 10, 20, 30, 40],
-            x: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'],
+            x: options,
             data: [],
           },
         ]}
