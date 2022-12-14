@@ -1,11 +1,10 @@
-import { useState } from 'react';
-// import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import BarChart from '../BarChart/BarChart';
 import BoxChat from '../ChatBox/BoxChat';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import './Demo.css';
 const Demo = () => {
   const [open, setOpen] = useState(false);
@@ -59,6 +58,7 @@ const Demo = () => {
         <h1 className='demo__question'>
           {presentation.slides[slide].question}
         </h1>
+
         <div className='demo__chart'>
           <BarChart options={presentation.slides[slide].options} />
         </div>

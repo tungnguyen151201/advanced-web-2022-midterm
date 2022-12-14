@@ -2,8 +2,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Voting.css';
-
+import Collapse from 'react-bootstrap/Collapse';
+import Button from 'react-bootstrap/Button';
+import BoxChat from '../ChatBox/BoxChat';
 const Voting = () => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const answers = document.querySelectorAll('.voting__answer');
@@ -52,19 +55,31 @@ const Voting = () => {
   }, []);
 
   return (
-    <div className="voting__container">
-      <h1 className="voting__logo">THT</h1>
-      <p className="voting__question">{presentation.slides[slide].question}</p>
-      <div className="voting__answers">
+    <div className='voting__container'>
+      <h1 className='voting__logo'>THT</h1>
+      <p className='voting__question'>{presentation.slides[slide].question}</p>
+      <div className='voting__answers'>
         {presentation.slides[slide].options.map((value, index) => {
           return (
-            <div className="voting__answer" key={index}>
+            <div className='voting__answer' key={index}>
               {value}
             </div>
           );
         })}
       </div>
-      <div className="voting__submit">Submit</div>
+      <div className='voting__submit'>Submit</div>
+      <Button
+        onClick={() => setOpen(!open)}
+        aria-controls='example-collapse-text'
+        aria-expanded={open}
+      >
+        Box Chat
+      </Button>
+      <Collapse in={open}>
+        <div id='example-collapse-text'>
+          <BoxChat></BoxChat>
+        </div>
+      </Collapse>
     </div>
   );
 };
