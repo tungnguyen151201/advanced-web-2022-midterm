@@ -1,11 +1,7 @@
-import './Present.css';
-import BoxChat from '../ChatBox/BoxChat';
-import Collapse from 'react-bootstrap/Collapse';
-import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
-export default function Present() {
-  const [open, setOpen] = useState(false);
+import './Present.css';
 
+export default function Present() {
   return (
     <>
       <div className='present'>
@@ -16,19 +12,8 @@ export default function Present() {
           <div className='answer'>Answer 3</div>
           <div className='answer'>Answer 4</div>
         </div>
-        <Button
-          onClick={() => setOpen(!open)}
-          aria-controls='example-collapse-text'
-          aria-expanded={open}
-        >
-          Box Chat
-        </Button>
-        <Collapse in={open}>
-          <div id='example-collapse-text'>
-            <BoxChat></BoxChat>
-          </div>
-        </Collapse>
       </div>
+
       <button className='btn__present'>Pressent notes</button>
     </>
   );
