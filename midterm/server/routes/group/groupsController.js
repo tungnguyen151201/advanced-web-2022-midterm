@@ -14,7 +14,7 @@ async function getGroupById(groupId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: 'getGroupById - groupsController error: ' + error,
     };
   }
 }
@@ -34,7 +34,7 @@ async function myGroup(userId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: 'myGroup - groupsController error: ' + error,
     };
   }
 }
@@ -57,50 +57,40 @@ async function createGroup({ groupname, members, coowner }, owner) {
     if (!myGroups) {
       return { status: false, message: 'error Infomation!' };
     }
-    await Groups.findOneAndUpdate(
-      { _id: myGroups._id },
-      { url: myGroups._id }
-    );
+    await Groups.findOneAndUpdate({ _id: myGroups._id }, { url: myGroups._id });
     return { status: true, message: 'create successful!' };
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: 'createGroup - groupsController error: ' + error,
     };
   }
 }
 async function editGroup(userInfo, groupId, groupInfo) {
   try {
-    if (!groupId) {
+    if (!groupId || !groupInfo || !userInfo) {
       return { status: false, message: 'Invalid Infomation!' };
     }
     // Kiểm tra có phải owner hay không?
-    const IsOwner = await Groups.findOne({ owner: userInfo.id }).lean();
+    const IsOwner = await Groups.findOne({
+      _id: groupId,
+      owner: userInfo.id,
+    }).lean();
     if (!IsOwner) {
       return { status: false, message: 'Invalid Credenticals!' };
-    }
-    //Kiểm tra xem có là co-owner hay member chưa?
-    const existedUser = await Groups.findOne({
-      $or: [{ members: groupInfo.members }, { coowner: groupInfo.coowner }],
-    }).lean();
-    if (existedUser) {
-      return { status: false, message: 'Invalid Credenticals!' };
-    }
-    //Kiểm tra id nhập vào có trong bảng user hay không?
-    const existsMember = await User.find({
-      $or: [{ _id: groupInfo.members }, { _id: groupInfo.members }],
-    }).lean();
-    if (!existsMember) {
-      return { status: false, message: 'Invalid Infomation!' };
     }
     //Update sau khi đã kiểm tra
     const myGroups = await Groups.findOneAndUpdate(
       { _id: groupId },
-      { ...groupInfo }
+      { ...groupInfo },
+      { new: true }
     );
     return { status: true, message: 'update successful!', myGroups };
   } catch (error) {
-    return { status: false, message: 'Invalid Infomation!' };
+    return {
+      status: false,
+      message: 'editGroup - groupController error:' + error,
+    };
   }
 }
 async function deleteGroup(userInfo, { groupId }) {
@@ -114,14 +104,91 @@ async function deleteGroup(userInfo, { groupId }) {
       return { status: false, message: 'Invalid Credenticals!' };
     }
 
-    await Groups.findOneAndDelete({ groupId });
+    await Groups.deleteOne({ _id: groupId });
     return { status: true, message: 'delete successful!' };
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: 'deleteGroup - groupsController error: ' + error,
     };
   }
+}
+async function promoteToCoowner(userInfo, userId, groupId) {
+  const existedUser = await User.findById(userId).lean();
+  if (!existedUser || userInfo.id === userId) {
+    return { status: false, message: 'Invalid User' };
+  }
+  const group = await Groups.findById(groupId, 'coowner members').lean();
+  if (!group) {
+    return { status: false, message: 'Group not found' };
+  }
+  let { coowner, members } = group;
+  if (!members.includes(userId)) {
+    return {
+      status: false,
+      message: 'This user is not a member of this group',
+    };
+  }
+  if (coowner.includes(userId)) {
+    return { status: false, message: 'This user has already been coowner' };
+  }
+  members.pop(userId);
+  coowner.push(userId);
+  const res = await editGroup(userInfo, groupId, {
+    coowner,
+    members,
+  });
+  return res;
+}
+async function demoteToMember(userInfo, userId, groupId) {
+  const existedUser = await User.findById(userId).lean();
+  if (!existedUser || userInfo.id === userId) {
+    return { status: false, message: 'Invalid User' };
+  }
+  const group = await Groups.findById(groupId, 'coowner members').lean();
+  if (!group) {
+    return { status: false, message: 'Group not found' };
+  }
+  let { coowner, members } = group;
+  if (!coowner.includes(userId)) {
+    return {
+      status: false,
+      message: 'This user is not a coowner of this group',
+    };
+  }
+  if (members.includes(userId)) {
+    return { status: false, message: 'This user has already been member' };
+  }
+  coowner.pop(userId);
+  members.push(userId);
+  const res = await editGroup(userInfo, groupId, {
+    coowner,
+    members,
+  });
+  return res;
+}
+async function kickAMember(userInfo, userId, groupId) {
+  const existedUser = await User.findById(userId).lean();
+  if (!existedUser || userInfo.id === userId) {
+    return { status: false, message: 'Invalid User' };
+  }
+  const group = await Groups.findById(groupId, 'coowner members').lean();
+  if (!group) {
+    return { status: false, message: 'Group not found' };
+  }
+  let { coowner, members } = group;
+  if (coowner.includes(userId)) {
+    coowner.pop(userId);
+  }
+  if (members.includes(userId)) {
+    members.pop(userId);
+  }
+
+  const res = await editGroup(userInfo, groupId, {
+    coowner,
+    members,
+  });
+  return res;
 }
 module.exports = {
   getGroupById,
@@ -129,4 +196,7 @@ module.exports = {
   createGroup,
   editGroup,
   deleteGroup,
+  promoteToCoowner,
+  demoteToMember,
+  kickAMember,
 };
