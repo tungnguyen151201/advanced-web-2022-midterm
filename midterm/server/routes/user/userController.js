@@ -109,7 +109,6 @@ async function EditProfile(userId, profileInfo) {
     if (!userId) {
       return { status: false, message: 'Invalid Information!' };
     }
-    console.log(profileInfo);
     const editProfile = await User.updateOne(
       { _id: userId },
       { ...profileInfo }
@@ -138,9 +137,13 @@ async function Activate(token) {
     };
   }
 }
-async function UpdateEmailToken(userId, emailToken) {
+async function UpdateEmailToken(email, emailToken) {
   try {
-    await User.findByIdAndUpdate(userId, { emailToken });
+    await User.findByOneAndUpdate({ email }, { emailToken });
+    return {
+      status: true,
+      message: 'Verify email successful!',
+    };
   } catch (error) {
     return {
       status: false,
@@ -149,19 +152,19 @@ async function UpdateEmailToken(userId, emailToken) {
   }
 }
 async function JoinGroup(userId, groupId) {
-  try {   
+  try {
     const group = await getGroupById(groupId);
-    if (!group) return { message: 'group not found'};
+    if (!group) return { message: 'group not found' };
     let { members, owner, coowner } = group;
-    members = members.map(member => member.toString());
-    coowner = coowner.map(coowner => coowner.toString());
+    members = members.map((member) => member.toString());
+    coowner = coowner.map((coowner) => coowner.toString());
 
     if (
       owner.toString() === userId ||
       members.includes(userId) ||
       coowner.includes(userId)
     ) {
-      return { message: 'user already been in this group'};
+      return { message: 'user already been in this group' };
     }
 
     members.push(userId);
@@ -172,7 +175,27 @@ async function JoinGroup(userId, groupId) {
         members,
       }
     );
-    return { message: 'join success'};
+    return { message: 'join success' };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+}
+
+async function UpdateNewPassword(email, newPassword) {
+  try {
+    if (!email || !newPassword) {
+      return { status: false, message: 'invalid infomation!' };
+    }
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+    await User.updateOne(
+      { email },
+      {
+        password: passwordHash,
+      }
+    );
   } catch (error) {
     return {
       status: false,
@@ -188,5 +211,6 @@ module.exports = {
   MyProfile,
   EditProfile,
   UpdateEmailToken,
+  UpdateNewPassword,
   JoinGroup,
 };

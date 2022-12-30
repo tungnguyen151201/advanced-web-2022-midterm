@@ -12,7 +12,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Groups from './components/Groups/Groups';
 import Details from './components/Groups/Details';
-
+import ForgotPassword from './components/Auth/ForgotPassword';
 import Mygroup from './user/mygroups';
 import Creategroup from './components/Group/CreateGroup';
 import Detailgroup from './components/Groups/Details';
@@ -48,6 +48,7 @@ root.render(
             <Route path='/createGroup' element={<Creategroup />} />
             <Route path='/join/:id' element={<Joingroup />} />
             <Route path='/getGroups/:id' element={<Detailgroup />} />
+            <Route path='/forgotPassword/' element={<ForgotPassword />} />
             <Route path='/sendInviteEmail/:id' element={<SendInviteEmail />} />
             {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
 

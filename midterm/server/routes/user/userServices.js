@@ -6,8 +6,13 @@ const {
   MyProfile,
   EditProfile,
   JoinGroup,
+  resetPassword,
 } = require('./userController');
-const { sendVerifyEmail, sendInviteEmail } = require('../utils/sendEmail');
+const {
+  sendVerifyEmail,
+  sendInviteEmail,
+  sendEmailResetPassword,
+} = require('../utils/sendEmail');
 
 async function register(req, res) {
   try {
@@ -39,7 +44,7 @@ async function activateUser(req, res) {
   try {
     const { emailToken } = req.params;
     await Activate(emailToken);
-    res.send('Activate successful');
+    res.send({ status: true, message: 'Activate successful' });
   } catch (error) {
     res.send('Activate failed');
   }
@@ -49,7 +54,7 @@ async function getProfile(req, res) {
     const myProfileRes = await MyProfile(req.user._id);
     res.send(myProfileRes);
   } catch (error) {
-    throw error;
+    res.send('userService - getProfile failed');
   }
 }
 async function editProfile(req, res) {
@@ -57,7 +62,7 @@ async function editProfile(req, res) {
     const editProfileRes = await EditProfile(req.user._id, req.body);
     res.send(editProfileRes);
   } catch (error) {
-    throw error;
+    res.send('userService - editProfile failed');
   }
 }
 async function logout(req, res) {
@@ -65,15 +70,15 @@ async function logout(req, res) {
     const logoutRes = await Logout(req.user._id, req.refreshToken);
     res.send(logoutRes);
   } catch (error) {
-    throw error;
+    res.send('userService - logout failed');
   }
 }
 async function sendVerifyEmailService(req, res) {
   try {
-    await sendVerifyEmail(req.user.id, req.user.email);
-    res.redirect('/');
+    const resData = await sendVerifyEmail(req.body.email);
+    res.send(resData);
   } catch (error) {
-    throw error;
+    res.send('userService - sendVerifyEmail failed');
   }
 }
 async function sendInviteEmailService(req, res) {
@@ -81,7 +86,7 @@ async function sendInviteEmailService(req, res) {
     const msg = await sendInviteEmail(req.body.email, req.params.groupId);
     res.send(msg);
   } catch (error) {
-    throw error;
+    res.send('userService - sendInviteEmail failed');
   }
 }
 async function joinGroup(req, res) {
@@ -92,6 +97,16 @@ async function joinGroup(req, res) {
     res.send('Join failed');
   }
 }
+async function resetPasswordService(req, res) {
+  try {
+    // console.log(213);
+    const msg = await sendEmailResetPassword(req.body.email);
+    res.send(msg);
+  } catch (error) {
+    res.send(`Renew password failed: ${error}`);
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -102,5 +117,6 @@ module.exports = {
   logout,
   sendVerifyEmailService,
   sendInviteEmailService,
+  resetPasswordService,
   joinGroup,
 };
