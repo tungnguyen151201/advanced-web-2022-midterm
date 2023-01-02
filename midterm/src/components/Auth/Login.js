@@ -46,19 +46,22 @@ export default function Login() {
       });
     }
   }
-  const handleLoginGG = async () => {
-    const res = await axios.get('http://localhost:3001/auth/google', {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    });
-    const { status, message, accessToken } = res.data;
+  // const handleLoginGG = async () => {
+  //   const res = await axios.get('http://localhost:3001/auth/google', {
+  //     headers: { 'Access-Control-Allow-Origin': '*' },
+  //   });
+  //   const { status, message, accessToken } = res.data;
 
-    if (status) {
-      setAlert({
-        status,
-        message,
-      });
-      localStorage.setItem('token', accessToken);
-    }
+  //   if (status) {
+  //     setAlert({
+  //       status,
+  //       message,
+  //     });
+  //     localStorage.setItem('token', accessToken);
+  //   }
+  // };
+  const googleAuth = () => {
+    window.open(`http://localhost:3001/auth/google`, 'self');
   };
   const {
     register,
@@ -126,7 +129,7 @@ export default function Login() {
 
         <div className='d-flex justify-content-center'>Or login with</div>
         <div className='d-flex justify-content-center mt-3'>
-          <Button variant='dark' className='btn-google' onClick={handleLoginGG}>
+          <Button variant='dark' className='btn-google' onClick={googleAuth}>
             <BsGoogle />
           </Button>
         </div>
