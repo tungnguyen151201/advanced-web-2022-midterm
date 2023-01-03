@@ -10,6 +10,7 @@ const PresentationSchema = new Schema({
       createdAt: { type: Date, default: Date.now() },
     },
   ],
+  status: { type: Boolean },
   createdAt: { type: Date, default: Date.now() },
 });
 const Presentation = mongoose.model('Presentation', PresentationSchema);

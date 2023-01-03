@@ -6,16 +6,15 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
-
-const Login = () => {
+import { BsGoogle } from 'react-icons/bs';
+// import { IconName } from "react-icons/bs"
+export default function Login() {
   const navigate = useNavigate();
   const [alert, setAlert] = useState({
     status: false,
     message: null,
   });
-  // const navigate = new useNavigate();
 
-  // const navigate = useNavigate();
   async function onSubmit(data) {
     try {
       const { username, password } = data;
@@ -47,6 +46,23 @@ const Login = () => {
       });
     }
   }
+  // const handleLoginGG = async () => {
+  //   const res = await axios.get('http://localhost:3001/auth/google', {
+  //     headers: { 'Access-Control-Allow-Origin': '*' },
+  //   });
+  //   const { status, message, accessToken } = res.data;
+
+  //   if (status) {
+  //     setAlert({
+  //       status,
+  //       message,
+  //     });
+  //     localStorage.setItem('token', accessToken);
+  //   }
+  // };
+  const googleAuth = () => {
+    window.open(`http://localhost:3001/auth/google`, 'self');
+  };
   const {
     register,
     handleSubmit,
@@ -107,6 +123,17 @@ const Login = () => {
         <Button variant='primary' type='submit' className='btn-submit'>
           Log in
         </Button>
+        <Button variant='link' href='/forgotPassword'>
+          Forgot password?
+        </Button>
+
+        <div className='d-flex justify-content-center'>Or login with</div>
+        <div className='d-flex justify-content-center mt-3'>
+          <Button variant='dark' className='btn-google' onClick={googleAuth}>
+            <BsGoogle />
+          </Button>
+        </div>
+
         <Button variant='link' href='/register'>
           Not a member yet? Sign up
         </Button>
@@ -124,6 +151,4 @@ const Login = () => {
       </Form>
     </div>
   );
-};
-
-export default Login;
+}

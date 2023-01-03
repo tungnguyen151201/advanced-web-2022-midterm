@@ -1,3 +1,5 @@
+import { useMutation } from 'react-query';
+import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -5,10 +7,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 // import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
-
-import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
-
 import axios from 'axios';
 const Register = () => {
   const navigate = useNavigate();
@@ -17,7 +15,6 @@ const Register = () => {
     isSuccess: false,
     message: null,
   });
-
   const {
     isLoading,
     isSuccess,
@@ -26,13 +23,22 @@ const Register = () => {
     mutate,
   } = useMutation((data) => {
     const { email, username, password, firstName, lastName } = data;
-    return axios.post('register', {
-      email,
-      username,
-      password,
-      firstName,
-      lastName,
-    });
+    return axios
+      .post('http://localhost:3001/sendVerifyEmail', {
+        email,
+      })
+      .then((response) => {
+        const { status } = response.data;
+        if (status) {
+          return axios.post('http://localhost:3001/register', {
+            email,
+            username,
+            password,
+            firstName,
+            lastName,
+          });
+        }
+      });
   });
   async function onSubmit(data) {
     try {
@@ -45,7 +51,6 @@ const Register = () => {
         });
         return;
       }
-
       mutate(data);
       if (isSuccess) {
         setAlert({
@@ -182,7 +187,7 @@ const Register = () => {
         <Button variant='link' href='/login'>
           Already have an account? Log in
         </Button>
-        <Alert key={variant} variant={variant} hidden={alert.message === null}>
+        <Alert key={variant} variant={variant}>
           {alert.message}
         </Alert>
         <div className='back'>
