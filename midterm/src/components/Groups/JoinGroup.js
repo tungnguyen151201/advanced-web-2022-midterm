@@ -20,7 +20,6 @@ const JoinGroups = () => {
         nagative('/mygroup');
       });
   });
-  //   return <div></div>;
 };
 
 export default JoinGroups;

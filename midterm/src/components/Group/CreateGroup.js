@@ -3,6 +3,7 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import './CreateGroup.css';
 const ModalcreateGroup = () => {
   const nagative = useNavigate();
   async function onSubmit(data) {
@@ -36,53 +37,25 @@ const ModalcreateGroup = () => {
   //   const variant = alert.status ? 'success' : 'danger';
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className='mb-3' controlId='formBasicEmail'>
-        <Form.Label>Group Name</Form.Label>
-        <Form.Control
-          {...register('groupname', {
-            required: 'groupname is required',
-          })}
-          type='text'
-          placeholder='Enter groupname'
-        />
-        {errors.groupname && (
-          <Form.Text className='text-danger'>
-            {errors.groupname.message}
-          </Form.Text>
-        )}
-      </Form.Group>
-      <Button variant='primary' type='submit'>
-        Create Group
-      </Button>
-    </Form>
+    <div className="group__container">
+      <Form className="group__form" onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group className=" mb-3" controlId="formBasicEmail">
+          <Form.Label className="group__label">Enter your group name</Form.Label>
+          <Form.Control
+            className="group__input"
+            {...register('groupname', {
+              required: 'groupname is required',
+            })}
+            type="text"
+            placeholder="e.g. Group01"
+          />
+          {errors.groupname && <Form.Text className="text-danger">{errors.groupname.message}</Form.Text>}
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Create Group
+        </Button>
+      </Form>
+    </div>
   );
-  //   const {
-  //     create,
-  //     handleSubmit,
-  //     formState: { errors },
-  //   } = useForm();
-  //   return (
-  //     <Form onSubmit={handleSubmit(onSubmit)}>
-  //       <Form.Group className='mb-3' controlId='formBasicEmail'>
-  //         <Form.Label>Group Name</Form.Label>
-  //         <Form.Control
-  //           {...create('groupname', {
-  //             required: 'groupname is required',
-  //           })}
-  //           type='text'
-  //           placeholder='Enter groupname'
-  //         />
-  //         {errors.groupname && (
-  //           <Form.Text className='text-danger'>
-  //             {errors.groupname.message}
-  //           </Form.Text>
-  //         )}
-  //       </Form.Group>
-  //       <Button variant='primary' type='submit'>
-  //         Create Group
-  //       </Button>
-  //     </Form>
-  //   );
 };
 export default ModalcreateGroup;

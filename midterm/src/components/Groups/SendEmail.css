@@ -1,0 +1,32 @@
+.email__container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.email__label {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.email__form {
+  width: 100%;
+  text-align: center;
+}
+
+.email__input {
+  width: 30%;
+  margin-left: 35%;
+  border: 1px solid #333;
+}
+
+.email__btn {
+  display: flex;
+  align-items: center;
+  margin-left: 46%;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}

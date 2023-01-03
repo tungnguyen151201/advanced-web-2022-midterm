@@ -16,6 +16,8 @@ const Groups = () => {
   const [members, setMembers] = useState({ listitems: [] });
   const [coowner, setCoowner] = useState({ listitems: [] });
 
+  const link = `http://localhost:3000/join/${id}`;
+
   useEffect(() => {
     axios
       .get(`http://localhost:3001/groups/${id}`, {
@@ -29,47 +31,48 @@ const Groups = () => {
         setCoowner({ listitems: res.data.coowner });
       });
   });
-  const handleOnGetLink = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/join/${id}`);
-  };
   const handleOnSendEmail = () => {
     nagative(`/sendInviteEmail/${id}`);
   };
-  console.log(owner);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link);
+    alert('Link copied to the clipboard');
+  };
   return (
     <React.Fragment>
-      <div className='group-container'>
-        <Button variant='primary' onClick={() => handleOnGetLink()}>
-          Create Link
-        </Button>
-        <Button variant='primary' onClick={() => handleOnSendEmail()}>
-          Send Invite Email
-        </Button>
-        <h1>Owners: {owner.username}</h1>
-        <h1>Co-Owners</h1>
-        <ul className='list-group'>
+      <div className="group-container">
+        <h1>
+          Owners: <span className="pr-t">{owner.username}</span>
+        </h1>
+        {/* <h1>{coowner.username === null ? '' : coowner.username}</h1> */}
+        <hr />
+        {/* <ul className="list-group">
           {coowner.listitems.map((listitem) => (
-            <li className='list-group-item list-group-item-primary'>
+            <li className="list-group-item list-group-item-primary">
               {listitem.username}{' '}
-              <span className='group-icons'>
-                <BsFillArchiveFill className='delete-icon' />{' '}
-                <BsFillPencilFill className='edit-icon' />
+              <span className="group-icons">
+                <BsFillArchiveFill className="delete-icon" /> <BsFillPencilFill className="edit-icon" />
               </span>
             </li>
           ))}
-        </ul>
+        </ul> */}
         <h1>Members</h1>
-        <ul className='list-group'>
+        <ul className="group__list list-group">
           {members.listitems.map((listitem) => (
-            <li className='list-group-item list-group-item-primary'>
-              {listitem.username}{' '}
-              <span className='group-icons'>
-                <BsFillArchiveFill className='delete-icon' />{' '}
-                <BsFillPencilFill className='edit-icon' />
+            <li className="group__list-item list-group-item list-group-item-primary">
+              <span className="group__item-name">{listitem.username}</span>
+              <span className="group-icons">
+                <BsFillArchiveFill className="delete-icon" /> <BsFillPencilFill className="edit-icon" />
               </span>
             </li>
           ))}
         </ul>
+        <button className="btn-group__copy" onClick={handleCopy}>
+          Copy link
+        </button>
+        <button className="btn-group__email" onClick={() => handleOnSendEmail()}>
+          Invite by email
+        </button>
       </div>
     </React.Fragment>
   );

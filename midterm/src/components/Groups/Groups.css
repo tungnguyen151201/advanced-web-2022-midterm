@@ -4,16 +4,35 @@
   flex-direction: column;
 }
 
+.pr-t {
+  color: rgb(20, 86, 204);
+}
+
 .group-container h1 {
   text-align: center;
 }
 
-.group-icons {
-  margin-left: 480px;
+.group__list-item {
+  display: flex;
+}
+
+.group__item-name {
+  margin-right: auto;
 }
 
 .delete-icon {
-  margin-right: 10px;
+  margin-right: 6px;
+}
+
+.delete-icon,
+.edit-icon {
+  transition: all 0.2s linear;
+}
+
+.delete-icon:hover,
+.edit-icon:hover {
+  transform: scale(1.5);
+  cursor: pointer;
 }
 
 .btn-create {
@@ -21,4 +40,46 @@
   padding: 10px;
   color: white;
   background-color: green;
+}
+
+.group__list {
+  margin-bottom: 20px;
+}
+
+hr {
+  border: 2px dashed #333;
+  width: 50%;
+  margin-left: 25%;
+}
+
+.btn-group__copy {
+  border: 2px solid rgb(20, 86, 204);
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+  transition: all 0.3s linear;
+  margin-top: 10%;
+  margin-bottom: 3px;
+}
+
+.btn-group__copy:hover {
+  background-color: black;
+  border: 2px solid transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-group__email {
+  background-color: rgb(20, 86, 204);
+  border: none;
+  color: white;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s linear;
+}
+
+.btn-group__email:hover {
+  background-color: rgb(13, 64, 154);
 }
