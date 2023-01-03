@@ -43,6 +43,7 @@ async function getHomePage(req, res) {
 async function activateUser(req, res) {
   try {
     const { emailToken } = req.params;
+
     await Activate(emailToken);
     res.send({ status: true, message: 'Activate successful' });
   } catch (error) {
