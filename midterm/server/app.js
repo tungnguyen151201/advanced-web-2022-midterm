@@ -57,9 +57,6 @@ app.use('/groups/', verifyToken, groupRouter);
 app.use('/', usersRouter);
 // app.use('/', usersRouter);
 app.use('/auth/', authRouter);
-app.get('/chat', (__, res) => {
-  res.sendFile();
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
