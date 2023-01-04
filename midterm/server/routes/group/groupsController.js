@@ -99,7 +99,7 @@ async function deleteGroup(userInfo, { groupId }) {
       return { status: false, message: 'Invalid Infomation!' };
     }
     // Kiểm tra có phải owner hay không?
-    const IsOwner = await Groups.findOne({ owner: userInfo.id }).lean();
+    const IsOwner = await Groups.findOne({ owner: userInfo.id, _id: groupId }).lean();
     if (!IsOwner) {
       return { status: false, message: 'Invalid Credenticals!' };
     }
@@ -123,6 +123,9 @@ async function promoteToCoowner(userInfo, userId, groupId) {
     return { status: false, message: 'Group not found' };
   }
   let { coowner, members } = group;
+  members = members.map((member) => member._id.toString());
+  coowner = coowner.map((coowner) => coowner._id.toString());
+
   if (!members.includes(userId)) {
     return {
       status: false,
@@ -150,6 +153,9 @@ async function demoteToMember(userInfo, userId, groupId) {
     return { status: false, message: 'Group not found' };
   }
   let { coowner, members } = group;
+  members = members.map((member) => member._id.toString());
+  coowner = coowner.map((coowner) => coowner._id.toString());
+
   if (!coowner.includes(userId)) {
     return {
       status: false,
@@ -177,6 +183,9 @@ async function kickAMember(userInfo, userId, groupId) {
     return { status: false, message: 'Group not found' };
   }
   let { coowner, members } = group;
+  members = members.map((member) => member._id.toString());
+  coowner = coowner.map((coowner) => coowner._id.toString());
+
   if (coowner.includes(userId)) {
     coowner.pop(userId);
   }

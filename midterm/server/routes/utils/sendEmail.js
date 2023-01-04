@@ -3,7 +3,6 @@ const generateTokens = require('./generateToken');
 const {
   UpdateEmailToken,
   UpdateNewPassword,
-  MyProfile,
 } = require('../user/userController');
 var crypto = require('crypto');
 

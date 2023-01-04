@@ -69,8 +69,6 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const variant = alert.status ? 'success' : 'danger';
-
   return (
     <div className='login-container'>
       <div className='header'>
@@ -117,7 +115,7 @@ export default function Login() {
             </Form.Text>
           )}
         </Form.Group>
-        <Alert key={variant} variant={variant} hidden={alert.message === null}>
+        <Alert key={alert.status ? 'success' : 'danger'} variant={alert.status ? 'success' : 'danger'} hidden={alert.message === null}>
           {alert.message}
         </Alert>
         <Button variant='primary' type='submit' className='btn-submit'>

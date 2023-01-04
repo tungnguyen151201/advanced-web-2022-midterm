@@ -36,8 +36,7 @@ const Register = () => {
           return axios.post('http://localhost:3001/sendVerifyEmail', {
             email,
           });
-        }
-        else return response;
+        } else return response;
       });
   });
   async function onSubmit(data) {
@@ -71,8 +70,6 @@ const Register = () => {
       });
     }
   }
-
-  const variant = alert.isSuccess ? 'success' : 'danger';
 
   const {
     register,
@@ -188,7 +185,10 @@ const Register = () => {
           Already have an account? Log in
         </Button>
         {alert.message !== null && (
-          <Alert key={variant} variant={variant}>
+          <Alert
+            key={alert.isSuccess ? 'success' : 'danger'}
+            variant={alert.isSuccess ? 'success' : 'danger'}
+          >
             {alert.message}
           </Alert>
         )}

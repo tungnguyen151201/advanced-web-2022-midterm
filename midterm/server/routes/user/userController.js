@@ -166,11 +166,11 @@ async function JoinGroup(userId, groupId) {
     const group = await getGroupById(groupId);
     if (!group) return { message: 'group not found' };
     let { members, owner, coowner } = group;
-    members = members.map((member) => member.toString());
-    coowner = coowner.map((coowner) => coowner.toString());
+    members = members.map((member) => member._id.toString());
+    coowner = coowner.map((coowner) => coowner._id.toString());
 
     if (
-      owner.toString() === userId ||
+      owner._id.toString() === userId ||
       members.includes(userId) ||
       coowner.includes(userId)
     ) {

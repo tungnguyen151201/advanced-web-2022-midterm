@@ -92,7 +92,8 @@ async function sendInviteEmailService(req, res) {
 async function joinGroup(req, res) {
   try {
     const msg = await JoinGroup(req.user.id, req.params.groupId);
-    res.send(msg);
+    console.log(msg);
+    res.send(msg.message);
   } catch (error) {
     res.send('Join failed');
   }
