@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-// import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 const Register = () => {
@@ -24,20 +23,21 @@ const Register = () => {
   } = useMutation((data) => {
     const { email, username, password, firstName, lastName } = data;
     return axios
-      .post('http://localhost:3001/sendVerifyEmail', {
+      .post('http://localhost:3001/register', {
         email,
+        username,
+        password,
+        firstName,
+        lastName,
       })
       .then((response) => {
         const { status } = response.data;
         if (status) {
-          return axios.post('http://localhost:3001/register', {
+          return axios.post('http://localhost:3001/sendVerifyEmail', {
             email,
-            username,
-            password,
-            firstName,
-            lastName,
           });
         }
+        else return response;
       });
   });
   async function onSubmit(data) {
@@ -81,11 +81,11 @@ const Register = () => {
   } = useForm();
 
   return (
-    <div className='login-container'>
-      <div className='header'>
+    <div className="login-container">
+      <div className="header">
         <span>Already have an account?</span>
         <button
-          className='btn-signup'
+          className="btn-signup"
           onClick={() => {
             navigate('/login');
           }}
@@ -94,103 +94,105 @@ const Register = () => {
         </button>
       </div>
 
-      <div className='title col-4 mx-auto'>THT</div>
-      <div className='welcome col-4 mx-auto'>Begin your journey</div>
+      <div className="title col-4 mx-auto">THT</div>
+      <div className="welcome col-4 mx-auto">Begin your journey</div>
       <Form
-        className='content-form col-4 mx-auto'
+        className="content-form col-4 mx-auto"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Form.Group className='mb-3' controlId='email'>
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
             {...register('email', { required: 'Email is required' })}
-            type='email'
-            placeholder='Enter your email'
+            type="email"
+            placeholder="Enter your email"
           />
           {errors.email && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.email.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className='mb-3' controlId='username'>
+        <Form.Group className="mb-3" controlId="username">
           <Form.Label>Username</Form.Label>
           <Form.Control
             {...register('username', { required: 'Username is required' })}
-            type='text'
-            placeholder='Enter username'
+            type="text"
+            placeholder="Enter username"
           />
           {errors.username && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.username.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className='mb-3' controlId='firstName'>
+        <Form.Group className="mb-3" controlId="firstName">
           <Form.Label>FirstName</Form.Label>
           <Form.Control
             {...register('firstName', { required: 'firstName is required' })}
-            type='text'
-            placeholder='Enter your first name'
+            type="text"
+            placeholder="Enter your first name"
           />
           {errors.firstName && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.firstName.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className='mb-3' controlId='lastName'>
+        <Form.Group className="mb-3" controlId="lastName">
           <Form.Label>LastName</Form.Label>
           <Form.Control
             {...register('lastName', { required: 'lastName is required' })}
-            type='text'
-            placeholder='Enter your last name'
+            type="text"
+            placeholder="Enter your last name"
           />
           {errors.lastName && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.lastName.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className='mb-3' controlId='password'>
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             {...register('password', { required: 'Password is required' })}
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
           />
           {errors.password && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.password.message}
             </Form.Text>
           )}
         </Form.Group>
 
-        <Form.Group className='mb-3' controlId='confirmPassword'>
+        <Form.Group className="mb-3" controlId="confirmPassword">
           <Form.Label>Confirm password</Form.Label>
           <Form.Control
             {...register('confirmPassword', {
               required: 'Confirm password is required',
             })}
-            type='password'
-            placeholder='Confirm password'
+            type="password"
+            placeholder="Confirm password"
           />
           {errors.confirmPassword && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.confirmPassword.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Button variant='primary' type='submit' className='btn-submit'>
+        <Button variant="primary" type="submit" className="btn-submit">
           {isLoading ? 'Loading...' : 'Sign up'}
         </Button>
-        <Button variant='link' href='/login'>
+        <Button variant="link" href="/login">
           Already have an account? Log in
         </Button>
-        <Alert key={variant} variant={variant}>
-          {alert.message}
-        </Alert>
-        <div className='back'>
+        {alert.message !== null && (
+          <Alert key={variant} variant={variant}>
+            {alert.message}
+          </Alert>
+        )}
+        <div className="back">
           <span
             onClick={() => {
               navigate('/');

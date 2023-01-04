@@ -32,7 +32,6 @@ const sendVerifyEmail = async (email) => {
     if (error) {
       console.log(error);
     } else {
-      console.log(hash);
       UpdateEmailToken(email, hash);
     }
   });
@@ -72,11 +71,11 @@ const sendEmailResetPassword = async (email) => {
       text: `Your new password: ${hash}`,
     };
 
-    transporter.sendMail(mailOptions, async function (error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        const res = await UpdateNewPassword(email, hash);
+        UpdateNewPassword(email, hash);
       }
     });
     return {

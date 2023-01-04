@@ -15,8 +15,14 @@ async function Register(req) {
     }
     const existsUser = await User.findOne({ username });
     if (existsUser) {
-      return { status: false, message: 'Invalid username!' };
+      return { status: false, message: 'Invalid Username!' };
     }
+
+    const existsEmail = await User.findOne({ email });
+    if (existsEmail) {
+      return { status: false, message: 'Invalid Email!' };
+    }
+
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
     const infoUser = {
@@ -35,7 +41,7 @@ async function Register(req) {
     }
     return { status: true, message: 'register success!' };
   } catch (error) {
-    return { status: false, message: error };
+    return { status: false, message: error.message };
   }
 }
 async function Login({ username, password }) {
@@ -46,6 +52,9 @@ async function Login({ username, password }) {
     const existsUser = await User.findOne({ username });
     if (!existsUser) {
       return { status: false, message: 'Invalid User!' };
+    }
+    if (existsUser.status !== 'Active') {
+      return { status: false, message: 'Invalid Credentials!' };
     }
     const match = await bcrypt.compare(password, existsUser.password);
 
@@ -65,7 +74,7 @@ async function Login({ username, password }) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -100,7 +109,7 @@ async function MyProfile(userId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -120,7 +129,7 @@ async function EditProfile(userId, profileInfo) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -134,7 +143,7 @@ async function Activate(token) {
     console.log(error);
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -148,7 +157,7 @@ async function UpdateEmailToken(email, emailToken) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -180,7 +189,7 @@ async function JoinGroup(userId, groupId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -200,7 +209,7 @@ async function UpdateNewPassword(email, newPassword) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
