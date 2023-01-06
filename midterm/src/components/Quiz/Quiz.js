@@ -46,7 +46,7 @@ const Quiz = () => {
   }, []);
   // const [quizInfo]
   const handleDemo = () => {
-    navigate('/demo');
+    navigate(`/demo/${PresentationId}`);
   };
 
   const handleNewSlide = () => {
