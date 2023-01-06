@@ -30,7 +30,7 @@ const Groups = () => {
         setMembers({ listitems: res.data.members });
         setCoowner({ listitems: res.data.coowner });
       });
-  });
+  }, []);
   const handleOnSendEmail = () => {
     nagative(`/sendInviteEmail/${id}`);
   };

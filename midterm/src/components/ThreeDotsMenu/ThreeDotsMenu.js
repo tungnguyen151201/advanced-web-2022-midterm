@@ -7,7 +7,7 @@ import Menu from '@material-ui/core/Menu';
 const ThreeDotsMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const MyOptions = ['Present', 'Delete'];
+  const MyOptions = ['Edit', 'Delete'];
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
