@@ -16,37 +16,34 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg='light' expand='lg'>
+    <Navbar bg="light" expand="lg">
       <Container>
-        <NavLink to='/' className='navbar-brand'>
+        <NavLink to="/" className="navbar-brand">
           THT
         </NavLink>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='me-auto'>
-            <NavLink to='/' className='nav-link'>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <NavLink to="/" className="nav-link">
               Home
             </NavLink>
-            <NavLink to='/about' className='nav-link'>
-              About
-            </NavLink>
-            <NavLink to='/groups' className='nav-link'>
+            <NavLink to="/groups" className="nav-link">
               Groups
             </NavLink>
-            <NavLink to='/details' className='nav-link'>
-              Details
+            <NavLink to="/myPresentations" className="nav-link">
+              Presentations
             </NavLink>
           </Nav>
           <Nav>
-            <button className='btn-login' onClick={() => handleLogin()}>
+            <button className="btn-login" onClick={() => handleLogin()}>
               Log in
             </button>
-            <button className='btn-signup' onClick={() => handleRegister()}>
+            <button className="btn-signup" onClick={() => handleRegister()}>
               Sign up
             </button>
-            <NavDropdown title='Language' id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>VietNamese</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>English</NavDropdown.Item>
+            <NavDropdown title="Language" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">VietNamese</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">English</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

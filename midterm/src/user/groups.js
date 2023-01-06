@@ -25,7 +25,7 @@ function GroupInfo({ idGroup, name, members, coowner }) {
         <Card.Title>{name}</Card.Title>
         <Card.Text className="group__member">
           <BsPeopleFill />
-          {members.length + coowner.length} {members.length + coowner.length > 1 ? 'members' : 'member'}
+          {members.length + coowner.length + 1} {members.length + coowner.length + 1 > 1 ? 'members' : 'member'}
         </Card.Text>
       </Card.Body>
       <Button className="group__btn bd-l" variant="primary" onClick={() => handleOnclick()}>

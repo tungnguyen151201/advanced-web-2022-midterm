@@ -1,0 +1,36 @@
+.prItem__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  transition: all 0.2s linear;
+}
+
+.prItem__owner {
+  margin-left: -10%;
+}
+
+p {
+  margin: unset;
+}
+
+.prItem__container:hover {
+  background-color: rgba(204, 204, 204, 0.4);
+  cursor: pointer;
+}
+
+.prItem__name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play__icon {
+  color: blue;
+  border-radius: 30px;
+}
+
+.prItem__created {
+  display: flex;
+  align-items: center;
+}

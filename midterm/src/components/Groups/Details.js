@@ -9,7 +9,7 @@ const token = 'Bearer ' + localStorage.getItem('token');
 
 const Groups = () => {
   const nagative = useNavigate();
-  const [owner, setOwner] = useState('-');
+  const [owner, setOwner] = useState('');
   // the dynamic pieces of the URL.
   let { id } = useParams();
 
@@ -44,9 +44,9 @@ const Groups = () => {
         <h1>
           Owners: <span className="pr-t">{owner.username}</span>
         </h1>
-        {/* <h1>{coowner.username === null ? '' : coowner.username}</h1> */}
+        <h1>{coowner.username === null ? '' : coowner.username}</h1>
         <hr />
-        {/* <ul className="list-group">
+        <ul className="list-group">
           {coowner.listitems.map((listitem) => (
             <li className="list-group-item list-group-item-primary">
               {listitem.username}{' '}
@@ -55,7 +55,7 @@ const Groups = () => {
               </span>
             </li>
           ))}
-        </ul> */}
+        </ul>
         <h1>Members</h1>
         <ul className="group__list list-group">
           {members.listitems.map((listitem) => (

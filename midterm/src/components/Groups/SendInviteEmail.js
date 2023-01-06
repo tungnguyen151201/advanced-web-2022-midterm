@@ -16,7 +16,7 @@ const SendEmail = () => {
       console.log(id, email);
       //http://localhost:3001/sendInviteEmail/6384e2f3fb3e22ca322f8289
       //   6384e2f3fb3e22ca322f8289
-      const res = await axios.get(
+      const res = await axios.post(
         `http://localhost:3001/sendInviteEmail/${id}`,
         { email },
         {
