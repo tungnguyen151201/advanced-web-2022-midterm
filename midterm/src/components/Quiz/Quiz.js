@@ -1,35 +1,61 @@
 import axios from 'axios';
 import './Quiz.css';
+import '../Slide/Slide.css';
 import React, { useEffect, useState } from 'react';
 import Slide from '../Slide/Slide';
-
+import Edit from '../Edit/Edit';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Quiz = () => {
-  const { id } = useParams();
+  const { PresentationId } = useParams();
   const navigate = useNavigate();
-  const [slide, newSlide] = useState([0]);
-  const [slideInfo, setSlideInfo] = useState({
-    slides: [
-      {
-        question: '12+1?',
-        options: ['0', '13', '5'],
-      },
-      {
-        question: '12+1?',
-        options: ['1', '13', '2'],
-      },
-    ],
+  const [slides, setSlide] = useState([
+    {
+      question: '',
+      options: [],
+    },
+  ]);
+  const [currentSlide, setCurrentSlide] = useState({
+    index: 0,
+    question: '',
+    options: [],
   });
+  const token = 'Bearer ' + localStorage.getItem('token');
+  const [slideInfo, setSlideInfo] = useState({
+    slides: [],
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const res = await axios.get(
+        `http://localhost:3001/presentation/${PresentationId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      // setPresentation(res.data.presentation);
+      setSlide(res.data.presentation.slides);
+      setCurrentSlide({ index: 0, ...res.data.presentation.slides[0] });
+      // ...
+    }
+    fetchData();
+  }, []);
   // const [quizInfo]
   const handleDemo = () => {
     navigate('/demo');
   };
+
   const handleNewSlide = () => {
-    newSlide((arr) => [...arr, `${arr.length + 1}`]);
+    const defaultSlide = {
+      question: '',
+      options: [],
+    };
+    setSlide((arr) => [...arr, defaultSlide]);
   };
   const handleSave = async () => {
-    console.log(slideInfo);
     // try {
     //   const token = 'Bearer ' + localStorage.getItem('token');
     //   const res = await axios.post(
@@ -48,7 +74,8 @@ const Quiz = () => {
     // }
   };
   const setInfoSlide = (info, index) => {
-    let arr = Array.from({ length: slide.length }, (v, i) => (v = slide[i]));
+    let arr = Array.from({ length: slides.length }, (v, i) => (v = slides[i]));
+
     arr[index] = info;
 
     setSlideInfo(arr);
@@ -69,20 +96,25 @@ const Quiz = () => {
       </div>
       <main className='quiz__content'>
         <div className='quiz__slide'>
-          {slide.map((value, index) => {
-            return (
-              <Slide
-                key={value}
-                setInfoSlide={setInfoSlide}
-                slideIndex={index}
-              />
-            );
-          })}
-        </div>
+          <div className='slide__container'>
+            <div className='slide__nav'>
+              {slides.map((value, index) => {
+                return (
+                  <Slide
+                    key={index}
+                    setInfoSlide={setInfoSlide}
+                    slideIndex={index}
+                    slideInfo={slides[index]}
+                    currentSlide={setCurrentSlide}
+                    currentSlideInfo={currentSlide}
+                  />
+                );
+              })}
+            </div>
 
-        {/* <div className='quiz__edit'>
-          <Edit />
-        </div> */}
+            <Edit slideInfoDetail={currentSlide} />
+          </div>
+        </div>
       </main>
     </div>
   );

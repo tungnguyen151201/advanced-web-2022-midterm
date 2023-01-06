@@ -12,7 +12,6 @@ const {
   editProfile,
   sendVerifyEmailService,
   resetPasswordService,
-  forgotPasswordService,
   sendInviteEmailService,
   joinGroup,
 } = require('./userServices');
