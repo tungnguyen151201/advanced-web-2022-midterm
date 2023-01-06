@@ -92,7 +92,6 @@ async function creatPresentation(presentationInfo, userId) {
 }
 async function editPresentaion(presentationId, presentationInfo, userId) {
   try {
-    console.log(presentationInfo);
     if (!presentationId || !presentationInfo || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }

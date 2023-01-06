@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Present from '../Present/Present';
 import './Edit.css';
 
-export default function Edit({ slideInfoDetail }) {
+export default function Edit({ slideInfoDetail, changeData }) {
   const [questions, setQuestions] = useState(slideInfoDetail.question);
   const [options, setOptions] = useState(slideInfoDetail.options);
 
@@ -23,6 +23,7 @@ export default function Edit({ slideInfoDetail }) {
       }
     });
     setOptions(newArray);
+    changeData({ questions, options });
   };
   return (
     <div className='edit__container'>
