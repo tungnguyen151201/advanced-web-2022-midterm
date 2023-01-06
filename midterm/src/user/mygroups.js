@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { BsPlusLg } from 'react-icons/bs';
+import './MyGroups.css';
 // import ModalcreateGroup from '../components/Group/CreateGroup';
 function Mygroup() {
   //   const nagative = useNavigate();
@@ -39,9 +41,10 @@ function Mygroup() {
     }
   };
   return (
-    <Container>
-      <Button variant='primary' onClick={() => handleOnclick()}>
-        Create Group
+    <Container className="p-10">
+      <Button className="group__btn" variant="primary" onClick={() => handleOnclick()}>
+        <BsPlusLg />
+        Create group
       </Button>
       {/* <Button variant='primary' onClick={() => setModalShow(true)}>
         Launch vertically centered modal
@@ -50,15 +53,7 @@ function Mygroup() {
       <ModalcreateGroup show={modalShow} onHide={() => setModalShow(false)} /> */}
 
       {listGroup.map((e, index) => {
-        return (
-          <GroupInfo
-            key={index}
-            idGroup={e._id}
-            name={e.groupname}
-            members={e.members}
-            coowner={e.coowner}
-          ></GroupInfo>
-        );
+        return <GroupInfo key={index} idGroup={e._id} name={e.groupname} members={e.members} coowner={e.coowner}></GroupInfo>;
       })}
     </Container>
   );

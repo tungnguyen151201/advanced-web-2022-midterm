@@ -26,8 +26,6 @@ router.get('/profile', verifyToken, (req, res) => getProfile(req, res));
 router.post('/profile/edit/', verifyToken, (req, res) => editProfile(req, res));
 router.get('/join/:groupId', verifyToken, (req, res) => joinGroup(req, res));
 router.post('/sendVerifyEmail', (req, res) => sendVerifyEmailService(req, res));
-router.get('/sendInviteEmail/:groupId', verifyToken, (req, res) =>
-  sendInviteEmailService(req, res)
-);
+router.post('/sendInviteEmail/:groupId', verifyToken, (req, res) => sendInviteEmailService(req, res));
 
 module.exports = router;

@@ -1,0 +1,29 @@
+.p-10 {
+  padding: 10px;
+}
+
+.group__btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.group__member {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group__card {
+  padding: 14px;
+  border: 1px solid #333;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.bd-l {
+  border-top-left-radius: unset;
+  border-bottom-left-radius: unset;
+}

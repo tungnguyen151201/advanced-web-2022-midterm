@@ -1,0 +1,26 @@
+.mypre__container {
+  padding: 10px 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.mypre__list {
+  margin-top: 50px;
+}
+
+.mypre__titles {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  padding: 0 20px;
+}
+
+.mypre__line {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  width: 100%;
+  margin: unset;
+}
