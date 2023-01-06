@@ -20,6 +20,7 @@ const Quiz = () => {
     question: '',
     options: [],
   });
+  const [dataChange, setDataChange] = useState();
   const token = 'Bearer ' + localStorage.getItem('token');
   const [slideInfo, setSlideInfo] = useState({
     slides: [],
@@ -80,7 +81,6 @@ const Quiz = () => {
 
     setSlideInfo(arr);
   };
-
   return (
     <div className='quiz__container'>
       <div className='quiz__header'>
@@ -107,12 +107,13 @@ const Quiz = () => {
                     slideInfo={slides[index]}
                     currentSlide={setCurrentSlide}
                     currentSlideInfo={currentSlide}
+                    changeData={dataChange}
                   />
                 );
               })}
             </div>
 
-            <Edit slideInfoDetail={currentSlide} />
+            <Edit slideInfoDetail={currentSlide} changeData={setDataChange} />
           </div>
         </div>
       </main>
