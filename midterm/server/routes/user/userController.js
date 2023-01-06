@@ -126,11 +126,12 @@ async function EditProfile(userId, profileInfo) {
 }
 async function Activate(token) {
   try {
-    await User.updateOne(
+    await User.findOneAndUpdate(
       { emailToken: token },
       { emailToken: '', status: 'Active' }
     );
   } catch (error) {
+    console.log(error);
     return {
       status: false,
       message: error,
@@ -139,7 +140,7 @@ async function Activate(token) {
 }
 async function UpdateEmailToken(email, emailToken) {
   try {
-    await User.findByOneAndUpdate({ email }, { emailToken });
+    await User.findOneAndUpdate({ email }, { emailToken });
     return {
       status: true,
       message: 'Verify email successful!',

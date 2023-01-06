@@ -32,6 +32,7 @@ const sendVerifyEmail = async (email) => {
     if (error) {
       console.log(error);
     } else {
+      console.log(hash);
       UpdateEmailToken(email, hash);
     }
   });

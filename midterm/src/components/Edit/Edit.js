@@ -1,19 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Present from '../Present/Present';
 import './Edit.css';
-export default function Edit({ setSlideDetail }) {
-  const [questions, setQuestions] = useState('');
-  const [options, setOptions] = useState('');
-  const [newoptions, createOptions] = useState([]);
-  // const handleInputQuetions = () => {};
+
+export default function Edit({ slideInfoDetail, changeData }) {
+  const [questions, setQuestions] = useState(slideInfoDetail.question);
+  const [options, setOptions] = useState(slideInfoDetail.options);
+
   const handleNewOptions = () => {
-    createOptions((arr) => [...arr, `${options}`]);
+    setOptions((arr) => [...arr, ``]);
   };
-  const handleChangeDetail = () => {
-    setSlideDetail({
-      question: questions,
-      options,
+  useEffect(() => {
+    setQuestions(slideInfoDetail.question);
+    setOptions(slideInfoDetail.options);
+  }, [slideInfoDetail]);
+
+  const handleChangeOptions = (index, e) => {
+    const newArray = options.map((item, i) => {
+      if (index === i) {
+        return e.target.value;
+      } else {
+        return item;
+      }
     });
+    setOptions(newArray);
+    changeData({ questions, options });
   };
   return (
     <div className="edit__container" onChange={handleChangeDetail}>
@@ -28,20 +38,24 @@ export default function Edit({ setSlideDetail }) {
         <input
           type="text"
           className="edit__input"
+          type='text'
+          className='edit__input'
+          value={questions}
           onChange={(e) => {
             setQuestions(e.target.value);
           }}
         />
-        <p className="edit__title">Options</p>
-        <div className="edit__options">
-          {newoptions.map((value, index) => {
+        <p className='edit__title'>Options</p>
+        <div className='edit__options'>
+          {options.map((value, index) => {
             return (
               <input
                 key={index}
-                type="text"
-                className="edit__input"
+                type='text'
+                value={value}
+                className='edit__input'
                 onChange={(e) => {
-                  setOptions(e.target.value);
+                  handleChangeOptions(index, e);
                 }}
               />
             );
@@ -52,7 +66,7 @@ export default function Edit({ setSlideDetail }) {
         </button>
       </div>
 
-      <Present question={questions} options={newoptions} />
+      <Present question={questions} options={options} />
     </div>
   );
 }

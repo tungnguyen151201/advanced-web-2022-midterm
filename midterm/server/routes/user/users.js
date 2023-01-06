@@ -2,7 +2,19 @@ var express = require('express');
 var router = express.Router();
 const { verifyToken } = require('../../middleware/auth');
 
-const { register, login, logout, getHomePage, activateUser, getProfile, editProfile, sendVerifyEmailService, resetPasswordService, forgotPasswordService, sendInviteEmailService, joinGroup } = require('./userServices');
+const {
+  register,
+  login,
+  logout,
+  getHomePage,
+  activateUser,
+  getProfile,
+  editProfile,
+  sendVerifyEmailService,
+  resetPasswordService,
+  sendInviteEmailService,
+  joinGroup,
+} = require('./userServices');
 router.post('/register', (req, res) => register(req, res));
 router.post('/login', (req, res) => login(req, res));
 router.post('/forgotPassword', (req, res) => resetPasswordService(req, res));
