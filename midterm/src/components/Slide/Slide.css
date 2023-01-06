@@ -10,7 +10,8 @@
   background-color: rgb(209, 226, 255);
   padding: 6px;
   height: max-content;
-  width: 22%;
+  cursor: pointer;
+  width: 300px;
 }
 
 .slide p {

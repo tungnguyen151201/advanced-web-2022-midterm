@@ -41,7 +41,7 @@ root.render(
               <Route path='groups' element={<Groups />} />
               <Route path='details' element={<Details />} />
               <Route path='about' element={<About />} />
-              <Route path='quiz' element={<Quiz />} />
+              <Route path='quiz/:PresentationId' element={<Quiz />} />
             </Route>
             <Route path='login' element={<Login />} />
             <Route path='/mygroup' element={<Mygroup />} />
