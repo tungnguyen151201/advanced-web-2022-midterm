@@ -46,7 +46,7 @@ const Quiz = () => {
   }, []);
   // const [quizInfo]
   const handleDemo = () => {
-    navigate('/demo');
+    navigate(`/demo/${PresentationId}`);
   };
 
   const handleNewSlide = () => {
@@ -74,6 +74,7 @@ const Quiz = () => {
     //   console.error(error.message);
     // }
   };
+
   const setInfoSlide = (info, index) => {
     let arr = Array.from({ length: slides.length }, (v, i) => (v = slides[i]));
 
@@ -105,6 +106,7 @@ const Quiz = () => {
                     setInfoSlide={setInfoSlide}
                     slideIndex={index}
                     slideInfo={slides[index]}
+                    slides={slides}
                     currentSlide={setCurrentSlide}
                     currentSlideInfo={currentSlide}
                     changeData={dataChange}

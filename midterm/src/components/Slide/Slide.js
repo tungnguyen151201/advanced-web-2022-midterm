@@ -7,6 +7,7 @@ export default function Slide({
   setInfoSlide,
   slideIndex,
   slideInfo,
+  slides,
   currentSlide,
   changeData,
 }) {
@@ -21,11 +22,20 @@ export default function Slide({
   };
   const handleCurrentSlide = async () => {
     currentSlide({ index: slideIndex, ...slideInfo });
-    console.log('change', changeData);
+    if (!changeData) {
+      return;
+    }
+    const { indexSlide } = changeData;
+    if (indexSlide <= slides.length) {
+      slides[indexSlide] = changeData;
+    } else {
+      slides.push(changeData);
+    }
+
     const res = await axios.patch(
       `http://localhost:3001/presentation/edit/${PresentationId}`,
       {
-        slides: changeData,
+        slides,
       },
       {
         headers: {

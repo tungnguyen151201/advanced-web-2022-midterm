@@ -3,9 +3,8 @@ import Present from '../Present/Present';
 import './Edit.css';
 
 export default function Edit({ slideInfoDetail, changeData }) {
-  const [questions, setQuestions] = useState(slideInfoDetail.question);
+  const [questions, setQuestions] = useState('');
   const [options, setOptions] = useState(slideInfoDetail.options);
-
   const handleNewOptions = () => {
     setOptions((arr) => [...arr, ``]);
   };
@@ -23,7 +22,13 @@ export default function Edit({ slideInfoDetail, changeData }) {
       }
     });
     setOptions(newArray);
-    changeData({ questions, options });
+    // console.log('1', questions);
+    changeData({
+      indexSlide: slideInfoDetail.index,
+      indexChange: index,
+      questions,
+      options,
+    });
   };
   return (
     <div className='edit__container'>
