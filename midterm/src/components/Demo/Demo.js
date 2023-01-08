@@ -25,7 +25,7 @@ const Demo = () => {
       },
     ],
   });
-  const [slide, setSlide] = useState(0);
+  const [slide, setSlide] = useState(1);
   const [answers, setAnswers] = useState(
     Array.from(
       { length: presentation.slides[slide].options.length },

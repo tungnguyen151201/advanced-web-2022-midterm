@@ -2,11 +2,13 @@ import '../Quiz/Quiz.css';
 import './MyPresentations.css';
 import PresentItem from './PresentItem';
 import useGlobalState from '../../context/useAuthState';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const MyPresentations = (props) => {
-  const [state, dispatch] = useGlobalState();
+  const navigate = useNavigate();
+  const [state] = useGlobalState();
   const [myPresentations, setMyPresentations] = useState([]);
 
   useEffect(() => {
@@ -17,14 +19,13 @@ const MyPresentations = (props) => {
             Authorization: state.token,
           },
         });
-        console.log(res);
         setMyPresentations(res.data.presentations);
       } catch (error) {
         console.error(error.message);
       }
     };
     fetchData();
-  }, [state.token]);
+  }, [state.token, myPresentations]);
   return (
     <div className="mypre__container">
       <h1>My presentations</h1>
@@ -40,6 +41,7 @@ const MyPresentations = (props) => {
           {myPresentations.map((e, index) => {
             return (
               <PresentItem
+                onClick={() => navigate(`../demo/${e._id}`)}
                 id={e._id}
                 name={e.name}
                 owner={`${e.owner.firstName} ${e.owner.lastName}`}

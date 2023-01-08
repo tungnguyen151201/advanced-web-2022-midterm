@@ -3,11 +3,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import useGlobalState from '../../context/useAuthState';
 
 const ThreeDotsMenu = ({ id }) => {
+  const navigate = useNavigate();
+  const [state] = useGlobalState();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const MyOptions = ['Edit', 'Delete'];
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -15,12 +18,24 @@ const ThreeDotsMenu = ({ id }) => {
 
   const open = Boolean(anchorEl);
 
-  const handleClose = (option) => {
-    if (option === 'Edit') {
-      console.log('Edit');
-    }
-    if (option === 'Delete') {
-      console.log('Delete');
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    navigate(`/quiz/${id}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:3001/presentation/delete/${id}`, {
+        headers: {
+          Authorization: state.token,
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -35,11 +50,8 @@ const ThreeDotsMenu = ({ id }) => {
         <MoreVertIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} keepMounted onClose={handleClose} open={open}>
-        {MyOptions.map((option) => (
-          <MenuItem key={option} onClick={handleClose(option)}>
-            {option}
-          </MenuItem>
-        ))}
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </div>
   );
