@@ -47,7 +47,7 @@ const sendInviteEmail = async (email, groupId) => {
     from: 'advancedweb2022.project@gmail.com',
     to: email,
     subject: 'Join a group',
-    html: `Please click this <a href="${hostname}/join/${groupId}">link</a> to join a group`,
+    html: `Please click this <a href="$http://localhost:3000/join/${groupId}">link</a> to join a group`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

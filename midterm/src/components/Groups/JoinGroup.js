@@ -17,7 +17,8 @@ const JoinGroups = () => {
         },
       })
       .then((res) => {
-        nagative('/mygroup');
+        console.log(res);
+        // nagative('/mygroup');
       });
   });
 };
