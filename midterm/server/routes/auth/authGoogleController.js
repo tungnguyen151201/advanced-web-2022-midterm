@@ -4,7 +4,7 @@ async function callbackGoogle(req, res) {
   const { accessToken, refreshToken } = await generateTokens({
     _id: userId,
   });
-  res.redirect('http://localhost:3000/');
+  res.redirect('http://localhost:3000/myGroup');
   // res.status(200).send({
   //   status: true,
   //   message: 'login success!',
