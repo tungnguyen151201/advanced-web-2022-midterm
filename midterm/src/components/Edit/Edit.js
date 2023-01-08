@@ -26,18 +26,17 @@ export default function Edit({ slideInfoDetail, changeData }) {
     changeData({ questions, options });
   };
   return (
-    <div className="edit__container" onChange={handleChangeDetail}>
-      <div className="edit">
-        <p className="edit__title">Slide type</p>
-        <select className="edit__select">
-          <option value="multiple">Multiple Choice</option>
-          <option value="type2">Type 2</option>
-          <option value="type3">Type 3</option>
+    <div className='edit__container'>
+      <div className='edit'>
+        <p className='edit__title'>Slide type</p>
+        <select className='edit__select'>
+          <option value='multiple'>Multiple Choice</option>
+          <option value='type2'>Type 2</option>
+          <option value='type3'>Type 3</option>
         </select>
-        <p className="edit__title">Your question</p>
+        <p className='edit__title'>Your question</p>
+
         <input
-          type="text"
-          className="edit__input"
           type='text'
           className='edit__input'
           value={questions}
@@ -61,7 +60,7 @@ export default function Edit({ slideInfoDetail, changeData }) {
             );
           })}
         </div>
-        <button className="btn__add quiz__btn--g" onClick={handleNewOptions}>
+        <button className='btn__add quiz__btn--g' onClick={handleNewOptions}>
           + Add option
         </button>
       </div>

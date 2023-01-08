@@ -1,8 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, useNavigate } from 'react-router-dom';
+import useGlobalState from '../../context/useAuthState';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,6 +14,8 @@ const Header = () => {
   const handleRegister = () => {
     navigate('/register');
   };
+
+  const [state, dispatch] = useGlobalState();
 
   return (
     <Navbar bg="light" expand="lg">
@@ -27,25 +29,35 @@ const Header = () => {
             <NavLink to="/" className="nav-link">
               Home
             </NavLink>
-            <NavLink to="/groups" className="nav-link">
+            <NavLink to="/mygroup" className="nav-link">
               Groups
             </NavLink>
             <NavLink to="/myPresentations" className="nav-link">
               Presentations
             </NavLink>
           </Nav>
-          <Nav>
-            <button className="btn-login" onClick={() => handleLogin()}>
-              Log in
-            </button>
-            <button className="btn-signup" onClick={() => handleRegister()}>
-              Sign up
-            </button>
-            <NavDropdown title="Language" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">VietNamese</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">English</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+          {!state.token ? (
+            <Nav>
+              <button className="btn-login" onClick={() => handleLogin()}>
+                Log in
+              </button>
+              <button className="btn-signup" onClick={() => handleRegister()}>
+                Sign up
+              </button>
+            </Nav>
+          ) : (
+            <Nav>
+              <button
+                className="btn-login"
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  dispatch({ token: localStorage.getItem('token') });
+                }}
+              >
+                Log out
+              </button>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

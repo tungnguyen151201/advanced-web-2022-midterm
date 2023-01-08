@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Groups.css';
 import { BsFillArchiveFill, BsFillPencilFill } from 'react-icons/bs';
-
 class Groups extends Component {
   state = {
     listitems: ['Item 1', 'Item 2', 'Item 3'],

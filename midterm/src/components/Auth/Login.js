@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 import { BsGoogle } from 'react-icons/bs';
-// import { IconName } from "react-icons/bs"
+import useGlobalState from '../../context/useAuthState';
+
 export default function Login() {
+  const [state, dispatch] = useGlobalState();
   const navigate = useNavigate();
   const [alert, setAlert] = useState({
     status: false,
@@ -31,8 +33,9 @@ export default function Login() {
           message,
         });
         localStorage.setItem('token', accessToken);
+        dispatch({ token: localStorage.getItem('token') });
 
-        navigate('/mygroup');
+        navigate('/');
       } else {
         setAlert({
           status,
