@@ -3,11 +3,11 @@ const {
   creatPresentation,
   editPresentaion,
   deletePresentation,
-  getPresentations,
+  getMyPresentations,
 } = require('./presentationController');
-async function GetPresentations(req, res) {
+async function GetMyPresentations(req, res) {
   try {
-    const getGroupRes = await getPresentations(req.user.id);
+    const getGroupRes = await getMyPresentations(req.user.id);
     res.send(getGroupRes);
   } catch (error) {
     throw error;
@@ -51,7 +51,7 @@ async function DeletePresentation(req, res) {
   }
 }
 module.exports = {
-  GetPresentations,
+  GetMyPresentations,
   GetPresentationById,
   CreatPresentation,
   EditPresentaion,

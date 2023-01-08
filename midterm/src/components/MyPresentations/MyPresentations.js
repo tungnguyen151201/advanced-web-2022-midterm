@@ -1,9 +1,30 @@
-import ThreeDotsMenu from '../ThreeDotsMenu/ThreeDotsMenu';
 import '../Quiz/Quiz.css';
 import './MyPresentations.css';
 import PresentItem from './PresentItem';
+import useGlobalState from '../../context/useAuthState';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const MyPresentations = (props) => {
+  const [state, dispatch] = useGlobalState();
+  const [myPresentations, setMyPresentations] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('http://localhost:3001/presentation', {
+          headers: {
+            Authorization: state.token,
+          },
+        });
+        console.log(res);
+        setMyPresentations(res.data.presentations);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, [state.token]);
   return (
     <div className="mypre__container">
       <h1>My presentations</h1>
@@ -16,7 +37,16 @@ const MyPresentations = (props) => {
         </div>
         <hr className="mypre__line" />
         <div className="mypre__items">
-          <PresentItem />
+          {myPresentations.map((e, index) => {
+            return (
+              <PresentItem
+                id={e._id}
+                name={e.name}
+                owner={`${e.owner.firstName} ${e.owner.lastName}`}
+                createdAt={e.createdAt}
+              ></PresentItem>
+            );
+          })}
         </div>
       </div>
     </div>

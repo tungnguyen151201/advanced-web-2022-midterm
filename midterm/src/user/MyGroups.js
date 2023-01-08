@@ -16,10 +16,9 @@ function Mygroup() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const _token = 'Bearer ' + localStorage.getItem('token');
         const res = await axios.get('http://localhost:3001/groups/mygroup', {
           headers: {
-            Authorization: _token,
+            Authorization: state.token,
           },
         });
 
@@ -29,7 +28,7 @@ function Mygroup() {
       }
     };
     fetchData();
-  }, []);
+  }, [state.token]);
   const handleOnclick = async (e) => {
     try {
       nagative(`/createGroup`);

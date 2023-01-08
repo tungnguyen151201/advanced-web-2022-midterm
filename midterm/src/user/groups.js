@@ -11,10 +11,7 @@ function GroupInfo({ idGroup, name, members, coowner }) {
 
   const handleOnclick = async (e) => {
     try {
-      //   console.log(2);
       nagative(`/getGroups/${idGroup}`);
-
-      //   DetailGroup(idGroup);
     } catch (error) {
       console.log(error);
     }

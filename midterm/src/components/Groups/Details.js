@@ -4,13 +4,12 @@ import './Groups.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsFillArchiveFill, BsFillPencilFill } from 'react-icons/bs';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
 const token = 'Bearer ' + localStorage.getItem('token');
 
 const Groups = () => {
   const nagative = useNavigate();
   const [owner, setOwner] = useState('');
-  // the dynamic pieces of the URL.
+
   let { id } = useParams();
 
   const [members, setMembers] = useState({ listitems: [] });
@@ -30,7 +29,7 @@ const Groups = () => {
         setMembers({ listitems: res.data.members });
         setCoowner({ listitems: res.data.coowner });
       });
-  }, []);
+  }, [owner, members, coowner, id]);
   const handleOnSendEmail = () => {
     nagative(`/sendInviteEmail/${id}`);
   };
@@ -51,7 +50,8 @@ const Groups = () => {
             <li className="list-group-item list-group-item-primary">
               {listitem.username}{' '}
               <span className="group-icons">
-                <BsFillArchiveFill className="delete-icon" /> <BsFillPencilFill className="edit-icon" />
+                <BsFillArchiveFill className="delete-icon" />{' '}
+                <BsFillPencilFill className="edit-icon" />
               </span>
             </li>
           ))}
@@ -62,7 +62,8 @@ const Groups = () => {
             <li className="group__list-item list-group-item list-group-item-primary">
               <span className="group__item-name">{listitem.username}</span>
               <span className="group-icons">
-                <BsFillArchiveFill className="delete-icon" /> <BsFillPencilFill className="edit-icon" />
+                <BsFillArchiveFill className="delete-icon" />{' '}
+                <BsFillPencilFill className="edit-icon" />
               </span>
             </li>
           ))}
@@ -70,7 +71,10 @@ const Groups = () => {
         <button className="btn-group__copy" onClick={handleCopy}>
           Copy link
         </button>
-        <button className="btn-group__email" onClick={() => handleOnSendEmail()}>
+        <button
+          className="btn-group__email"
+          onClick={() => handleOnSendEmail()}
+        >
           Invite by email
         </button>
       </div>

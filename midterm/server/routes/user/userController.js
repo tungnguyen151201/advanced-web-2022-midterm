@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const generateTokens = require('../utils/generateToken');
 const { getGroupById } = require('../group/groupsController');
-// const tokenList = {};
+
 async function Register(req) {
   try {
     if (!req) {

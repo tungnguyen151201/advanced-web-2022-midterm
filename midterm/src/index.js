@@ -9,9 +9,8 @@ import MyPresentations from './components/MyPresentations/MyPresentations';
 import HomePage from './components/HomePage/HomePage';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import Details from './components/Groups/Details';
 import ForgotPassword from './components/Auth/ForgotPassword';
-import Mygroup from './user/mygroups';
+import Mygroup from './user/MyGroups';
 import Creategroup from './components/Group/CreateGroup';
 import Detailgroup from './components/Groups/Details';
 import Joingroup from './components/Groups/JoinGroup';
@@ -34,34 +33,31 @@ root.render(
         <React.StrictMode>
           <BrowserRouter>
             <Routes>
-              <Route path='/' element={<App />}>
+              <Route path="/" element={<App />}>
                 <Route index element={<HomePage />} />
-                <Route path='myPresentations' element={<MyPresentations />} />
-                <Route path='details' element={<Details />} />
-                <Route path='quiz/:PresentationId' element={<Quiz />} />
+                <Route path="myPresentations" element={<MyPresentations />} />
+                <Route path="quiz/:PresentationId" element={<Quiz />} />
+                <Route path="/mygroup" element={<Mygroup />} />
+                <Route path="/createGroup" element={<Creategroup />} />
+                <Route path="/getGroups/:id" element={<Detailgroup />} />
+                <Route
+                  path="/sendInviteEmail/:id"
+                  element={<SendInviteEmail />}
+                />
               </Route>
-              <Route path='login' element={<Login />} />
-              <Route path='/mygroup' element={<Mygroup />} />
-              <Route path='/createGroup' element={<Creategroup />} />
-              <Route path='/join/:id' element={<Joingroup />} />
-              <Route path='/getGroups/:id' element={<Detailgroup />} />
-              <Route path='/forgotPassword/' element={<ForgotPassword />} />
-              <Route
-                path='/sendInviteEmail/:id'
-                element={<SendInviteEmail />}
-              />
-              {/* <Route path='/getGroups/${idGroup}' element={<Detailgroup groupId= />}  /> */}
-
-            <Route path="/register" element={<Register />} />
-            <Route path="/chat/:id" element={<Chat />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="demo/:id" element={<Demo />} />
-            <Route path="voting/:id" element={<Voting />} />
-          </Routes>
-        </BrowserRouter>
-      </React.StrictMode>
-    </QueryClientProvider>
-  </SocketContext.Provider>
+              <Route path="login" element={<Login />} />
+              <Route path="/join/:id" element={<Joingroup />} />
+              <Route path="/forgotPassword/" element={<ForgotPassword />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/chat/:id" element={<Chat />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="demo/:id" element={<Demo />} />
+              <Route path="voting/:id" element={<Voting />} />
+            </Routes>
+          </BrowserRouter>
+        </React.StrictMode>
+      </QueryClientProvider>
+    </SocketContext.Provider>
   </AuthProvider>
 );
 
