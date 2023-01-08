@@ -1,3 +1,7 @@
+.m-u {
+  margin: unset !important;
+}
+
 .mypre__container {
   padding: 10px 100px;
   display: flex;
@@ -23,4 +27,13 @@ h1 {
   border: 1px solid rgba(0, 0, 0, 0.6);
   width: 100%;
   margin: unset;
+}
+
+.mypre__input {
+  width: 100%;
+  padding: 10px;
+}
+
+.mypr__dialog {
+  justify-content: space-around !important;
 }

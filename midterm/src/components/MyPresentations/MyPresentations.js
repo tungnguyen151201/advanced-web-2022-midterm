@@ -6,10 +6,26 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import React from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Button from '@material-ui/core/Button';
 const MyPresentations = (props) => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
   const [myPresentations, setMyPresentations] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickToOpen = () => {
+    setOpen(true);
+  };
+
+  const handleToClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +45,23 @@ const MyPresentations = (props) => {
   return (
     <div className="mypre__container">
       <h1>My presentations</h1>
-      <button className="quiz__btn quiz__btn--b m-r">+ New presentation</button>
+      <button className="quiz__btn quiz__btn--b m-r" onClick={handleClickToOpen}>
+        + New presentation
+      </button>
+      <Dialog open={open} onClose={handleToClose}>
+        <DialogTitle>{'Enter name of presentation'}</DialogTitle>
+        <DialogContent>
+          <input placeholder="e.g.Group01" type="text" className="mypre__input m-u" />
+        </DialogContent>
+        <DialogActions className="mypr__dialog">
+          <Button onClick={handleToClose} color="warning" autoFocus>
+            Close
+          </Button>
+          <Button onClick={handleToClose} color="primary" autoFocus>
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className="mypre__list">
         <div className="mypre__titles">
           <p>Name</p>
