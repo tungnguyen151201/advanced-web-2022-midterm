@@ -4,6 +4,7 @@ const {
   editPresentaion,
   deletePresentation,
   getPresentations,
+  loadMessage,
 } = require('./presentationController');
 async function GetPresentations(req, res) {
   try {
@@ -50,10 +51,19 @@ async function DeletePresentation(req, res) {
     throw error;
   }
 }
+async function LoadMessage(req, res) {
+  try {
+    const messageRes = await loadMessage(req.params.idPresent);
+    res.send(messageRes);
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
   GetPresentations,
   GetPresentationById,
   CreatPresentation,
   EditPresentaion,
+  LoadMessage,
   DeletePresentation,
 };

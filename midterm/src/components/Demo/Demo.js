@@ -4,6 +4,7 @@ import axios from 'axios';
 import BarChart from '../BarChart/BarChart';
 import BoxChat from '../ChatBox/BoxChat';
 import Collapse from 'react-bootstrap/Collapse';
+
 import Button from 'react-bootstrap/Button';
 import './Demo.css';
 import { SocketContext } from '../../context/socket';
@@ -11,6 +12,7 @@ const Demo = () => {
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
+
   const [presentation, setPresentation] = useState({
     name: 'test',
     owner: 'test',
@@ -86,6 +88,8 @@ const Demo = () => {
             answers={answers}
           />
         </div>
+
+        {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
         <Button
           onClick={() => setOpen(!open)}
           aria-controls='example-collapse-text'
@@ -98,6 +102,7 @@ const Demo = () => {
             <BoxChat></BoxChat>
           </div>
         </Collapse>
+        {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
   );

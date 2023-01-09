@@ -128,10 +128,32 @@ async function deletePresentation(userId, presentationId) {
     };
   }
 }
+async function loadMessage(idPresent) {
+  try {
+    if (!idPresent) {
+      return { status: false, message: 'Invalid Infomation!' };
+    }
+    const existsRoom = await Room.findOne({ presentation: idPresent });
+    if (!existsRoom) {
+      return { status: false, message: 'Invalid Infomation!' };
+    }
+    return {
+      status: true,
+      message: 'get message successful!',
+      messages: existsRoom.messages,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+}
 module.exports = {
   getPresentationById,
   creatPresentation,
   editPresentaion,
   deletePresentation,
   getPresentations,
+  loadMessage,
 };
