@@ -8,7 +8,9 @@ import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import './Demo.css';
 import { SocketContext } from '../../context/socket';
+import useGlobalState from '../../context/useAuthState';
 const Demo = () => {
+  const [state] = useGlobalState();
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
@@ -43,13 +45,30 @@ const Demo = () => {
     alert('Link copied to the clipboard');
   };
 
-  const token = 'Bearer ' + localStorage.getItem('token');
+  const handleChangeSlide = (event) => {
+    if (event.keyCode === 37) {
+      //previous
+      if (slide === 0) {
+        return;
+      }
+      setSlide(slide - 1);
+      socket.emit('change-slide', slide);
+    }
+    if (event.keyCode === 39) {
+      //next
+      if (slide === presentation.slides.length - 1) {
+        return;
+      }
+      setSlide(slide + 1);
+      socket.emit('change-slide', slide);
+    }
+  };
 
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
         headers: {
-          Authorization: token,
+          Authorization: state.token,
         },
       })
       .then((res) => {
@@ -66,23 +85,27 @@ const Demo = () => {
     return () => {
       socket.off('submit-answer');
     };
-  }, [answers, id, presentation.slides, slide, socket, token]);
+  }, [answers, id, presentation.slides, slide, socket, state.token]);
 
   return (
-    <div className='demo__container'>
-      <div className='demo__content'>
-        <p className='demo__title'>Link the test</p>
-        <div className='demo__link'>
-          <input className='demo__input' value={link} />
-          <button className='btn__copy' onClick={handleCopy}>
+    <div
+      className="demo__container"
+      onKeyDown={handleChangeSlide}
+      tabIndex={-1}
+    >
+      <div className="demo__content">
+        <p className="demo__title">Link the test</p>
+        <div className="demo__link">
+          <input className="demo__input" value={link} />
+          <button className="btn__copy" onClick={handleCopy}>
             Copy link
           </button>
         </div>
-        <h1 className='demo__question'>
+        <h1 className="demo__question">
           {presentation.slides[slide].question}
         </h1>
 
-        <div className='demo__chart'>
+        <div className="demo__chart">
           <BarChart
             options={presentation.slides[slide].options}
             answers={answers}
@@ -92,13 +115,13 @@ const Demo = () => {
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
         <Button
           onClick={() => setOpen(!open)}
-          aria-controls='example-collapse-text'
+          aria-controls="example-collapse-text"
           aria-expanded={open}
         >
           Box Chat
         </Button>
         <Collapse in={open}>
-          <div id='example-collapse-text'>
+          <div id="example-collapse-text">
             <BoxChat></BoxChat>
           </div>
         </Collapse>

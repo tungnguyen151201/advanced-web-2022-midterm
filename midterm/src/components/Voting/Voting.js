@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './Voting.css';
@@ -6,13 +6,14 @@ import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import BoxChat from '../ChatBox/BoxChat';
 import { SocketContext } from '../../context/socket';
+import useGlobalState from '../../context/useAuthState';
 
 const Voting = () => {
+  const [state] = useGlobalState();
   const { id } = useParams();
   const socket = useContext(SocketContext);
 
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const answers = document.querySelectorAll('.voting__answer');
   socket.emit('join-room', id);
 
@@ -31,7 +32,6 @@ const Voting = () => {
   const handleAnswer = () => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
-        console.log(answer.id);
         socket.emit('submit-answer', { answer: answer.id });
       }
     });
@@ -52,13 +52,12 @@ const Voting = () => {
   });
 
   const [slide, setSlide] = useState(0);
-  const token = 'Bearer ' + localStorage.getItem('token');
 
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
         headers: {
-          Authorization: token,
+          Authorization: state.token,
         },
       })
       .then((res) => {
@@ -70,14 +69,18 @@ const Voting = () => {
       console.log(`connect_error :${err.message}`);
     });
     socket.on('handle-error', (error) => {
-      // setError(error);
       console.log(error);
+    });
+    socket.on('change-slide', (data) => {
+      setSlide(data);
     });
 
     return () => {
-      socket.off('submit-answer');
+      socket.off('change-slide');
+      socket.off('connect_error');
+      socket.off('handle-error');
     };
-  }, []);
+  }, [id, slide, socket, state.token]);
 
   return (
     <div className='voting__container'>

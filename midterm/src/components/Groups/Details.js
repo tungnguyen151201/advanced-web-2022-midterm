@@ -4,13 +4,12 @@ import './Groups.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsFillArchiveFill, BsFillPencilFill } from 'react-icons/bs';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
 const token = 'Bearer ' + localStorage.getItem('token');
 
 const Groups = () => {
   const nagative = useNavigate();
   const [owner, setOwner] = useState('');
-  // the dynamic pieces of the URL.
+
   let { id } = useParams();
 
   const [members, setMembers] = useState({ listitems: [] });
@@ -30,7 +29,7 @@ const Groups = () => {
         setMembers({ listitems: res.data.members });
         setCoowner({ listitems: res.data.coowner });
       });
-  }, []);
+  }, [owner, members, coowner, id]);
   const handleOnSendEmail = () => {
     nagative(`/sendInviteEmail/${id}`);
   };

@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 import { BsGoogle } from 'react-icons/bs';
-// import { IconName } from "react-icons/bs"
+import useGlobalState from '../../context/useAuthState';
+
 export default function Login() {
+  const [state, dispatch] = useGlobalState();
   const navigate = useNavigate();
   const [alert, setAlert] = useState({
     status: false,
@@ -31,8 +33,9 @@ export default function Login() {
           message,
         });
         localStorage.setItem('token', accessToken);
+        dispatch({ token: localStorage.getItem('token') });
 
-        navigate('/mygroup');
+        navigate('/');
       } else {
         setAlert({
           status,
@@ -68,8 +71,6 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const variant = alert.status ? 'success' : 'danger';
 
   return (
     <div className='login-container'>
@@ -117,7 +118,7 @@ export default function Login() {
             </Form.Text>
           )}
         </Form.Group>
-        <Alert key={variant} variant={variant} hidden={alert.message === null}>
+        <Alert key={alert.status ? 'success' : 'danger'} variant={alert.status ? 'success' : 'danger'} hidden={alert.message === null}>
           {alert.message}
         </Alert>
         <Button variant='primary' type='submit' className='btn-submit'>

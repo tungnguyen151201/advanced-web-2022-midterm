@@ -18,7 +18,6 @@ const {
 router.post('/register', (req, res) => register(req, res));
 router.post('/login', (req, res) => login(req, res));
 router.post('/forgotPassword', (req, res) => resetPasswordService(req, res));
-// router.post('/forgot-password', (req, res) => forgotPasswordService(req, res));
 router.post('/logout', verifyToken, (req, res) => logout(req, res));
 router.get('/home', verifyToken, (req, res) => getHomePage(req, res));
 router.get('/activation/:emailToken', (req, res) => activateUser(req, res));

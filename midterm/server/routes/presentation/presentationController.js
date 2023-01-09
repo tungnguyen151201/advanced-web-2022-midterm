@@ -1,23 +1,29 @@
 const { Presentation, Room } = require('../../models');
-async function getPresentations(userId) {
+async function getMyPresentations(userId) {
   try {
     if (!userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const IsOwner = await Presentation.findOne({ owner: userId }).lean();
-    if (!IsOwner) {
-      return { status: false, message: 'Invalid Credencials!' };
+    const presentations = await Presentation.find({ owner: userId })
+      .populate('owner')
+      .lean();
+    if (presentations) {
+      return {
+        status: true,
+        message: 'Get presentation Success!',
+        presentations,
+      };
+    } else {
+      return {
+        status: false,
+        message: 'Not found presentations',
+        presentations,
+      };
     }
-    const presentations = await Presentation.find({}).populate('slides').lean();
-    return {
-      status: true,
-      message: 'Get presentation Success!',
-      presentations,
-    };
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -26,14 +32,11 @@ async function getPresentationById(presentationId, userId) {
     if (!presentationId || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const IsOwner = await Presentation.findOne({ owner: userId }).lean();
-    if (!IsOwner) {
-      return { status: false, message: 'Invalid Credencials!' };
-    }
 
-    const presentation = await Presentation.findById(presentationId)
-      .populate('slides')
-      .lean();
+    const presentation = await Presentation.findOne({
+      _id: presentationId,
+      owner: userId,
+    }).lean();
     if (!presentation) {
       return {
         status: false,
@@ -51,7 +54,6 @@ async function getPresentationById(presentationId, userId) {
 }
 async function creatPresentation(presentationInfo, userId) {
   try {
-    // Tao Presentation
     if (!presentationInfo || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
@@ -95,14 +97,11 @@ async function editPresentaion(presentationId, presentationInfo, userId) {
     if (!presentationId || !presentationInfo || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const IsOwner = await Presentation.findOne({ owner: userId }).lean();
-    if (!IsOwner) {
-      return { status: false, message: 'Invalid Credencials!' };
-    }
-    //Update sau khi đã kiểm tra
+
     const myPresentation = await Presentation.findOneAndUpdate(
-      { _id: presentationId },
-      { ...presentationInfo }
+      { _id: presentationId, owner: userId },
+      { ...presentationInfo },
+      { new: true }
     );
     return { status: true, message: 'update successful!', myPresentation };
   } catch (error) {
@@ -114,13 +113,19 @@ async function deletePresentation(userId, presentationId) {
     if (!presentationId || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const IsOwner = await Presentation.findOne({ owner: userId }).lean();
-    if (!IsOwner) {
-      return { status: false, message: 'Invalid Credencials!' };
+    const { deletedCount } = await Presentation.deleteOne({
+      _id: presentationId,
+      owner: userId,
+    });
+    if (deletedCount > 0) {
+      const { deletedCount } = await Room.deleteOne({
+        presentation: presentationId,
+      });
+      if (deletedCount > 0) {
+        return { status: true, message: 'delete successful!' };
+      }
     }
-    await Presentation.findOneAndDelete({ _id: presentationId });
-    await Room.findOneAndDelete({ presentation: presentationId });
-    return { status: true, message: 'delete successful!' };
+    return { status: false, message: 'delete failed!' };
   } catch (error) {
     return {
       status: false,
@@ -150,10 +155,10 @@ async function loadMessage(idPresent) {
   }
 }
 module.exports = {
+  getMyPresentations,
   getPresentationById,
   creatPresentation,
   editPresentaion,
   deletePresentation,
-  getPresentations,
   loadMessage,
 };

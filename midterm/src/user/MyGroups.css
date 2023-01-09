@@ -1,10 +1,41 @@
 .p-10 {
   padding: 10px;
 }
+.b-5 {
+  border-radius: 5px !important;
+}
+
+.red {
+  color: #dc4c64;
+}
+
+.fs-18 {
+  font-size: 18px !important;
+  color: black !important;
+  font-weight: 600 !important;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.danger__icon {
+  color: red;
+  font-size: 30px;
+}
+
+.flex-center {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 10px;
+}
 
 .group__btn {
+  min-width: 100px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 10px;
   font-weight: 600;
@@ -26,4 +57,14 @@
 .bd-l {
   border-top-left-radius: unset;
   border-bottom-left-radius: unset;
+}
+
+.rs-btn {
+  background-color: unset !important;
+  border: unset !important;
+  color: #0d6efd;
+}
+
+.rs-btn:hover {
+  color: unset !important;
 }

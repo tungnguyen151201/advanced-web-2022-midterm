@@ -6,7 +6,6 @@ const {
   MyProfile,
   EditProfile,
   JoinGroup,
-  resetPassword,
 } = require('./userController');
 const {
   sendVerifyEmail,
@@ -93,14 +92,14 @@ async function sendInviteEmailService(req, res) {
 async function joinGroup(req, res) {
   try {
     const msg = await JoinGroup(req.user.id, req.params.groupId);
-    res.send(msg);
+    console.log(msg);
+    res.send(msg.message);
   } catch (error) {
     res.send('Join failed');
   }
 }
 async function resetPasswordService(req, res) {
   try {
-    // console.log(213);
     const msg = await sendEmailResetPassword(req.body.email);
     res.send(msg);
   } catch (error) {

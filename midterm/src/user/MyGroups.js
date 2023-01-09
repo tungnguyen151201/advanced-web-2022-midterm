@@ -1,25 +1,25 @@
 import GroupInfo from './groups';
 import Container from 'react-bootstrap/Container';
-// import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { BsPlusLg } from 'react-icons/bs';
 import './MyGroups.css';
-// import ModalcreateGroup from '../components/Group/CreateGroup';
+import useGlobalState from '../context/useAuthState';
+import WarningLogin from '../components/WarningLogin/WarningLogin';
+
 function Mygroup() {
-  //   const nagative = useNavigate();
+  const [state, dispatch] = useGlobalState();
   const nagative = useNavigate();
-  //   const [modalShow, setModalShow] = useState(false);
   const [listGroup, setList] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = 'Bearer ' + localStorage.getItem('token');
         const res = await axios.get('http://localhost:3001/groups/mygroup', {
           headers: {
-            Authorization: token,
+            Authorization: state.token,
           },
         });
 
@@ -29,33 +29,27 @@ function Mygroup() {
       }
     };
     fetchData();
-  }, []);
+  }, [state.token]);
   const handleOnclick = async (e) => {
     try {
-      //   console.log(2);
       nagative(`/createGroup`);
-
-      //   DetailGroup(idGroup);
     } catch (error) {
       console.log(error);
     }
   };
-  return (
+  return state.token ? (
     <Container className="p-10">
       <Button className="group__btn" variant="primary" onClick={() => handleOnclick()}>
         <BsPlusLg />
         Create group
       </Button>
-      {/* <Button variant='primary' onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
-      </Button>
-
-      <ModalcreateGroup show={modalShow} onHide={() => setModalShow(false)} /> */}
 
       {listGroup.map((e, index) => {
         return <GroupInfo key={index} idGroup={e._id} name={e.groupname} members={e.members} coowner={e.coowner}></GroupInfo>;
       })}
     </Container>
+  ) : (
+    <WarningLogin />
   );
 }
 

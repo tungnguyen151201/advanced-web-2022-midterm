@@ -4,47 +4,42 @@ const {
   createGroup,
   editGroup,
   deleteGroup,
+  promoteToCoowner,
+  demoteToMember,
+  kickAMember,
 } = require('./groupsController');
 async function GetGroupById(req, res) {
-  try {
-    const getGroupRes = await getGroupById(req.params.id);
-    res.send(getGroupRes);
-  } catch (error) {
-    throw error;
-  }
+  const getGroupRes = await getGroupById(req.params.id);
+  res.send(getGroupRes);
 }
 
 async function MyGroup(req, res) {
-  try {
-    const MyGroupRes = await myGroup(req.user.id);
-    res.send(MyGroupRes);
-  } catch (error) {
-    throw error;
-  }
+  const MyGroupRes = await myGroup(req.user.id);
+  res.send(MyGroupRes);
 }
 async function CreateGroup(req, res) {
-  try {
-    const createGroupRes = await createGroup(req.body, req.user.id);
-    res.send(createGroupRes);
-  } catch (error) {
-    throw error;
-  }
+  const createGroupRes = await createGroup(req.body, req.user.id);
+  res.send(createGroupRes);
 }
 async function EditGroup(req, res) {
-  try {
-    const editGroupRes = await editGroup(req.user, req.params.id, req.body);
-    res.send(editGroupRes);
-  } catch (error) {
-    throw error;
-  }
+  const editGroupRes = await editGroup(req.user, req.params.id, req.body);
+  res.send(editGroupRes);
 }
 async function DeleteGroup(req, res) {
-  try {
-    const deleteGroupRes = await deleteGroup(req.user, req.params.id);
-    res.send(deleteGroupRes);
-  } catch (error) {
-    throw error;
-  }
+  const deleteGroupRes = await deleteGroup(req.user, req.params.id);
+  res.send(deleteGroupRes);
+}
+async function PromoteToCoowner(req, res) {
+  const promoteToCoownerRes = await promoteToCoowner(req.user, req.body.userId, req.params.id);
+  res.send(promoteToCoownerRes);
+}
+async function DemoteToMember(req, res) {
+  const demoteToMemberRes = await demoteToMember(req.user, req.body.userId, req.params.id);
+  res.send(demoteToMemberRes);
+}
+async function KickAMember(req, res) {
+  const kickAMemberRes = await kickAMember(req.user, req.body.userId, req.params.id);
+  res.send(kickAMemberRes);
 }
 module.exports = {
   GetGroupById,
@@ -52,4 +47,7 @@ module.exports = {
   CreateGroup,
   EditGroup,
   DeleteGroup,
+  PromoteToCoowner,
+  DemoteToMember,
+  KickAMember,
 };

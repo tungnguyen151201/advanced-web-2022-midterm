@@ -12,14 +12,15 @@ const Quiz = () => {
   const [slides, setSlide] = useState([
     {
       question: '',
-      options: [],
+      options: [''],
     },
   ]);
   const [currentSlide, setCurrentSlide] = useState({
     index: 0,
     question: '',
-    options: [],
+    options: [''],
   });
+  
   const [dataChange, setDataChange] = useState();
   const token = 'Bearer ' + localStorage.getItem('token');
   const [slideInfo, setSlideInfo] = useState({
@@ -52,7 +53,7 @@ const Quiz = () => {
   const handleNewSlide = () => {
     const defaultSlide = {
       question: '',
-      options: [],
+      options: [''],
     };
     setSlide((arr) => [...arr, defaultSlide]);
   };

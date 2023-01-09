@@ -3,7 +3,6 @@ const generateTokens = require('./generateToken');
 const {
   UpdateEmailToken,
   UpdateNewPassword,
-  MyProfile,
 } = require('../user/userController');
 var crypto = require('crypto');
 
@@ -32,7 +31,6 @@ const sendVerifyEmail = async (email) => {
     if (error) {
       console.log(error);
     } else {
-      console.log(hash);
       UpdateEmailToken(email, hash);
     }
   });
@@ -47,7 +45,7 @@ const sendInviteEmail = async (email, groupId) => {
     from: 'advancedweb2022.project@gmail.com',
     to: email,
     subject: 'Join a group',
-    html: `Please click this <a href="${hostname}/join/${groupId}">link</a> to join a group`,
+    html: `Please click this <a href="http://localhost:3000/join/${groupId}">link</a> to join a group`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -72,11 +70,11 @@ const sendEmailResetPassword = async (email) => {
       text: `Your new password: ${hash}`,
     };
 
-    transporter.sendMail(mailOptions, async function (error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        const res = await UpdateNewPassword(email, hash);
+        UpdateNewPassword(email, hash);
       }
     });
     return {
