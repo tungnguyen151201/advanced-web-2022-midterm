@@ -73,12 +73,7 @@ module.exports = async (io, socket) => {
   }
   async function changeSlide(slideIndex) {
     try {
-      if (!slideIndex) {
-        socket.emit('handle-error', 'Error next index!');
-        socket.disconnect(true);
-        return;
-      }
-      io.to(room).emit('change-slide', { slideIndex });
+      io.to(room).emit('change-slide', slideIndex);
     } catch (error) {
       console.log('chatHandler - chatMessage error', error);
       socket.emit('handle-error', error.message);

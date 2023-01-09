@@ -1,8 +1,6 @@
 import Plot from 'react-plotly.js';
 
 const BarChart = ({ options, answers }) => {
-  console.log(answers);
-
   return (
     <>
       <Plot

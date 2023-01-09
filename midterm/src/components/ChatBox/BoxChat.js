@@ -12,6 +12,7 @@ const BoxChat = () => {
   socket.emit('join-room', id);
 
   const handleSendMessage = () => {
+    console.log(socket);
     socket.emit('chat-message', message);
   };
   useEffect(() => {
@@ -28,6 +29,8 @@ const BoxChat = () => {
 
     return () => {
       socket.off('chat-message');
+      socket.off('connect_error');
+      socket.off('handle-error');
     };
   }, []);
 

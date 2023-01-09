@@ -18,6 +18,7 @@ const MyPresentations = (props) => {
   const [state] = useGlobalState();
   const [myPresentations, setMyPresentations] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [nameInput, setNameInput] = useState();
 
   const handleClickToOpen = () => {
     setOpen(true);
@@ -25,6 +26,31 @@ const MyPresentations = (props) => {
 
   const handleToClose = () => {
     setOpen(false);
+  };
+
+  const handleCreate = async () => {
+    try {
+      setOpen(false);
+      await axios.post(
+        'http://localhost:3001/presentation/create',
+        {
+          name: nameInput,
+          slides: [
+            {
+              question: '',
+              options: [''],
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -45,19 +71,27 @@ const MyPresentations = (props) => {
   return (
     <div className="mypre__container">
       <h1>My presentations</h1>
-      <button className="quiz__btn quiz__btn--b m-r" onClick={handleClickToOpen}>
+      <button
+        className="quiz__btn quiz__btn--b m-r"
+        onClick={handleClickToOpen}
+      >
         + New presentation
       </button>
       <Dialog open={open} onClose={handleToClose}>
         <DialogTitle>{'Enter name of presentation'}</DialogTitle>
         <DialogContent>
-          <input placeholder="e.g.Group01" type="text" className="mypre__input m-u" />
+          <input
+            placeholder="e.g.Group01"
+            type="text"
+            className="mypre__input m-u"
+            onChange={(e) => setNameInput(e.target.value)}
+          />
         </DialogContent>
         <DialogActions className="mypr__dialog">
           <Button onClick={handleToClose} color="warning" autoFocus>
             Close
           </Button>
-          <Button onClick={handleToClose} color="primary" autoFocus>
+          <Button onClick={handleCreate} color="primary" autoFocus>
             Create
           </Button>
         </DialogActions>
