@@ -1,6 +1,7 @@
 import React from 'react';
 const defaultGlobalState = {
   token: localStorage.getItem('token'),
+  userId: localStorage.getItem('userId'),
 };
 export const globalStateContext = React.createContext(defaultGlobalState);
 export const dispatchStateContext = React.createContext(undefined);

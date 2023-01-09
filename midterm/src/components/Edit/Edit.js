@@ -1,63 +1,65 @@
-import { useEffect, useState } from 'react';
 import Present from '../Present/Present';
 import './Edit.css';
 
-export default function Edit({ slideInfoDetail, changeData }) {
-  const [questions, setQuestions] = useState('');
-  const [options, setOptions] = useState(slideInfoDetail.options);
-  const handleNewOptions = () => {
-    setOptions((arr) => [...arr, ``]);
+export default function Edit({ slideInfoDetail, setSlideInfoDetail }) {
+  console.log(slideInfoDetail);
+  const handleChangeQuestion = (e) => {
+    setSlideInfoDetail({
+      ...slideInfoDetail,
+      question: e.target.value,
+      options: slideInfoDetail.options,
+    });
   };
-  useEffect(() => {
-    setQuestions(slideInfoDetail.question);
-    setOptions(slideInfoDetail.options);
-  }, [slideInfoDetail]);
+
+  const handleNewOptions = () => {
+    setSlideInfoDetail({
+      ...slideInfoDetail,
+      question: slideInfoDetail.question,
+      options: [...slideInfoDetail.options, ''],
+    });
+  };
 
   const handleChangeOptions = (index, e) => {
-    const newArray = options.map((item, i) => {
+    const newArray = slideInfoDetail.options.map((item, i) => {
       if (index === i) {
         return e.target.value;
       } else {
         return item;
       }
     });
-    setOptions(newArray);
-    // console.log('1', questions);
-    changeData({
-      indexSlide: slideInfoDetail.index,
-      indexChange: index,
-      questions,
-      options,
+    setSlideInfoDetail({
+      ...slideInfoDetail,
+      question: slideInfoDetail.question,
+      options: newArray,
     });
   };
+
   return (
-    <div className='edit__container'>
-      <div className='edit'>
-        <p className='edit__title'>Slide type</p>
-        <select className='edit__select'>
-          <option value='multiple'>Multiple Choice</option>
-          <option value='type2'>Type 2</option>
-          <option value='type3'>Type 3</option>
+    <div className="edit__container">
+      <div className="edit">
+        <p className="edit__title">Slide type</p>
+        <select className="edit__select">
+          <option value="multiple">Multiple Choice</option>
+          <option value="type2">Heading</option>
+          <option value="type3">Paragraph</option>
         </select>
-        <p className='edit__title'>Your question</p>
+        <p className="edit__title">Your question</p>
 
         <input
-          type='text'
-          className='edit__input'
-          value={questions}
-          onChange={(e) => {
-            setQuestions(e.target.value);
-          }}
+          type="text"
+          className="edit__input"
+          value={slideInfoDetail.question}
+          onChange={handleChangeQuestion}
         />
-        <p className='edit__title'>Options</p>
-        <div className='edit__options'>
-          {options.map((value, index) => {
+        <p className="edit__title">Options</p>
+        <div className="edit__options">
+          {slideInfoDetail.options.map((value, index) => {
             return (
               <input
                 key={index}
-                type='text'
+                type="text"
                 value={value}
-                className='edit__input'
+                className="edit__input"
                 onChange={(e) => {
                   handleChangeOptions(index, e);
                 }}
@@ -65,12 +67,15 @@ export default function Edit({ slideInfoDetail, changeData }) {
             );
           })}
         </div>
-        <button className='btn__add quiz__btn--g' onClick={handleNewOptions}>
+        <button className="btn__add quiz__btn--g" onClick={handleNewOptions}>
           + Add option
         </button>
       </div>
 
-      <Present question={questions} options={options} />
+      <Present
+        question={slideInfoDetail.question}
+        options={slideInfoDetail.options}
+      />
     </div>
   );
 }

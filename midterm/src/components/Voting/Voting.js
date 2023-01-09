@@ -32,7 +32,10 @@ const Voting = () => {
   const handleAnswer = () => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
-        socket.emit('submit-answer', { answer: answer.id });
+        socket.emit('submit-answer', {
+          userId: state.userId,
+          answer: answer.id,
+        });
       }
     });
   };
@@ -52,7 +55,16 @@ const Voting = () => {
   });
 
   const [slide, setSlide] = useState(0);
-
+  // const [{ slide }, dispatch] = useReducer(
+  //   (state, action) => {
+  //     if (action.type === 'change-slide') {
+  //       state.slide = action.slide;
+  //       return state;
+  //     }
+  //     return state;
+  //   },
+  //   { slide: 0 }
+  // );
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -71,42 +83,48 @@ const Voting = () => {
     socket.on('handle-error', (error) => {
       console.log(error);
     });
-    socket.on('change-slide', (data) => {
-      setSlide(data);
-    });
 
     return () => {
-      socket.off('change-slide');
       socket.off('connect_error');
       socket.off('handle-error');
     };
-  }, [id, slide, socket, state.token]);
+  }, [id, socket, state.token]);
+
+  useEffect(() => {
+    const handleChangeSlide = (data) => {
+      setSlide(data);
+    };
+    socket.on('change-slide', handleChangeSlide);
+    return () => {
+      socket.off('change-slide');
+    };
+  }, [socket]);
 
   return (
-    <div className='voting__container'>
-      <h1 className='voting__logo'>THT</h1>
-      <p className='voting__question'>{presentation.slides[slide].question}</p>
-      <div className='voting__answers'>
+    <div className="voting__container">
+      <h1 className="voting__logo">THT</h1>
+      <p className="voting__question">{presentation.slides[slide].question}</p>
+      <div className="voting__answers">
         {presentation.slides[slide].options.map((value, index) => {
           return (
-            <div className='voting__answer' key={index} id={index}>
+            <div className="voting__answer" key={index} id={index}>
               {value}
             </div>
           );
         })}
       </div>
-      <div className='voting__submit' onClick={handleAnswer}>
+      <div className="voting__submit" onClick={handleAnswer}>
         Submit
       </div>
       <Button
         onClick={() => setOpen(!open)}
-        aria-controls='example-collapse-text'
+        aria-controls="example-collapse-text"
         aria-expanded={open}
       >
         Box Chat
       </Button>
       <Collapse in={open}>
-        <div id='example-collapse-text'>
+        <div id="example-collapse-text">
           <BoxChat></BoxChat>
         </div>
       </Collapse>

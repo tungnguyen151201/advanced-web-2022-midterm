@@ -51,7 +51,8 @@ const Header = () => {
                 className="btn-login"
                 onClick={() => {
                   localStorage.removeItem('token');
-                  dispatch({ token: localStorage.getItem('token') });
+                  localStorage.removeItem('userId');
+                  dispatch({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') });
                 }}
               >
                 Log out
