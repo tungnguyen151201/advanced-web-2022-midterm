@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { BsPlusLg } from 'react-icons/bs';
 import './MyGroups.css';
 import useGlobalState from '../context/useAuthState';
+import WarningLogin from '../components/WarningLogin/WarningLogin';
 
 function Mygroup() {
   const [state, dispatch] = useGlobalState();
@@ -38,29 +39,17 @@ function Mygroup() {
   };
   return state.token ? (
     <Container className="p-10">
-      <Button
-        className="group__btn"
-        variant="primary"
-        onClick={() => handleOnclick()}
-      >
+      <Button className="group__btn" variant="primary" onClick={() => handleOnclick()}>
         <BsPlusLg />
         Create group
       </Button>
 
       {listGroup.map((e, index) => {
-        return (
-          <GroupInfo
-            key={index}
-            idGroup={e._id}
-            name={e.groupname}
-            members={e.members}
-            coowner={e.coowner}
-          ></GroupInfo>
-        );
+        return <GroupInfo key={index} idGroup={e._id} name={e.groupname} members={e.members} coowner={e.coowner}></GroupInfo>;
       })}
     </Container>
   ) : (
-    'Chưa login'
+    <WarningLogin />
   );
 }
 
