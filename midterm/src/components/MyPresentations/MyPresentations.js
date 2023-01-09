@@ -13,6 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
+import WarningLogin from '../WarningLogin/WarningLogin';
 const MyPresentations = (props) => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
@@ -42,7 +43,7 @@ const MyPresentations = (props) => {
     };
     fetchData();
   }, [state.token, myPresentations]);
-  return (
+  return state.token ? (
     <div className="mypre__container">
       <h1>My presentations</h1>
       <button className="quiz__btn quiz__btn--b m-r" onClick={handleClickToOpen}>
@@ -71,19 +72,13 @@ const MyPresentations = (props) => {
         <hr className="mypre__line" />
         <div className="mypre__items">
           {myPresentations.map((e, index) => {
-            return (
-              <PresentItem
-                onClick={() => navigate(`../demo/${e._id}`)}
-                id={e._id}
-                name={e.name}
-                owner={`${e.owner.firstName} ${e.owner.lastName}`}
-                createdAt={e.createdAt}
-              ></PresentItem>
-            );
+            return <PresentItem onClick={() => navigate(`../demo/${e._id}`)} id={e._id} name={e.name} owner={`${e.owner.firstName} ${e.owner.lastName}`} createdAt={e.createdAt}></PresentItem>;
           })}
         </div>
       </div>
     </div>
+  ) : (
+    <WarningLogin />
   );
 };
 

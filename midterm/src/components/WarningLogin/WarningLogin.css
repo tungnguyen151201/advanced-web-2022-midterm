@@ -1,0 +1,42 @@
+.wl__container {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.wl__icon {
+  font-size: 120px;
+  color: #e60023;
+  margin-bottom: 10px;
+}
+
+.wl__title {
+  margin-bottom: 10px;
+  color: #e60023;
+}
+
+.wl__infor {
+  font-size: 26px;
+}
+
+.wl__btn {
+  margin-top: 20px;
+  background-color: yellow;
+  padding: 6px 20px;
+  border-radius: 10px;
+  font-size: 18px;
+  background-color: #0b5ed7;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wl__arrow {
+  font-size: 30px;
+}
+
+.wl__btn:hover {
+  background-color: #0b57c9;
+}
