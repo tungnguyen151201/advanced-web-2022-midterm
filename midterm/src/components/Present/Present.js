@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import './Present.css';
-import Edit from '../Edit/Edit';
 
 export default function Present({ question, options }) {
   return (
@@ -16,7 +14,6 @@ export default function Present({ question, options }) {
             );
           })}
         </div>
-        <button className='btn__present'>Pressent notes</button>
       </div>
     </div>
   );
