@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useReducer, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './Voting.css';
 import Collapse from 'react-bootstrap/Collapse';
@@ -52,6 +52,21 @@ const Voting = () => {
   });
 
   const [slide, setSlide] = useState(0);
+  // const [{ slide }, dispatch] = useReducer(
+  //   (state, action) => {
+  //     if (action.type === 'change-slide') {
+  //       state.slide = action.slide;
+  //       return state;
+  //     }
+  //     return state;
+  //   },
+  //   { slide: 0 }
+  // );
+
+  const handleChangeSlide = (data) => {
+    setSlide(data);
+    console.log(slide, data);
+  };
 
   useEffect(() => {
     axios
@@ -71,17 +86,23 @@ const Voting = () => {
     socket.on('handle-error', (error) => {
       console.log(error);
     });
+
+    return () => {
+      socket.off('connect_error');
+      socket.off('handle-error');
+    };
+  }, [id, socket, state.token]);
+
+  useEffect(() => {
     socket.on('change-slide', (data) => {
-      setSlide(data);
-      console.log(slide, data);
+      // dispatch({ type: 'change-slide', slide: data });
+      handleChangeSlide(data);
     });
 
     return () => {
       socket.off('change-slide');
-      socket.off('connect_error');
-      socket.off('handle-error');
     };
-  }, [id, slide, socket, state.token]);
+  }, [slide, socket]);
 
   return (
     <div className="voting__container">
