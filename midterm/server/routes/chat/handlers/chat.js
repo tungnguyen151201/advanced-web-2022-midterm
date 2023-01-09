@@ -88,7 +88,7 @@ module.exports = async (io, socket) => {
         return;
       }
       console.log();
-      io.to(room).emit('submit-answer', { answer });
+      io.to(room).emit('submit-answer', answer);
     } catch (error) {
       console.log('chatHandler - chatMessage error', error);
       socket.emit('handle-error', error.message);

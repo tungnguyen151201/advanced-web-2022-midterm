@@ -8,8 +8,12 @@ import Button from 'react-bootstrap/Button';
 import './Demo.css';
 import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
+import { useNavigate } from 'react-router-dom';
+
 const Demo = () => {
+  const navigate = useNavigate();
   const [state] = useGlobalState();
+  console.log('id: ' + state.userId);
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
@@ -20,10 +24,22 @@ const Demo = () => {
       {
         question: "What's your name?",
         options: ['anwser 1', 'anwser 2', 'anwser 3'],
+        answers: [
+          {
+            user: '',
+            answer: '',
+          },
+        ],
       },
       {
         question: 'Slide 2',
         options: ['anwser 1', 'anwser 2', 'anwser 3'],
+        answers: [
+          {
+            user: '',
+            answer: '',
+          },
+        ],
       },
     ],
   });
@@ -44,21 +60,24 @@ const Demo = () => {
   };
 
   const handleChangeSlide = (event) => {
+    if (event.keyCode === 27) {
+      navigate(`/quiz/${id}`);
+    }
     if (event.keyCode === 37) {
       //previous
       if (slide === 0) {
         return;
       }
-      setSlide(slide - 1);
-      socket.emit('change-slide', slide);
+      setSlide((slide) => slide - 1);
+      socket.emit('change-slide', slide - 1);
     }
     if (event.keyCode === 39) {
       //next
       if (slide === presentation.slides.length - 1) {
         return;
       }
-      setSlide(slide + 1);
-      socket.emit('change-slide', slide);
+      setSlide((slide) => slide + 1);
+      socket.emit('change-slide', slide + 1);
     }
   };
 
@@ -73,12 +92,13 @@ const Demo = () => {
         setPresentation(res.data.presentation);
       });
     socket.on('submit-answer', (data) => {
-      let arr = Array.from(
-        { length: presentation.slides[slide].options.length },
-        (v, i) => (v = answers[i])
-      );
-      arr[data.answer.answer] += 1;
-      setAnswers(arr);
+      // let arr = Array.from(
+      //   { length: presentation.slides[slide].options.length },
+      //   (v, i) => (v = answers[i])
+      // );
+      // arr[data.answer.answer] += 1;
+      // setAnswers(arr);
+      console.log(data);
     });
     return () => {
       socket.off('submit-answer');

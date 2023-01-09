@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useState, useReducer, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './Voting.css';
 import Collapse from 'react-bootstrap/Collapse';
@@ -32,7 +32,10 @@ const Voting = () => {
   const handleAnswer = () => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
-        socket.emit('submit-answer', { answer: answer.id });
+        socket.emit('submit-answer', {
+          userId: state.userId,
+          answer: answer.id,
+        });
       }
     });
   };
@@ -62,12 +65,6 @@ const Voting = () => {
   //   },
   //   { slide: 0 }
   // );
-
-  const handleChangeSlide = (data) => {
-    setSlide(data);
-    console.log(slide, data);
-  };
-
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -94,15 +91,14 @@ const Voting = () => {
   }, [id, socket, state.token]);
 
   useEffect(() => {
-    socket.on('change-slide', (data) => {
-      // dispatch({ type: 'change-slide', slide: data });
-      handleChangeSlide(data);
-    });
-
+    const handleChangeSlide = (data) => {
+      setSlide(data);
+    };
+    socket.on('change-slide', handleChangeSlide);
     return () => {
       socket.off('change-slide');
     };
-  }, [slide, socket]);
+  }, [socket]);
 
   return (
     <div className="voting__container">

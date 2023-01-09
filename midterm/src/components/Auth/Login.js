@@ -24,8 +24,8 @@ export default function Login() {
         username,
         password,
       });
-      console.log(res);
-      const { status, message, accessToken } = res.data;
+
+      const { status, message, accessToken, userId } = res.data;
 
       if (status) {
         setAlert({
@@ -33,7 +33,8 @@ export default function Login() {
           message,
         });
         localStorage.setItem('token', accessToken);
-        dispatch({ token: localStorage.getItem('token') });
+        localStorage.setItem('userId', userId);
+        dispatch({ userId, token: accessToken });
 
         navigate('/');
       } else {
@@ -49,22 +50,34 @@ export default function Login() {
       });
     }
   }
-  // const handleLoginGG = async () => {
-  //   const res = await axios.get('http://localhost:3001/auth/google', {
-  //     headers: { 'Access-Control-Allow-Origin': '*' },
-  //   });
-  //   const { status, message, accessToken } = res.data;
+  const handleLoginGG = async () => {
+    const res = await axios.get('http://localhost:3001/auth/google', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    });
+    const { status, message, accessToken } = res.data;
 
-  //   if (status) {
-  //     setAlert({
-  //       status,
-  //       message,
-  //     });
-  //     localStorage.setItem('token', accessToken);
-  //   }
-  // };
-  const googleAuth = () => {
+    if (status) {
+      setAlert({
+        status,
+        message,
+      });
+      localStorage.setItem('token', accessToken);
+    }
+  };
+  const googleAuth = async () => {
     window.open(`http://localhost:3001/auth/google`, 'self');
+    const res = await axios.get('http://localhost:3001/auth/google/callback', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    });
+    const { status, message, accessToken } = res.data;
+
+    if (status) {
+      setAlert({
+        status,
+        message,
+      });
+      localStorage.setItem('token', accessToken);
+    }
   };
   const {
     register,
@@ -73,11 +86,11 @@ export default function Login() {
   } = useForm();
 
   return (
-    <div className='login-container'>
-      <div className='header'>
+    <div className="login-container">
+      <div className="header">
         <span>Don't have account yet?</span>
         <button
-          className='btn-signup'
+          className="btn-signup"
           onClick={() => {
             navigate('/register');
           }}
@@ -86,60 +99,64 @@ export default function Login() {
         </button>
       </div>
 
-      <div className='title col-4 mx-auto'>THT</div>
-      <div className='welcome col-4 mx-auto'>Hello, who's this?</div>
+      <div className="title col-4 mx-auto">THT</div>
+      <div className="welcome col-4 mx-auto">Hello, who's this?</div>
       <Form
-        className='content-form col-4 mx-auto'
+        className="content-form col-4 mx-auto"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Form.Group className='mb-3' controlId='username'>
+        <Form.Group className="mb-3" controlId="username">
           <Form.Label>Username</Form.Label>
           <Form.Control
             {...register('username', { required: 'Username is required' })}
-            type='text'
-            placeholder='Enter username'
+            type="text"
+            placeholder="Enter username"
           />
           {errors.username && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.username.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className='mb-3' controlId='password'>
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             {...register('password', { required: 'Password is required' })}
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
           />
           {errors.password && (
-            <Form.Text className='text-danger'>
+            <Form.Text className="text-danger">
               {errors.password.message}
             </Form.Text>
           )}
         </Form.Group>
-        <Alert key={alert.status ? 'success' : 'danger'} variant={alert.status ? 'success' : 'danger'} hidden={alert.message === null}>
+        <Alert
+          key={alert.status ? 'success' : 'danger'}
+          variant={alert.status ? 'success' : 'danger'}
+          hidden={alert.message === null}
+        >
           {alert.message}
         </Alert>
-        <Button variant='primary' type='submit' className='btn-submit'>
+        <Button variant="primary" type="submit" className="btn-submit">
           Log in
         </Button>
-        <Button variant='link' href='/forgotPassword'>
+        <Button variant="link" href="/forgotPassword">
           Forgot password?
         </Button>
 
-        <div className='d-flex justify-content-center'>Or login with</div>
-        <div className='d-flex justify-content-center mt-3'>
-          <Button variant='dark' className='btn-google' onClick={googleAuth}>
+        <div className="d-flex justify-content-center">Or login with</div>
+        <div className="d-flex justify-content-center mt-3">
+          <Button variant="dark" className="btn-google" onClick={handleLoginGG}>
             <BsGoogle />
           </Button>
         </div>
 
-        <Button variant='link' href='/register'>
+        <Button variant="link" href="/register">
           Not a member yet? Sign up
         </Button>
 
-        <div className='back'>
+        <div className="back">
           <span
             onClick={() => {
               navigate('/');

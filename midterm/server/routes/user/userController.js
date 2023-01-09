@@ -70,6 +70,7 @@ async function Login({ username, password }) {
       message: 'login success!',
       accessToken,
       refreshToken,
+      userId: existsUser._id,
     };
   } catch (error) {
     return {

@@ -7,6 +7,12 @@ const PresentationSchema = new Schema({
     {
       question: { type: String, require: true },
       options: [{ type: String, require: true }],
+      answers: [
+        {
+          user: { type: mongoose.ObjectId, ref: 'User' },
+          answer: { type: String },
+        },
+      ],
       createdAt: { type: Date, default: Date.now() },
     },
   ],
