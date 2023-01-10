@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import BoxChat from '../ChatBox/BoxChat';
 import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
-import { BsFillChatTextFill } from 'react-icons/bs';
+import { BsFillChatTextFill, BsCursorFill } from 'react-icons/bs';
 
 const Voting = () => {
   const [state] = useGlobalState();
@@ -125,7 +125,10 @@ const Voting = () => {
         </div>
       </Collapse>
       <h1 className="voting__post-question">Have an question?</h1>
-      <input type="text" placeholder="Enter your question" className="voting__input" />
+      <div className="voting__post-container">
+        <input type="text" placeholder="Enter your question" className="voting__input" />
+        <BsCursorFill className="voting__post-btn" />
+      </div>
     </div>
   );
 };

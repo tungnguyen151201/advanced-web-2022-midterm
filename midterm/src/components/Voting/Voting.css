@@ -72,11 +72,25 @@
 }
 
 .voting__post-question {
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 8px;
 }
 
 .voting__input {
   width: 30%;
   padding: 5px 8px;
+}
+
+.voting__post-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.voting__post-btn {
+  font-size: 30px;
+  color: rgb(20, 86, 204, 1);
+  margin-top: -15px;
 }
