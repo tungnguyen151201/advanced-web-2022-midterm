@@ -70,10 +70,10 @@ const MyPresentations = (props) => {
     fetchData();
   }, [state.token, myPresentations]);
   return state.token ? (
-    <div className="mypre__container">
+    <div className='mypre__container'>
       <h1>My presentations</h1>
       <button
-        className="quiz__btn quiz__btn--b m-r"
+        className='quiz__btn quiz__btn--b m-r'
         onClick={handleClickToOpen}
       >
         + New presentation
@@ -82,31 +82,39 @@ const MyPresentations = (props) => {
         <DialogTitle>{'Enter name of presentation'}</DialogTitle>
         <DialogContent>
           <input
-            placeholder="e.g.Group01"
-            type="text"
-            className="mypre__input m-u"
+            placeholder='e.g.Group01'
+            type='text'
+            className='mypre__input m-u'
             onChange={(e) => setNameInput(e.target.value)}
           />
         </DialogContent>
-        <DialogActions className="mypr__dialog">
-          <Button onClick={handleToClose} color="warning" autoFocus>
+        <DialogActions className='mypr__dialog'>
+          <Button onClick={handleToClose} color='warning' autoFocus>
             Close
           </Button>
-          <Button onClick={handleCreate} color="primary" autoFocus>
+          <Button onClick={handleCreate} color='primary' autoFocus>
             Create
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="mypre__list">
-        <div className="mypre__titles">
+      <div className='mypre__list'>
+        <div className='mypre__titles'>
           <p>Name</p>
           <p>Owner</p>
           <p>Created</p>
         </div>
-        <hr className="mypre__line" />
-        <div className="mypre__items">
+        <hr className='mypre__line' />
+        <div className='mypre__items'>
           {myPresentations.map((e, index) => {
-            return <PresentItem onClick={() => navigate(`../demo/${e._id}`)} id={e._id} name={e.name} owner={`${e.owner.firstName} ${e.owner.lastName}`} createdAt={e.createdAt}></PresentItem>;
+            return (
+              <PresentItem
+                onClick={() => navigate(`../demo/${e._id}`)}
+                id={e._id}
+                name={e.name}
+                owner={`${e.owner.firstName} ${e.owner.lastName}`}
+                createdAt={e.createdAt}
+              ></PresentItem>
+            );
           })}
         </div>
       </div>

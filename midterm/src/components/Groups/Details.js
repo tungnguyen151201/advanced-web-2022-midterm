@@ -44,7 +44,7 @@ const Groups = () => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
         headers: {
-          Authorization: token,
+          Authorization: state.token,
         },
       })
       .then((res) => {

@@ -79,7 +79,7 @@ const Quiz = () => {
         <button className='quiz__btn quiz__btn--b m-r' onClick={handleNewSlide}>
           + New slide
         </button>
-        <AddOwnner />
+        <AddOwnner idPresent={PresentationId} />
         <button className='quiz__btn black' onClick={handleSave}>
           Save
         </button>

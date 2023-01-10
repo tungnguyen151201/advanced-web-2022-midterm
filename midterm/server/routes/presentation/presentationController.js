@@ -107,7 +107,7 @@ async function editPresentaion(presentationId, presentationInfo, userId) {
     );
     return { status: true, message: 'update successful!', myPresentation };
   } catch (error) {
-    return { status: false, message: 'Invalid Infomation!' };
+    return { status: false, message: error.message };
   }
 }
 async function deletePresentation(userId, presentationId) {
