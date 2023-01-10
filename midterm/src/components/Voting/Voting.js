@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import BoxChat from '../ChatBox/BoxChat';
 import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
+import { BsFillChatTextFill, BsCursorFill } from 'react-icons/bs';
 
 const Voting = () => {
   const [state] = useGlobalState();
@@ -94,8 +95,7 @@ const Voting = () => {
 
   return (
     <div className="voting__container">
-      <h1 className="voting__logo">THT</h1>
-      <p className="voting__question">{presentation.slides[slide].question}</p>
+      <h1 className="voting__logo">{presentation.slides[slide].question}</h1>
       <div className="voting__answers">
         {presentation.slides[slide].options.map((value, index) => {
           return (
@@ -108,18 +108,19 @@ const Voting = () => {
       <div className="voting__submit" onClick={handleAnswer}>
         Submit
       </div>
-      <Button
-        onClick={() => setOpen(!open)}
-        aria-controls="example-collapse-text"
-        aria-expanded={open}
-      >
-        Box Chat
+      <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+        <BsFillChatTextFill className="chat__icon" />
       </Button>
       <Collapse in={open}>
         <div id="example-collapse-text">
           <BoxChat></BoxChat>
         </div>
       </Collapse>
+      <h1 className="voting__post-question">Have an question?</h1>
+      <div className="voting__post-container">
+        <input type="text" placeholder="Enter your question" className="voting__input" />
+        <BsCursorFill className="voting__post-btn" />
+      </div>
     </div>
   );
 };

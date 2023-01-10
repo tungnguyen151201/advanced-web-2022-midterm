@@ -4,12 +4,13 @@ import axios from 'axios';
 import BarChart from '../BarChart/BarChart';
 import BoxChat from '../ChatBox/BoxChat';
 import Collapse from 'react-bootstrap/Collapse';
-
+import { BsFillChatTextFill } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
 import './Demo.css';
 import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
 import { useNavigate } from 'react-router-dom';
+import AccordionQuestion from '../AccordionQuestion/AccordionQuestion';
 
 const Demo = () => {
   const navigate = useNavigate();
@@ -127,11 +128,7 @@ const Demo = () => {
   };
 
   return (
-    <div
-      className="demo__container"
-      onKeyDown={handleChangeSlide}
-      tabIndex={-1}
-    >
+    <div className="demo__container" onKeyDown={handleChangeSlide} tabIndex={-1}>
       <div className="demo__content">
         <p className="demo__title">Link the test</p>
         <div className="demo__link">
@@ -140,9 +137,7 @@ const Demo = () => {
             Copy link
           </button>
         </div>
-        <h1 className="demo__question">
-          {presentation.slides[slide].question}
-        </h1>
+        <h1 className="demo__question">{presentation.slides[slide].question}</h1>
 
         <div className="demo__chart">
           <BarChart
@@ -152,18 +147,16 @@ const Demo = () => {
         </div>
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
-        <Button
-          onClick={() => setOpen(!open)}
-          aria-controls="example-collapse-text"
-          aria-expanded={open}
-        >
-          Box Chat
+        <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+          <BsFillChatTextFill className="chat__icon" />
         </Button>
         <Collapse in={open}>
           <div id="example-collapse-text">
             <BoxChat></BoxChat>
           </div>
         </Collapse>
+        <h1>List questions</h1>
+        <AccordionQuestion />
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
