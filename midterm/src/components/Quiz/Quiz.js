@@ -37,11 +37,11 @@ const Quiz = () => {
 
   const handleNewSlide = async () => {
     const defaultSlide = {
-      question: '',
-      options: [''],
+      question: 'Question 1',
+      options: ['Option 1', 'Option 2', 'Option 3'],
     };
     setSlides([...slides, defaultSlide]);
-    setSlideIndex(slideIndex + 1);
+    setSlideIndex(slides.length);
   };
 
   const handleUpdateSlides = (slideDetail) => {

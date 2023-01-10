@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const PresentationSchema = new Schema({
   name: { type: String, require: true },
   owner: { type: mongoose.ObjectId, require: true, ref: 'User' },
+  coowner: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   slides: [
     {
       question: { type: String, require: true },

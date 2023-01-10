@@ -41,8 +41,8 @@ const Demo = () => {
   };
 
   const handleChangeSlide = async (event) => {
-    if (event.keyCode === 27) {
-      navigate(`/quiz/${id}`);
+    if (event.keyCode === 27) { // ESC
+      navigate(`/quiz/${id}`);    
     }
     if (event.keyCode === 37) {
       //previous

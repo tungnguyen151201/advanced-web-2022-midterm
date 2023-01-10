@@ -4,7 +4,9 @@ async function getMyPresentations(userId) {
     if (!userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
-    const presentations = await Presentation.find({ owner: userId })
+    const presentations = await Presentation.find({
+      $or: [{ owner: userId }, { coowner: userId }],
+    })
       .populate('owner')
       .lean();
     if (presentations) {
@@ -35,7 +37,7 @@ async function getPresentationById(presentationId, userId) {
 
     const presentation = await Presentation.findOne({
       _id: presentationId,
-      owner: userId,
+      $or: [{ owner: userId }, { coowner: userId }],
     }).lean();
     if (!presentation) {
       return {

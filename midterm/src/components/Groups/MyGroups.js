@@ -29,7 +29,7 @@ function Mygroup() {
       }
     };
     fetchData();
-  }, [state.token]);
+  }, [state.token, listGroup]);
   const handleOnclick = async (e) => {
     try {
       nagative(`/createGroup`);
