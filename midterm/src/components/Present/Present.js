@@ -4,7 +4,7 @@ export default function Present({ question, options }) {
   return (
     <div className='present__container'>
       <div className='present'>
-        <p className='question'>Question 1: {question}</p>
+        <p className='question'>Question: {question}</p>
         <div className='answers'>
           {options.map((value, index) => {
             return (

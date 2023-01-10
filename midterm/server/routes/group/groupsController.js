@@ -93,13 +93,16 @@ async function editGroup(userInfo, groupId, groupInfo) {
     };
   }
 }
-async function deleteGroup(userInfo, { groupId }) {
+async function deleteGroup(userInfo, groupId) {
   try {
     if (!groupId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
     // Kiểm tra có phải owner hay không?
-    const IsOwner = await Groups.findOne({ owner: userInfo.id, _id: groupId }).lean();
+    const IsOwner = await Groups.findOne({
+      owner: userInfo.id,
+      _id: groupId,
+    }).lean();
     if (!IsOwner) {
       return { status: false, message: 'Invalid Credenticals!' };
     }
@@ -135,7 +138,12 @@ async function promoteToCoowner(userInfo, userId, groupId) {
   if (coowner.includes(userId)) {
     return { status: false, message: 'This user has already been coowner' };
   }
-  members.pop(userId);
+
+  const index = members.indexOf(userId);
+  if (index > -1) {
+    members.splice(index, 1);
+  }
+
   coowner.push(userId);
   const res = await editGroup(userInfo, groupId, {
     coowner,
@@ -165,7 +173,12 @@ async function demoteToMember(userInfo, userId, groupId) {
   if (members.includes(userId)) {
     return { status: false, message: 'This user has already been member' };
   }
-  coowner.pop(userId);
+
+  const index = coowner.indexOf(userId);
+  if (index > -1) {
+    coowner.splice(index, 1);
+  }
+
   members.push(userId);
   const res = await editGroup(userInfo, groupId, {
     coowner,
@@ -187,10 +200,16 @@ async function kickAMember(userInfo, userId, groupId) {
   coowner = coowner.map((coowner) => coowner._id.toString());
 
   if (coowner.includes(userId)) {
-    coowner.pop(userId);
+    const index = coowner.indexOf(userId);
+    if (index > -1) {
+      coowner.splice(index, 1);
+    }
   }
   if (members.includes(userId)) {
-    members.pop(userId);
+    const index = members.indexOf(userId);
+    if (index > -1) {
+      members.splice(index, 1);
+    }
   }
 
   const res = await editGroup(userInfo, groupId, {
