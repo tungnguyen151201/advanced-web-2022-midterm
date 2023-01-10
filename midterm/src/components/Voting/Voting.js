@@ -29,6 +29,7 @@ const Voting = () => {
       answer.classList.add('active');
     });
   });
+
   const handleAnswer = () => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
@@ -55,16 +56,7 @@ const Voting = () => {
   });
 
   const [slide, setSlide] = useState(0);
-  // const [{ slide }, dispatch] = useReducer(
-  //   (state, action) => {
-  //     if (action.type === 'change-slide') {
-  //       state.slide = action.slide;
-  //       return state;
-  //     }
-  //     return state;
-  //   },
-  //   { slide: 0 }
-  // );
+
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {

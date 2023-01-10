@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 const Demo = () => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
-  console.log('id: ' + state.userId);
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
@@ -24,34 +23,13 @@ const Demo = () => {
     owner: 'test',
     slides: [
       {
-        question: "What's your name?",
-        options: ['anwser 1', 'anwser 2', 'anwser 3'],
-        answers: [
-          {
-            user: '',
-            answer: '',
-          },
-        ],
-      },
-      {
-        question: 'Slide 2',
-        options: ['anwser 1', 'anwser 2', 'anwser 3'],
-        answers: [
-          {
-            user: '',
-            answer: '',
-          },
-        ],
+        question: '',
+        options: ['', '', ''],
+        answers: [],
       },
     ],
   });
   const [slide, setSlide] = useState(0);
-  const [answers, setAnswers] = useState(
-    Array.from(
-      { length: presentation.slides[slide].options.length },
-      (v) => (v = 0)
-    )
-  );
 
   const link = `http://localhost:3000/voting/${id}`;
   socket.emit('join-room', id);
@@ -61,7 +39,7 @@ const Demo = () => {
     alert('Link copied to the clipboard');
   };
 
-  const handleChangeSlide = (event) => {
+  const handleChangeSlide = async (event) => {
     if (event.keyCode === 27) {
       navigate(`/quiz/${id}`);
     }
@@ -71,6 +49,17 @@ const Demo = () => {
         return;
       }
       setSlide((slide) => slide - 1);
+      await axios.patch(
+        `http://localhost:3001/presentation/edit/${id}`,
+        {
+          ...presentation,
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
       socket.emit('change-slide', slide - 1);
     }
     if (event.keyCode === 39) {
@@ -79,6 +68,17 @@ const Demo = () => {
         return;
       }
       setSlide((slide) => slide + 1);
+      await axios.patch(
+        `http://localhost:3001/presentation/edit/${id}`,
+        {
+          ...presentation,
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
       socket.emit('change-slide', slide + 1);
     }
   };
@@ -93,19 +93,38 @@ const Demo = () => {
       .then((res) => {
         setPresentation(res.data.presentation);
       });
+  }, [id, state.token]);
+
+  useEffect(() => {
     socket.on('submit-answer', (data) => {
-      // let arr = Array.from(
-      //   { length: presentation.slides[slide].options.length },
-      //   (v, i) => (v = answers[i])
-      // );
-      // arr[data.answer.answer] += 1;
-      // setAnswers(arr);
-      console.log(data);
+      setPresentation((presentation) => ({
+        ...presentation,
+        slides: presentation.slides.map((s, index) => {
+          if (index === slide) {
+            return {
+              ...s,
+              answers: [...s.answers, data],
+            };
+          } else return s;
+        }),
+      }));
     });
     return () => {
       socket.off('submit-answer');
     };
-  }, [answers, id, presentation.slides, slide, socket, state.token]);
+  }, [slide, socket]);
+
+  const countAnswers = (answers) => {
+    let result = Array.from(
+      { length: presentation.slides[slide].options.length },
+      (v) => (v = 0)
+    );
+
+    answers.forEach((e) => {
+      result[parseInt(e.answer)] += 1;
+    });
+    return result;
+  };
 
   return (
     <div
@@ -128,7 +147,7 @@ const Demo = () => {
         <div className="demo__chart">
           <BarChart
             options={presentation.slides[slide].options}
-            answers={answers}
+            answers={countAnswers(presentation.slides[slide].answers)}
           />
         </div>
 
