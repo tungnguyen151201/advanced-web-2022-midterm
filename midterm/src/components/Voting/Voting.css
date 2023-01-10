@@ -1,5 +1,4 @@
 .voting__container {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +11,7 @@
 }
 
 .voting__question {
-  font-size: 25px;
+  font-size: 40px;
   margin-left: -400px;
   font-weight: 600;
   margin-bottom: -2px;
@@ -46,7 +45,7 @@
 
 .voting__submit {
   width: 50%;
-  background-color: rgb(20, 86, 204, 1);
+  background-color: rgb(175, 176, 180, 1);
   padding: 10px 20px;
   text-align: center;
   border-radius: 5px;
@@ -57,4 +56,27 @@
 
 .voting__submit:hover {
   cursor: pointer;
+}
+
+.chat__btn {
+  display: flex;
+  padding: 15px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+}
+
+.chat__icon {
+  font-size: 25px;
+}
+
+.voting__post-question {
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.voting__input {
+  width: 30%;
+  padding: 5px 8px;
 }

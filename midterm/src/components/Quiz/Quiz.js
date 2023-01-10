@@ -21,14 +21,11 @@ const Quiz = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(
-        `http://localhost:3001/presentation/${PresentationId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const res = await axios.get(`http://localhost:3001/presentation/${PresentationId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       setSlides(res.data.presentation.slides);
     }
     fetchData();
@@ -70,6 +67,7 @@ const Quiz = () => {
         },
       }
     );
+    alert('Save success!');
   };
   return (
     <div className="quiz__container">
@@ -89,19 +87,10 @@ const Quiz = () => {
           <div className="slide__container">
             <div className="slide__nav">
               {slides.map((_, index) => {
-                return (
-                  <Slide
-                    slideIndex={index}
-                    currentSlide={slideIndex}
-                    onClick={() => setSlideIndex(index)}
-                  />
-                );
+                return <Slide slideIndex={index} currentSlide={slideIndex} onClick={() => setSlideIndex(index)} />;
               })}
             </div>
-            <Edit
-              slideInfoDetail={slides[slideIndex]}
-              setSlideInfoDetail={handleUpdateSlides}
-            />
+            <Edit slideInfoDetail={slides[slideIndex]} setSlideInfoDetail={handleUpdateSlides} />
           </div>
         </div>
       </main>
