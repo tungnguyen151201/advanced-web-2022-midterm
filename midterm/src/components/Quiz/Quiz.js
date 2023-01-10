@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Slide from '../Slide/Slide';
 import Edit from '../Edit/Edit';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import AddOwnner from './addOwnner';
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
@@ -21,11 +21,14 @@ const Quiz = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`http://localhost:3001/presentation/${PresentationId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axios.get(
+        `http://localhost:3001/presentation/${PresentationId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       setSlides(res.data.presentation.slides);
     }
     fetchData();
@@ -69,28 +72,39 @@ const Quiz = () => {
     );
     alert('Save success!');
   };
+  const handleAddOwnner = () => {};
   return (
-    <div className="quiz__container">
-      <div className="quiz__header">
-        <button className="quiz__btn quiz__btn--b m-r" onClick={handleNewSlide}>
+    <div className='quiz__container'>
+      <div className='quiz__header'>
+        <button className='quiz__btn quiz__btn--b m-r' onClick={handleNewSlide}>
           + New slide
         </button>
-        <button className="quiz__btn black" onClick={handleSave}>
+        <AddOwnner />
+        <button className='quiz__btn black' onClick={handleSave}>
           Save
         </button>
-        <button className="quiz__btn quiz__btn--b" onClick={() => handleDemo()}>
+        <button className='quiz__btn quiz__btn--b' onClick={() => handleDemo()}>
           Demo
         </button>
       </div>
-      <main className="quiz__content">
-        <div className="quiz__slide">
-          <div className="slide__container">
-            <div className="slide__nav">
+      <main className='quiz__content'>
+        <div className='quiz__slide'>
+          <div className='slide__container'>
+            <div className='slide__nav'>
               {slides.map((_, index) => {
-                return <Slide slideIndex={index} currentSlide={slideIndex} onClick={() => setSlideIndex(index)} />;
+                return (
+                  <Slide
+                    slideIndex={index}
+                    currentSlide={slideIndex}
+                    onClick={() => setSlideIndex(index)}
+                  />
+                );
               })}
             </div>
-            <Edit slideInfoDetail={slides[slideIndex]} setSlideInfoDetail={handleUpdateSlides} />
+            <Edit
+              slideInfoDetail={slides[slideIndex]}
+              setSlideInfoDetail={handleUpdateSlides}
+            />
           </div>
         </div>
       </main>

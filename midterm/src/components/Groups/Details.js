@@ -14,6 +14,7 @@ const Groups = () => {
 
   const [members, setMembers] = useState({ listitems: [] });
   const [coowner, setCoowner] = useState({ listitems: [] });
+  const [hasPrensent, setPrensent] = useState();
 
   const link = `http://localhost:3000/join/${id}`;
 
@@ -39,6 +40,16 @@ const Groups = () => {
   };
   const handleOnAddPresent = () => {
     nagative(`/group/listPresentations/${id}`);
+    axios
+      .get(`http://localhost:3001/presentation/${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setPrensent(res.data.name);
+      });
   };
   return (
     <React.Fragment>
@@ -80,12 +91,18 @@ const Groups = () => {
         >
           Invite by email
         </button>
-        <button
-          className='btn-group__email'
-          onClick={() => handleOnAddPresent()}
-        >
-          Add Presentation +
-        </button>
+        <div>
+          {hasPrensent ? (
+            <button className='btn-group__email'>{hasPrensent}</button>
+          ) : (
+            <button
+              className='btn-group__email'
+              onClick={() => handleOnAddPresent()}
+            >
+              Add Presentation +
+            </button>
+          )}
+        </div>
       </div>
     </React.Fragment>
   );
