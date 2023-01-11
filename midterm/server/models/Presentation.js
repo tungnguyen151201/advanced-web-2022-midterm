@@ -17,6 +17,15 @@ const PresentationSchema = new Schema({
       createdAt: { type: Date, default: Date.now() },
     },
   ],
+  questions: [
+    {
+      user: { type: mongoose.ObjectId, ref: 'User' },
+      content: { type: String, require: true },
+      isReplied: { type: Boolean, default: false },
+      vote: { type: Number, default: 0 },
+      createdAt: { type: Date, default: Date.now() },
+    },
+  ],
   status: { type: Boolean },
   createdAt: { type: Date, default: Date.now() },
 });

@@ -29,6 +29,14 @@ const Demo = () => {
         answers: [],
       },
     ],
+    questions: [
+      {
+        user: ' ',
+        content: '',
+        isReplied: false,
+        vote: 0,
+      },
+    ],
   });
   const [slide, setSlide] = useState(0);
 
@@ -41,8 +49,9 @@ const Demo = () => {
   };
 
   const handleChangeSlide = async (event) => {
-    if (event.keyCode === 27) { // ESC
-      navigate(`/quiz/${id}`);    
+    if (event.keyCode === 27) {
+      // ESC
+      navigate(`/quiz/${id}`);
     }
     if (event.keyCode === 37) {
       //previous
@@ -126,20 +135,25 @@ const Demo = () => {
     });
     return result;
   };
-
   return (
-    <div className="demo__container" onKeyDown={handleChangeSlide} tabIndex={-1}>
-      <div className="demo__content">
-        <p className="demo__title">Link the test</p>
-        <div className="demo__link">
-          <input className="demo__input" value={link} />
-          <button className="btn__copy" onClick={handleCopy}>
+    <div
+      className='demo__container'
+      onKeyDown={handleChangeSlide}
+      tabIndex={-1}
+    >
+      <div className='demo__content'>
+        <p className='demo__title'>Link the test</p>
+        <div className='demo__link'>
+          <input className='demo__input' value={link} />
+          <button className='btn__copy' onClick={handleCopy}>
             Copy link
           </button>
         </div>
-        <h1 className="demo__question">{presentation.slides[slide].question}</h1>
+        <h1 className='demo__question'>
+          {presentation.slides[slide].question}
+        </h1>
 
-        <div className="demo__chart">
+        <div className='demo__chart'>
           <BarChart
             options={presentation.slides[slide].options}
             answers={countAnswers(presentation.slides[slide].answers)}
@@ -147,16 +161,22 @@ const Demo = () => {
         </div>
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
-        <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
-          <BsFillChatTextFill className="chat__icon" />
+        <Button
+          className='chat__btn'
+          onClick={() => setOpen(!open)}
+          aria-controls='example-collapse-text'
+          aria-expanded={open}
+        >
+          <BsFillChatTextFill className='chat__icon' />
         </Button>
         <Collapse in={open}>
-          <div id="example-collapse-text">
+          <div id='example-collapse-text'>
             <BoxChat></BoxChat>
           </div>
         </Collapse>
         <h1>List questions</h1>
-        <AccordionQuestion />
+        <AccordionQuestion idPresent={id} questions={presentation.questions} />
+
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>

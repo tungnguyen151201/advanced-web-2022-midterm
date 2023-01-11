@@ -8,12 +8,14 @@ import BoxChat from '../ChatBox/BoxChat';
 import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
 import { BsFillChatTextFill, BsCursorFill } from 'react-icons/bs';
-
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 const Voting = () => {
   const [state] = useGlobalState();
   const { id } = useParams();
   const socket = useContext(SocketContext);
-
+  const [question, setQuestion] = useState();
+  const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const answers = document.querySelectorAll('.voting__answer');
   socket.emit('join-room', id);
@@ -30,7 +32,27 @@ const Voting = () => {
       answer.classList.add('active');
     });
   });
-
+  const handleCreateQuestion = () => {
+    axios
+      .post(
+        `http://localhost:3001/presentation/createQuestion/${id}`,
+        {
+          question,
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      )
+      .then((res) => {
+        const { status } = res.data;
+        console.log(res);
+        if (status) {
+          setShow(true);
+        }
+      });
+  };
   const handleAnswer = () => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
@@ -94,33 +116,67 @@ const Voting = () => {
   }, [socket]);
 
   return (
-    <div className="voting__container">
-      <h1 className="voting__logo">{presentation.slides[slide].question}</h1>
-      <div className="voting__answers">
+    <div className='voting__container'>
+      <h1 className='voting__logo'>{presentation.slides[slide].question}</h1>
+      <div className='voting__answers'>
         {presentation.slides[slide].options.map((value, index) => {
           return (
-            <div className="voting__answer" key={index} id={index}>
+            <div className='voting__answer' key={index} id={index}>
               {value}
             </div>
           );
         })}
       </div>
-      <div className="voting__submit" onClick={handleAnswer}>
+      <div className='voting__submit' onClick={handleAnswer}>
         Submit
       </div>
-      <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
-        <BsFillChatTextFill className="chat__icon" />
+      <Button
+        className='chat__btn'
+        onClick={() => setOpen(!open)}
+        aria-controls='example-collapse-text'
+        aria-expanded={open}
+      >
+        <BsFillChatTextFill className='chat__icon' />
       </Button>
       <Collapse in={open}>
-        <div id="example-collapse-text">
+        <div id='example-collapse-text'>
           <BoxChat></BoxChat>
         </div>
       </Collapse>
-      <h1 className="voting__post-question">Have an question?</h1>
-      <div className="voting__post-container">
-        <input type="text" placeholder="Enter your question" className="voting__input" />
-        <BsCursorFill className="voting__post-btn" />
+      <h1 className='voting__post-question'>Have an question?</h1>
+      <div className='voting__post-container'>
+        <input
+          type='text'
+          placeholder='Enter your question'
+          className='voting__input'
+          onChange={(e) => {
+            setQuestion(e.target.value);
+          }}
+        />
+        <BsCursorFill
+          className='voting__post-btn'
+          onClick={handleCreateQuestion}
+        />
       </div>
+      <ToastContainer className='chat__toast p-3' position='bottom-center'>
+        <Toast
+          onClose={() => setShow(false)}
+          show={show}
+          bg='success'
+          delay={3000}
+          autohide
+        >
+          <Toast.Header closeButton={false}>
+            <img
+              src='holder.js/20x20?text=%20'
+              className='rounded me-2'
+              alt=''
+            />
+            <strong className='me-auto'>Notify</strong>
+          </Toast.Header>
+          <Toast.Body className='text-white'>update Successful!</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 };
