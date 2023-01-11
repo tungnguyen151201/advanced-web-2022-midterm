@@ -4,8 +4,9 @@ async function getMyPresentations(userId) {
     if (!userId) {
       return { status: false, message: 'Invalid Infomation!' };
     }
+
     const presentations = await Presentation.find({
-      $or: [{ owner: userId }, { coowner: userId }],
+      $or: [{ owner: userId }, { coowners: userId }],
     })
       .populate('owner')
       .lean();
@@ -37,7 +38,7 @@ async function getPresentationById(presentationId, userId) {
 
     const presentation = await Presentation.findOne({
       _id: presentationId,
-      $or: [{ owner: userId }, { coowner: userId }],
+      $or: [{ owner: userId }, { coowners: userId }],
     }).lean();
     if (!presentation) {
       return {
@@ -66,6 +67,7 @@ async function creatPresentation(presentationInfo, userId) {
       name,
       slides,
       owner: userId,
+      coowners: [],
     });
     // Tao Room chat sau khi tao presentation
     const presentationId = newPresentation._id;

@@ -3,11 +3,7 @@ const Schema = mongoose.Schema;
 const PresentationSchema = new Schema({
   name: { type: String, require: true },
   owner: { type: mongoose.ObjectId, require: true, ref: 'User' },
-  coowners: [
-    {
-      username: { type: String, require: true },
-    },
-  ],
+  coowners: [{ type: mongoose.ObjectId, require: true, ref: 'User' }],
   slides: [
     {
       question: { type: String, require: true },
