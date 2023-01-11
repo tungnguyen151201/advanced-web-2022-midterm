@@ -12,7 +12,7 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Button from '@material-ui/core/Button';
 import WarningLogin from '../WarningLogin/WarningLogin';
-const AddOwnner = (idPresent) => {
+const AddCoownner = (idPresent) => {
   const [state] = useGlobalState();
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = useState(false);
@@ -26,7 +26,7 @@ const AddOwnner = (idPresent) => {
     setOpen(false);
   };
 
-  const handleAddOwnner = async () => {
+  const handleAddCoownner = async () => {
     try {
       const res = await axios.patch(
         `http://localhost:3001/presentation/edit/${idPresent}`,
@@ -50,7 +50,7 @@ const AddOwnner = (idPresent) => {
   };
   const handleUsernameInput = (usernameInput, index) => {
     const newArray = coowners.map((item, i) => {
-      if (index === i) {
+      if (i === index) {
         return { username: usernameInput };
       } else {
         return item;
@@ -89,7 +89,7 @@ const AddOwnner = (idPresent) => {
           <Button onClick={handleToClose} color='warning' autoFocus>
             Close
           </Button>
-          <Button onClick={handleAddOwnner} color='primary' autoFocus>
+          <Button onClick={handleAddCoownner} color='primary' autoFocus>
             Add
           </Button>
         </DialogActions>
@@ -121,4 +121,4 @@ const AddOwnner = (idPresent) => {
   );
 };
 
-export default AddOwnner;
+export default AddCoownner;

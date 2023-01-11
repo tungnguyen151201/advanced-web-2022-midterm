@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Slide from '../Slide/Slide';
 import Edit from '../Edit/Edit';
 import { useNavigate, useParams } from 'react-router-dom';
-import AddOwnner from './addOwnner';
+import AddCoownner from './addCoownner';
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
@@ -72,14 +72,13 @@ const Quiz = () => {
     );
     alert('Save success!');
   };
-  const handleAddOwnner = () => {};
   return (
     <div className='quiz__container'>
       <div className='quiz__header'>
         <button className='quiz__btn quiz__btn--b m-r' onClick={handleNewSlide}>
           + New slide
         </button>
-        <AddOwnner idPresent={PresentationId} />
+        <AddCoownner idPresent={PresentationId} />
         <button className='quiz__btn black' onClick={handleSave}>
           Save
         </button>
