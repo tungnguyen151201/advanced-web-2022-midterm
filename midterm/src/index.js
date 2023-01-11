@@ -59,7 +59,9 @@ root.render(
               <Route path='/chat/:id' element={<Chat />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='demo/:id' element={<Demo />} />
+              <Route path='demo/:id/group/:groupId' element={<Demo />} />
               <Route path='voting/:id' element={<Voting />} />
+              <Route path='voting/:id/group/:groupId' element={<Voting />} />
             </Routes>
           </BrowserRouter>
         </React.StrictMode>

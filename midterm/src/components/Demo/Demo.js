@@ -15,9 +15,11 @@ import AccordionQuestion from '../AccordionQuestion/AccordionQuestion';
 const Demo = () => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
-  const { id } = useParams();
+  const { id, groupId } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
+
+  const [loadStatus, setLoadStatus] = useState({ status: false, message: '' });
 
   const [presentation, setPresentation] = useState({
     name: 'test',
@@ -32,7 +34,8 @@ const Demo = () => {
   });
   const [slide, setSlide] = useState(0);
 
-  const link = `http://localhost:3000/voting/${id}`;
+  const link = groupId ? `http://localhost:3000/voting/${id}/group/${groupId}` : `http://localhost:3000/voting/${id}`;
+
   socket.emit('join-room', id);
 
   const handleCopy = () => {
@@ -41,8 +44,9 @@ const Demo = () => {
   };
 
   const handleChangeSlide = async (event) => {
-    if (event.keyCode === 27) { // ESC
-      navigate(`/quiz/${id}`);    
+    if (event.keyCode === 27) {
+      // ESC
+      navigate(`/quiz/${id}`);
     }
     if (event.keyCode === 37) {
       //previous
@@ -92,7 +96,17 @@ const Demo = () => {
         },
       })
       .then((res) => {
-        setPresentation(res.data.presentation);
+        if (res.data.status) {
+          setLoadStatus({
+            status: true,
+          });
+          setPresentation(res.data.presentation);
+        } else {
+          setLoadStatus({
+            status: false,
+            message: res.data.message,
+          });
+        }
       });
   }, [id, state.token]);
 
@@ -127,8 +141,12 @@ const Demo = () => {
     return result;
   };
 
-  return (
-    <div className="demo__container" onKeyDown={handleChangeSlide} tabIndex={-1}>
+  return loadStatus.status ? (
+    <div
+      className="demo__container"
+      onKeyDown={handleChangeSlide}
+      tabIndex={-1}
+    >
       <div className="demo__content">
         <p className="demo__title">Link the test</p>
         <div className="demo__link">
@@ -137,7 +155,9 @@ const Demo = () => {
             Copy link
           </button>
         </div>
-        <h1 className="demo__question">{presentation.slides[slide].question}</h1>
+        <h1 className="demo__question">
+          {presentation.slides[slide].question}
+        </h1>
 
         <div className="demo__chart">
           <BarChart
@@ -147,7 +167,12 @@ const Demo = () => {
         </div>
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
-        <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+        <Button
+          className="chat__btn"
+          onClick={() => setOpen(!open)}
+          aria-controls="example-collapse-text"
+          aria-expanded={open}
+        >
           <BsFillChatTextFill className="chat__icon" />
         </Button>
         <Collapse in={open}>
@@ -160,7 +185,7 @@ const Demo = () => {
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
-  );
+  ) : loadStatus.message;
 };
 
 export default Demo;

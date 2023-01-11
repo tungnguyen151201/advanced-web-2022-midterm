@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import React from 'react';
 import WarningLogin from '../WarningLogin/WarningLogin';
-const ListPresentations = (props) => {
+const ListPresentations = () => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
   const [myPresentations, setMyPresentations] = useState([]);
@@ -40,7 +40,9 @@ const ListPresentations = (props) => {
         },
       }
     );
-    console.log(res);
+    if (!res.data.status) {
+      alert(res.data.message);
+    }
     navigate(`/getGroups/${id}`);
   };
   return state.token ? (

@@ -11,10 +11,13 @@ import { BsFillChatTextFill, BsCursorFill } from 'react-icons/bs';
 
 const Voting = () => {
   const [state] = useGlobalState();
-  const { id } = useParams();
+  const { id, groupId } = useParams();
   const socket = useContext(SocketContext);
 
   const [open, setOpen] = useState(false);
+
+  const [loadStatus, setLoadStatus] = useState({ status: false, message: '' });
+
   const answers = document.querySelectorAll('.voting__answer');
   socket.emit('join-room', id);
 
@@ -59,15 +62,70 @@ const Voting = () => {
   const [slide, setSlide] = useState(0);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/presentation/${id}`, {
-        headers: {
-          Authorization: state.token,
-        },
-      })
-      .then((res) => {
-        setPresentation(res.data.presentation);
-      });
+    if (groupId) {
+      axios
+        .get(`http://localhost:3001/groups/checkIfUserInGroup/${groupId}`, {
+          headers: {
+            Authorization: state.token,
+          },
+        })
+        .then((res) => {
+          console.log(state.token, res, id);
+          if (!res.data.status) {
+            setLoadStatus({
+              status: false,
+              message: 'This is private presentation. Only members can join',
+            });
+            return false;
+          }
+          return true;
+        })
+        .then((res) => {
+          console.log(res);
+          if (res) {
+            axios
+              .get(`http://localhost:3001/presentation/getForVoting/${id}`, {
+                headers: {
+                  Authorization: state.token,
+                },
+              })
+              .then((res) => {
+                if (res.data.status) {
+                  setLoadStatus({
+                    status: true,
+                  });
+                  setPresentation(res.data.presentation);
+                } else {
+                  setLoadStatus({
+                    status: false,
+                    message: res.data.message,
+                  });
+                }
+              });
+          }
+        });
+    } else {
+      console.log(2);
+      axios
+        .get(`http://localhost:3001/presentation/getForVoting/${id}`, {
+          headers: {
+            Authorization: state.token,
+          },
+        })
+        .then((res) => {
+          if (res.data.status) {
+            setLoadStatus({
+              status: true,
+            });
+            setPresentation(res.data.presentation);
+          } else {
+            setLoadStatus({
+              status: false,
+              message: res.data.message,
+            });
+          }
+        });
+    }
 
     socket.on('connect_error', (err) => {
       if (err.message === 'xhr poll error') return;
@@ -81,7 +139,7 @@ const Voting = () => {
       socket.off('connect_error');
       socket.off('handle-error');
     };
-  }, [id, socket, state.token]);
+  }, [groupId, id, socket, state.token]);
 
   useEffect(() => {
     const handleChangeSlide = (data) => {
@@ -93,7 +151,7 @@ const Voting = () => {
     };
   }, [socket]);
 
-  return (
+  return loadStatus.status ? (
     <div className="voting__container">
       <h1 className="voting__logo">{presentation.slides[slide].question}</h1>
       <div className="voting__answers">
@@ -108,7 +166,12 @@ const Voting = () => {
       <div className="voting__submit" onClick={handleAnswer}>
         Submit
       </div>
-      <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+      <Button
+        className="chat__btn"
+        onClick={() => setOpen(!open)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open}
+      >
         <BsFillChatTextFill className="chat__icon" />
       </Button>
       <Collapse in={open}>
@@ -118,10 +181,16 @@ const Voting = () => {
       </Collapse>
       <h1 className="voting__post-question">Have an question?</h1>
       <div className="voting__post-container">
-        <input type="text" placeholder="Enter your question" className="voting__input" />
+        <input
+          type="text"
+          placeholder="Enter your question"
+          className="voting__input"
+        />
         <BsCursorFill className="voting__post-btn" />
       </div>
     </div>
+  ) : (
+    loadStatus.message
   );
 };
 

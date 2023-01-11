@@ -48,7 +48,7 @@ async function getPresentationById(presentationId, userId) {
     if (!presentation) {
       return {
         status: false,
-        message: 'Cant find presentation!',
+        message: 'Presentation not found or invalid credentials',
         presentation: null,
       };
     }
@@ -60,7 +60,33 @@ async function getPresentationById(presentationId, userId) {
     };
   }
 }
-async function creatPresentation(presentationInfo, userId) {
+async function getPresentationForVoting(presentationId, userId) {
+  try {
+    if (!presentationId || !userId) {
+      return { status: false, message: 'Invalid Infomation!' };
+    }
+
+    const presentation = await Presentation.findById(presentationId)
+      .populate('owner')
+      .populate('coowners')
+      .lean();
+    console.log(presentationId);
+    if (!presentation) {
+      return {
+        status: false,
+        message: 'Presentation not found or invalid credentials',
+        presentation: null,
+      };
+    }
+    return { status: true, message: 'Get presentation Success!', presentation };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+}
+async function createPresentation(presentationInfo, userId) {
   try {
     if (!presentationInfo || !userId) {
       return { status: false, message: 'Invalid Infomation!' };
@@ -112,7 +138,10 @@ async function editPresentaion(presentationId, presentationInfo, userId) {
       { ...presentationInfo },
       { new: true }
     );
-    return { status: true, message: 'update successful!', myPresentation };
+    if (!myPresentation) {
+      return { status: false, message: 'Update failed!', myPresentation };
+    }
+    return { status: true, message: 'Update successful!', myPresentation };
   } catch (error) {
     return { status: false, message: error.message };
   }
@@ -200,9 +229,10 @@ async function addCoowner(userInfo, username, PresentId) {
 module.exports = {
   getMyPresentations,
   getPresentationById,
-  creatPresentation,
+  creatPresentation: createPresentation,
   editPresentaion,
   deletePresentation,
   loadMessage,
   addCoowner,
+  getPresentationForVoting,
 };
