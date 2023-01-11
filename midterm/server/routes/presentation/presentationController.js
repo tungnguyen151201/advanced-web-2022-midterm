@@ -92,7 +92,7 @@ async function creatPresentation(presentationInfo, userId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
