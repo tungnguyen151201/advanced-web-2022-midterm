@@ -56,50 +56,50 @@ const Demo = () => {
     if (event.keyCode === 27) {
       // ESC
       navigate(`/quiz/${id}`);
-    if (event.keyCode === 27) {
-      // ESC
-      navigate(`/quiz/${id}`);
-    }
-    if (event.keyCode === 37) {
-      //previous
-      if (slide === 0) {
-        return;
+      if (event.keyCode === 27) {
+        // ESC
+        navigate(`/quiz/${id}`);
       }
-      setSlide((slide) => slide - 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 37) {
+        //previous
+        if (slide === 0) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide - 1);
-    }
-    if (event.keyCode === 39) {
-      //next
-      if (slide === presentation.slides.length - 1) {
-        return;
+        setSlide((slide) => slide - 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide - 1);
       }
-      setSlide((slide) => slide + 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 39) {
+        //next
+        if (slide === presentation.slides.length - 1) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide + 1);
-    }
-  };
-
+        setSlide((slide) => slide + 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide + 1);
+      }
+    };
+  }
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -120,7 +120,7 @@ const Demo = () => {
           });
         }
       });
-  }, [id, state.token]);
+  }, [id, state.token, presentation]);
 
   useEffect(() => {
     socket.on('submit-answer', (data) => {
@@ -188,7 +188,7 @@ const Demo = () => {
             <BoxChat></BoxChat>
           </div>
         </Collapse>
-        <h1>List questions</h1>
+        {presentation.questions.length !== 0 && <h1>List questions</h1>}
         <AccordionQuestion idPresent={id} questions={presentation.questions} />
 
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}

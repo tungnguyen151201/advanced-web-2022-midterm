@@ -25,7 +25,7 @@ export default function Login() {
         password,
       });
 
-      const { status, message, accessToken, userId } = res.data;
+      const { status, message, accessToken, userId, username: name } = res.data;
 
       if (status) {
         setAlert({
@@ -34,7 +34,8 @@ export default function Login() {
         });
         localStorage.setItem('token', accessToken);
         localStorage.setItem('userId', userId);
-        dispatch({ userId, token: accessToken });
+        localStorage.setItem('username', name);
+        dispatch({ userId, token: accessToken, username: name });
 
         navigate('/');
       } else {

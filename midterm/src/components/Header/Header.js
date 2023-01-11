@@ -66,7 +66,7 @@ const Header = () => {
                 }}
               >
                 <FaUserCircle />
-                test
+                {state.username}
               </span>
               <Nav>
                 <button
@@ -74,7 +74,8 @@ const Header = () => {
                   onClick={() => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('userId');
-                    dispatch({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') });
+                    localStorage.removeItem('username');
+                    dispatch({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token'), username: localStorage.getItem('username') });
                   }}
                 >
                   Log out
