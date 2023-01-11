@@ -4,9 +4,11 @@ import '../Slide/Slide.css';
 import React, { useEffect, useState } from 'react';
 import Slide from '../Slide/Slide';
 import Edit from '../Edit/Edit';
+import { BsPlayFill } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router-dom';
-import AddCoownner from './addCoownner';
-import CRUDCoowner from './CRUDCoowner';
+import InviteCoownner from './InviteCoownner';
+import ListCoowner from './ListCoowner';
+
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
@@ -22,14 +24,11 @@ const Quiz = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(
-        `http://localhost:3001/presentation/${PresentationId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const res = await axios.get(`http://localhost:3001/presentation/${PresentationId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       setSlides(res.data.presentation.slides);
     }
     fetchData();
@@ -74,39 +73,30 @@ const Quiz = () => {
     alert('Save success!');
   };
   return (
-    <div className='quiz__container'>
-      <div className='quiz__header'>
-        <button className='quiz__btn quiz__btn--b m-r' onClick={handleNewSlide}>
+    <div className="quiz__container">
+      <div className="quiz__header">
+        <button className="quiz__btn quiz__btn--b " onClick={handleNewSlide}>
           + New slide
         </button>
 
-        <AddCoownner idPresent={PresentationId} />
-        <CRUDCoowner idPresent={PresentationId} />
-        <button className='quiz__btn black' onClick={handleSave}>
+        <button className="quiz__btn quiz__btn--save black m-r" onClick={handleSave}>
           Save
         </button>
-        <button className='quiz__btn quiz__btn--b' onClick={() => handleDemo()}>
-          Demo
+        <InviteCoownner idPresent={PresentationId} />
+        <ListCoowner idPresent={PresentationId} />
+        <button className="quiz__btn quiz__btn--present quiz__btn--b" onClick={() => handleDemo()}>
+          <BsPlayFill className="quiz__icon-play" /> Present
         </button>
       </div>
-      <main className='quiz__content'>
-        <div className='quiz__slide'>
-          <div className='slide__container'>
-            <div className='slide__nav'>
+      <main className="quiz__content">
+        <div className="quiz__slide">
+          <div className="slide__container">
+            <div className="slide__nav">
               {slides.map((_, index) => {
-                return (
-                  <Slide
-                    slideIndex={index}
-                    currentSlide={slideIndex}
-                    onClick={() => setSlideIndex(index)}
-                  />
-                );
+                return <Slide slideIndex={index} currentSlide={slideIndex} onClick={() => setSlideIndex(index)} />;
               })}
             </div>
-            <Edit
-              slideInfoDetail={slides[slideIndex]}
-              setSlideInfoDetail={handleUpdateSlides}
-            />
+            <Edit slideInfoDetail={slides[slideIndex]} setSlideInfoDetail={handleUpdateSlides} />
           </div>
         </div>
       </main>

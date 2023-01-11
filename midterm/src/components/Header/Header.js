@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { FaUserCircle } from 'react-icons/fa';
 import useGlobalState from '../../context/useAuthState';
 
 const Header = () => {
@@ -46,18 +47,40 @@ const Header = () => {
               </button>
             </Nav>
           ) : (
-            <Nav>
-              <button
-                className="btn-login"
-                onClick={() => {
-                  localStorage.removeItem('token');
-                  localStorage.removeItem('userId');
-                  dispatch({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') });
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                'justify-content': 'center',
+                gap: '20px',
+              }}
+            >
+              <span
+                className="header__account"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  'justify-content': 'center',
+                  gap: '6px',
+                  fontSize: '18px',
                 }}
               >
-                Log out
-              </button>
-            </Nav>
+                <FaUserCircle />
+                test
+              </span>
+              <Nav>
+                <button
+                  className="btn-login"
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
+                    dispatch({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') });
+                  }}
+                >
+                  Log out
+                </button>
+              </Nav>
+            </div>
           )}
         </Navbar.Collapse>
       </Container>

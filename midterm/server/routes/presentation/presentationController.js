@@ -10,6 +10,7 @@ async function getMyPresentations(userId) {
       $or: [{ owner: userId }, { coowners: userId }],
     })
       .populate('owner')
+      .populate('coowners')
       .lean();
     if (presentations) {
       return {
@@ -40,7 +41,10 @@ async function getPresentationById(presentationId, userId) {
     const presentation = await Presentation.findOne({
       _id: presentationId,
       $or: [{ owner: userId }, { coowners: userId }],
-    }).lean();
+    })
+      .populate('owner')
+      .populate('coowners')
+      .lean();
     if (!presentation) {
       return {
         status: false,

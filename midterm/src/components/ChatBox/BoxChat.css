@@ -38,8 +38,8 @@
   display: flex;
 }
 
-.form-control {
-  width: 290px !important;
+.boxchat__input {
+  width: 290px;
 }
 
 .sendmessage {

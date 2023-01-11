@@ -17,10 +17,10 @@
 .quiz__btn {
   border: none;
   border-radius: 3px;
-  margin: 0 3px;
-  padding: 10px;
+  padding: 8px 12px;
   font-weight: 600;
   background-color: transparent;
+  transition: 0.2s all linear;
 }
 
 .quiz__btn--b {
@@ -30,10 +30,80 @@
 
 .quiz__btn--g {
   background-color: rgb(175, 176, 180);
-  color: black;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.quiz__btn--b:hover {
+  background-color: rgb(18, 76, 176);
+}
+.quiz__btn--g:hover {
+  background-color: rgb(140, 140, 144);
 }
 
 .quiz__content {
   width: 100%;
   background: rgb(175, 176, 180);
+}
+
+.quiz__btn--present {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+}
+
+.quiz__btn--save {
+  transition: all 0.2s linear;
+  margin-left: 5px;
+}
+
+.quiz__btn--save:hover {
+  background-color: rgb(175, 176, 180);
+}
+
+.quiz__icon-play {
+  color: white;
+  font-size: 22px;
+}
+
+.inviteCoonwer__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.listCoowner__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 0 5px;
+}
+
+.listCoowner__dialog {
+  padding: 0px 65px !important;
+  padding-top: 25px !important;
+}
+
+.listCoowner__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  margin-bottom: 8px;
+}
+
+.listCoowner__icon {
+  transition: all 0.16s linear;
+}
+
+.listCoowner__icon:hover {
+  color: #dc4c64;
+  transform: scale(1.2);
+  cursor: pointer;
 }
