@@ -11,6 +11,7 @@ import { SocketContext } from '../../context/socket';
 import useGlobalState from '../../context/useAuthState';
 import { useNavigate } from 'react-router-dom';
 import AccordionQuestion from '../AccordionQuestion/AccordionQuestion';
+import ListAnswer from '../ListAnswer/ListAnswer';
 
 const Demo = () => {
   const navigate = useNavigate();
@@ -31,6 +32,14 @@ const Demo = () => {
         answers: [],
       },
     ],
+    questions: [
+      {
+        user: ' ',
+        content: '',
+        isReplied: false,
+        vote: 0,
+      },
+    ],
   });
   const [slide, setSlide] = useState(0);
 
@@ -44,6 +53,9 @@ const Demo = () => {
   };
 
   const handleChangeSlide = async (event) => {
+    if (event.keyCode === 27) {
+      // ESC
+      navigate(`/quiz/${id}`);
     if (event.keyCode === 27) {
       // ESC
       navigate(`/quiz/${id}`);
@@ -130,10 +142,7 @@ const Demo = () => {
   }, [slide, socket]);
 
   const countAnswers = (answers) => {
-    let result = Array.from(
-      { length: presentation.slides[slide].options.length },
-      (v) => (v = 0)
-    );
+    let result = Array.from({ length: presentation.slides[slide].options.length }, (v) => (v = 0));
 
     answers.forEach((e) => {
       result[parseInt(e.answer)] += 1;
@@ -160,11 +169,10 @@ const Demo = () => {
         </h1>
 
         <div className="demo__chart">
-          <BarChart
-            options={presentation.slides[slide].options}
-            answers={countAnswers(presentation.slides[slide].answers)}
-          />
+          <BarChart options={presentation.slides[slide].options} answers={countAnswers(presentation.slides[slide].answers)} />
         </div>
+
+        <ListAnswer />
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
         <Button
@@ -176,12 +184,13 @@ const Demo = () => {
           <BsFillChatTextFill className="chat__icon" />
         </Button>
         <Collapse in={open}>
-          <div id="example-collapse-text">
+          <div id='example-collapse-text'>
             <BoxChat></BoxChat>
           </div>
         </Collapse>
         <h1>List questions</h1>
-        <AccordionQuestion />
+        <AccordionQuestion idPresent={id} questions={presentation.questions} />
+
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>

@@ -1,0 +1,34 @@
+.listAnswer__container {
+  position: fixed;
+  bottom: 55px;
+  left: 70px;
+  height: fit-content;
+  padding: 0px 40px;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  background-color: #f6f6f6;
+  z-index: 1000;
+  border: 1px solid #333;
+  border-radius: 5px;
+}
+
+.listAnswer__btn {
+  display: flex;
+  padding: 15px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 10px;
+  left: 15px;
+}
+
+.listAnswer__title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}

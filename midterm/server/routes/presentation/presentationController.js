@@ -226,6 +226,42 @@ async function addCoowner(userInfo, username, PresentId) {
 
   return res;
 }
+async function createQuestion(userId, presentId, QuestionInfo) {
+  try {
+    if (!presentId || !QuestionInfo) {
+      return { status: false, message: 'Invalid Questions' };
+    }
+
+    const present = await Presentation.findOne(
+      {
+        _id: presentId,
+      },
+      'questions'
+    ).lean();
+
+    if (!present) {
+      return { status: false, message: 'not found present!' };
+    }
+    let { questions } = present;
+    // user: { type: mongoose.ObjectId, ref: 'User' },
+    // content: [{ type: String, require: true }],
+    // isReplied: { type: Boolean },
+    // vote: { type: Number, default: 0 },
+    // createdAt: { type: Date, default: Date.now() },
+    console.log(QuestionInfo.question);
+    questions.push({ user: userId, content: QuestionInfo.question });
+
+    const res = await editPresentaion(presentId, { questions }, userId);
+
+    return res;
+  } catch (error) {
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+}
+
 module.exports = {
   getMyPresentations,
   getPresentationById,
@@ -235,4 +271,5 @@ module.exports = {
   loadMessage,
   addCoowner,
   getPresentationForVoting,
+  createQuestion,
 };

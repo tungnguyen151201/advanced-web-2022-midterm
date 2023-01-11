@@ -101,3 +101,16 @@ hr {
 .btn-group__email:hover {
   background-color: rgb(13, 64, 154);
 }
+
+.coowner__item,
+.member__item {
+  margin-bottom: 8px;
+}
+
+.detail__presentation {
+  margin-bottom: unset;
+}
+.detail__line {
+  margin-top: 24px;
+  margin-bottom: 0;
+}

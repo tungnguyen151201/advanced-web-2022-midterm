@@ -7,6 +7,7 @@ const {
   loadMessage,
   addCoowner,
   getMyPresentations,
+  createQuestion,
 } = require('./presentationController');
 async function GetMyPresentations(req, res) {
   try {
@@ -81,6 +82,19 @@ async function AddCoowner(req, res) {
   );
   res.send(promoteToCoownerRes);
 }
+async function CreateQuestion(req, res) {
+  try {
+    const questionRes = await createQuestion(
+      req.user.id,
+      req.params.idPresent,
+      req.body
+    );
+    res.send(questionRes);
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   GetMyPresentations,
   GetPresentationById,
@@ -90,4 +104,5 @@ module.exports = {
   AddCoowner,
   DeletePresentation,
   GetPresentationForVoting,
+  CreateQuestion,
 };

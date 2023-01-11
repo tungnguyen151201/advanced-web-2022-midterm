@@ -9,11 +9,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import { BsShare } from 'react-icons/bs';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Button from '@material-ui/core/Button';
 import WarningLogin from '../WarningLogin/WarningLogin';
-const AddCoownner = ({ idPresent }) => {
+const InviteCoownner = ({ idPresent }) => {
   const [state] = useGlobalState();
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = useState(false);
@@ -52,18 +54,13 @@ const AddCoownner = ({ idPresent }) => {
 
   return state.token ? (
     <div>
-      <button className="quiz__btn quiz__btn--g m-r" onClick={handleClickToOpen}>
-        <BsShare /> Share
+      <button className="inviteCoonwer__btn quiz__btn quiz__btn--b m-r" onClick={handleClickToOpen}>
+        <AiOutlineUserAdd /> Add Co-owner
       </button>
       <Dialog open={open} onClose={handleToClose}>
-        <DialogTitle>{'Enter username'}</DialogTitle>
+        <DialogTitle>{'Enter name of Co-owner'}</DialogTitle>
         <DialogContent>
-          <input
-            placeholder='e.g.user01'
-            type='text'
-            className='mypre__input m-u'
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <input placeholder="e.g.user01" type="text" className="mypre__input m-u" onChange={(e) => setUsername(e.target.value)} />
         </DialogContent>
         <DialogActions className="mypr__dialog">
           <Button onClick={handleToClose} color="warning" autoFocus>
@@ -89,4 +86,4 @@ const AddCoownner = ({ idPresent }) => {
   );
 };
 
-export default AddCoownner;
+export default InviteCoownner;
