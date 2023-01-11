@@ -3,7 +3,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import { AiOutlineComment } from 'react-icons/ai';
+import { BsFillBookmarkFill } from 'react-icons/bs';
 import Button from 'react-bootstrap/Button';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import './AccordionQuestion.css';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
@@ -51,41 +53,27 @@ function AccordionQuestion({ idPresent, questions }) {
     <div>
       {questions.map((e, index) => {
         return (
-          <Accordion className='accordion__container' key={index}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon className='accordion__icon' />}
-              aria-controls='panel1a-content'
-            >
-              <p className='accordion__question'>
-                <AiOutlineComment className='accordion__icon' />
+          <Accordion className="accordion__container" key={index}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon className="accordion__icon" />} aria-controls="panel1a-content">
+              <p className="accordion__question">
+                <AiOutlineComment className="accordion__icon" />
                 {e.content}
               </p>
-              <Button onClick={() => handleMarkQuestion(index)}>
-                MarkQuestion
-              </Button>
             </AccordionSummary>
+            <AccordionDetails className="accordion__answer">
+              <input type="text" placeholder="Give the answer" className="accordion__input" />
+              <BsFillBookmarkFill className="accordion__bookmark" onClick={() => handleMarkQuestion(index)}></BsFillBookmarkFill>
+            </AccordionDetails>
           </Accordion>
         );
       })}
-      <ToastContainer className='chat__toast p-3' position='bottom-center'>
-        <Toast
-          onClose={() => setShow(false)}
-          show={show}
-          bg='success'
-          delay={3000}
-          autohide
-        >
+      <ToastContainer className="chat__toast p-3" position="bottom-center">
+        <Toast onClose={() => setShow(false)} show={show} bg="success" delay={3000} autohide>
           <Toast.Header closeButton={false}>
-            <img
-              src='holder.js/20x20?text=%20'
-              className='rounded me-2'
-              alt=''
-            />
-            <strong className='me-auto'>Notify</strong>
+            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+            <strong className="me-auto">Notify</strong>
           </Toast.Header>
-          <Toast.Body className='text-white'>
-            MarkQuestion Successful!
-          </Toast.Body>
+          <Toast.Body className="text-white">Mark question successful!</Toast.Body>
         </Toast>
       </ToastContainer>
     </div>

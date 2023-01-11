@@ -16,9 +16,11 @@ import ListAnswer from '../ListAnswer/ListAnswer';
 const Demo = () => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
-  const { id } = useParams();
+  const { id, groupId } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
+
+  const [loadStatus, setLoadStatus] = useState({ status: false, message: '' });
 
   const [presentation, setPresentation] = useState({
     name: 'test',
@@ -41,7 +43,8 @@ const Demo = () => {
   });
   const [slide, setSlide] = useState(0);
 
-  const link = `http://localhost:3000/voting/${id}`;
+  const link = groupId ? `http://localhost:3000/voting/${id}/group/${groupId}` : `http://localhost:3000/voting/${id}`;
+
   socket.emit('join-room', id);
 
   const handleCopy = () => {
@@ -95,8 +98,8 @@ const Demo = () => {
         );
         socket.emit('change-slide', slide + 1);
       }
-    }
-  };
+    };
+  }
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -105,9 +108,19 @@ const Demo = () => {
         },
       })
       .then((res) => {
-        setPresentation(res.data.presentation);
+        if (res.data.status) {
+          setLoadStatus({
+            status: true,
+          });
+          setPresentation(res.data.presentation);
+        } else {
+          setLoadStatus({
+            status: false,
+            message: res.data.message,
+          });
+        }
       });
-  }, [id, state.token]);
+  }, [id, state.token, presentation]);
 
   useEffect(() => {
     socket.on('submit-answer', (data) => {
@@ -136,8 +149,13 @@ const Demo = () => {
     });
     return result;
   };
-  return (
-    <div className="demo__container" onKeyDown={handleChangeSlide} tabIndex={-1}>
+
+  return loadStatus.status ? (
+    <div
+      className="demo__container"
+      onKeyDown={handleChangeSlide}
+      tabIndex={-1}
+    >
       <div className="demo__content">
         <p className="demo__title">Link the test</p>
         <div className="demo__link">
@@ -146,7 +164,9 @@ const Demo = () => {
             Copy link
           </button>
         </div>
-        <h1 className="demo__question">{presentation.slides[slide].question}</h1>
+        <h1 className="demo__question">
+          {presentation.slides[slide].question}
+        </h1>
 
         <div className="demo__chart">
           <BarChart options={presentation.slides[slide].options} answers={countAnswers(presentation.slides[slide].answers)} />
@@ -155,7 +175,12 @@ const Demo = () => {
         <ListAnswer />
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
-        <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+        <Button
+          className="chat__btn"
+          onClick={() => setOpen(!open)}
+          aria-controls="example-collapse-text"
+          aria-expanded={open}
+        >
           <BsFillChatTextFill className="chat__icon" />
         </Button>
         <Collapse in={open}>
@@ -163,13 +188,14 @@ const Demo = () => {
             <BoxChat></BoxChat>
           </div>
         </Collapse>
-        <h1>List questions</h1>
+        {presentation.questions.length !== 0 && <h1>List questions</h1>}
+        
         <AccordionQuestion idPresent={id} questions={presentation.questions} />
 
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
-  );
+  ) : loadStatus.message;
 };
 
 export default Demo;

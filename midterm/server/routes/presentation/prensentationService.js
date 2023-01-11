@@ -1,5 +1,6 @@
 const {
   getPresentationById,
+  getPresentationForVoting,
   creatPresentation,
   editPresentaion,
   deletePresentation,
@@ -19,6 +20,18 @@ async function GetMyPresentations(req, res) {
 async function GetPresentationById(req, res) {
   try {
     const getGroupRes = await getPresentationById(req.params.id, req.user.id);
+    res.send(getGroupRes);
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function GetPresentationForVoting(req, res) {
+  try {
+    const getGroupRes = await getPresentationForVoting(
+      req.params.id,
+      req.user.id
+    );
     res.send(getGroupRes);
   } catch (error) {
     throw error;
@@ -90,5 +103,6 @@ module.exports = {
   LoadMessage,
   AddCoowner,
   DeletePresentation,
+  GetPresentationForVoting,
   CreateQuestion,
 };

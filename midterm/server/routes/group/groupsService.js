@@ -7,6 +7,7 @@ const {
   promoteToCoowner,
   demoteToMember,
   kickAMember,
+  checkIfUserInGroup,
 } = require('./groupsController');
 async function GetGroupById(req, res) {
   const getGroupRes = await getGroupById(req.params.id);
@@ -30,16 +31,35 @@ async function DeleteGroup(req, res) {
   res.send(deleteGroupRes);
 }
 async function PromoteToCoowner(req, res) {
-  const promoteToCoownerRes = await promoteToCoowner(req.user, req.body.userId, req.params.id);
+  const promoteToCoownerRes = await promoteToCoowner(
+    req.user,
+    req.body.userId,
+    req.params.id
+  );
   res.send(promoteToCoownerRes);
 }
 async function DemoteToMember(req, res) {
-  const demoteToMemberRes = await demoteToMember(req.user, req.body.userId, req.params.id);
+  const demoteToMemberRes = await demoteToMember(
+    req.user,
+    req.body.userId,
+    req.params.id
+  );
   res.send(demoteToMemberRes);
 }
 async function KickAMember(req, res) {
-  const kickAMemberRes = await kickAMember(req.user, req.body.userId, req.params.id);
+  const kickAMemberRes = await kickAMember(
+    req.user,
+    req.body.userId,
+    req.params.id
+  );
   res.send(kickAMemberRes);
+}
+async function CheckIfUserInGroup(req, res) {
+  const checkIfUserInGroupRes = await checkIfUserInGroup(
+    req.user,
+    req.params.id
+  );
+  res.send(checkIfUserInGroupRes);
 }
 module.exports = {
   GetGroupById,
@@ -50,4 +70,5 @@ module.exports = {
   PromoteToCoowner,
   DemoteToMember,
   KickAMember,
+  CheckIfUserInGroup,
 };

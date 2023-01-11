@@ -1,5 +1,5 @@
 .accordion__container {
-  width: 50%;
+  width: 500px;
   background-color: #0d6efd !important;
   color: white !important;
   border-radius: 10px !important;
@@ -19,12 +19,20 @@
 }
 
 .accordion__answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: white;
   border: 1px solid #333;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding: 8px 16px;
-  padding-bottom: unset;
+}
+
+.accordion__bookmark {
+  color: #0d6efd;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .accordion__input {

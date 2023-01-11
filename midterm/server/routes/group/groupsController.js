@@ -89,7 +89,7 @@ async function editGroup(userInfo, groupId, groupInfo) {
       owner: userInfo.id,
     }).lean();
     if (!IsOwner) {
-      return { status: false, message: 'Invalid Credenticals!' };
+      return { status: false, message: 'You are not owner of this group!' };
     }
     //Update sau khi đã kiểm tra
     const myGroups = await Groups.findOneAndUpdate(
@@ -230,6 +230,33 @@ async function kickAMember(userInfo, userId, groupId) {
   });
   return res;
 }
+async function checkIfUserInGroup(userInfo, groupId) {
+  if (!userInfo || !groupId) {
+    return { status: false, message: 'Invalid Infomation' };
+  }
+
+  console.log(groupId, userInfo._id);
+
+  const res = await Groups.findOne({
+    _id: groupId,
+    $or: [
+      {
+        owner: userInfo._id.toString(),
+      },
+      {
+        coowner: userInfo._id.toString(),
+      },
+      {
+        members: userInfo._id.toString(),
+      },
+    ],
+  }).lean();
+
+  if (!res) {
+    return { status: false, message: 'Not found' };
+  }
+  return { status: true, message: 'User is in this group' };
+}
 module.exports = {
   getGroupById,
   myGroup,
@@ -239,4 +266,5 @@ module.exports = {
   promoteToCoowner,
   demoteToMember,
   kickAMember,
+  checkIfUserInGroup,
 };

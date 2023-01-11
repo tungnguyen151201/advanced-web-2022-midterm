@@ -12,7 +12,7 @@ import PresentItem from '../MyPresentations/PresentItem';
 
 const Groups = () => {
   const [state] = useGlobalState();
-  const nagative = useNavigate();
+  const navigate = useNavigate();
   const [owner, setOwner] = useState('');
 
   let { id } = useParams();
@@ -40,7 +40,7 @@ const Groups = () => {
   }, [id, state.token, members, coowner]);
 
   const handleOnSendEmail = () => {
-    nagative(`/sendInviteEmail/${id}`);
+    navigate(`/sendInviteEmail/${id}`);
   };
 
   const handleCopy = () => {
@@ -49,7 +49,7 @@ const Groups = () => {
   };
 
   const handleOnAddPresent = () => {
-    nagative(`/group/listPresentations/${id}`);
+    navigate(`/group/listPresentations/${id}`);
   };
 
   const promoteToCoowner = async (userId) => {
@@ -159,16 +159,16 @@ const Groups = () => {
         </button>
         <div>
           {presentation ? (
-            // <button className="btn-group__email">{presentation.name}</button>
             <>
               <hr className="detail__line" />
               <h1 className="detail__presentation">Presentations</h1>
               <PresentItem
-                // onClick={() => navigate(`../demo/${e._id}`)}
+                onClick={() => navigate(`../demo/${presentation._id}/group/${id}`)}
                 id={presentation._id}
                 name={presentation.name}
-                owner={`${presentation.owner.firstName} ${presentation.owner.lastName}`}
+                owner={`${presentation.owner.firstName} ${presentation.owner.lastName}`}             
                 createdAt={presentation.createdAt}
+              groupId={id}
               ></PresentItem>
             </>
           ) : (

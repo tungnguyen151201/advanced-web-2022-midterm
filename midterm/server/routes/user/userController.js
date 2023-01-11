@@ -71,6 +71,7 @@ async function Login({ username, password }) {
       accessToken,
       refreshToken,
       userId: existsUser._id,
+      username: existsUser.username,
     };
   } catch (error) {
     return {
