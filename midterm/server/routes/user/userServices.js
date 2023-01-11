@@ -6,6 +6,7 @@ const {
   MyProfile,
   EditProfile,
   JoinGroup,
+  GetUserById,
 } = require('./userController');
 const {
   sendVerifyEmail,
@@ -55,6 +56,14 @@ async function getProfile(req, res) {
     res.send(myProfileRes);
   } catch (error) {
     res.send('userService - getProfile failed');
+  }
+}
+async function getUserById(req, res) {
+  try {
+    const myProfileRes = await GetUserById(req.params.id);
+    res.send(myProfileRes);
+  } catch (error) {
+    res.send('userService - getUserById failed');
   }
 }
 async function editProfile(req, res) {
@@ -119,4 +128,5 @@ module.exports = {
   sendInviteEmailService,
   resetPasswordService,
   joinGroup,
+  getUserById,
 };

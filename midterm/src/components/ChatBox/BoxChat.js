@@ -103,7 +103,7 @@ const BoxChat = () => {
               }}
             />
           </form>
-          <button className="btn btn-primary m-2 sendmessage" onSubmit={handleSendMessage}>
+          <button className="btn btn-primary m-2 sendmessage" onClick={handleSendMessage}>
             Send
           </button>
         </div>
