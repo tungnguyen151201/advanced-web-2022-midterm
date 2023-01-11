@@ -1,0 +1,27 @@
+.answerItem__container {
+  display: flex;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+.answerItem__user {
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.answerItem__answer {
+  background: rgb(20, 86, 204, 1);
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
