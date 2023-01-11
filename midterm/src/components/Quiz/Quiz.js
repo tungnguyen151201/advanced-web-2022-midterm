@@ -6,8 +6,8 @@ import Slide from '../Slide/Slide';
 import Edit from '../Edit/Edit';
 import { BsPlayFill } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router-dom';
-import AddCoownner from './addCoownner';
-import CRUDCoowner from './CRUDCoowner';
+import InviteCoownner from './InviteCoownner';
+import ListCoowner from './ListCoowner';
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
@@ -78,12 +78,11 @@ const Quiz = () => {
           + New slide
         </button>
 
-        <AddCoownner idPresent={PresentationId} />
-        <CRUDCoowner idPresent={PresentationId} />
-        <button className='quiz__btn black' onClick={handleSave}>
+        <button className="quiz__btn quiz__btn--save black m-r" onClick={handleSave}>
           Save
         </button>
-        <AddCoownner idPresent={PresentationId} />
+        <InviteCoownner idPresent={PresentationId} />
+        <ListCoowner idPresent={PresentationId} />
         <button className="quiz__btn quiz__btn--present quiz__btn--b" onClick={() => handleDemo()}>
           <BsPlayFill className="quiz__icon-play" /> Present
         </button>
