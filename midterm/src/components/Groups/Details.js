@@ -53,7 +53,7 @@ const Groups = () => {
   };
 
   const promoteToCoowner = async (userId) => {
-    await axios.post(
+    const res = await axios.post(
       `http://localhost:3001/groups/promoteToCoowner/${id}`,
       {
         userId,
@@ -64,6 +64,7 @@ const Groups = () => {
         },
       }
     );
+    console.log(res);
   };
 
   const demoteToMember = async (userId) => {
@@ -107,29 +108,46 @@ const Groups = () => {
           {coowner.listitems.map((listitem) => (
             <li className="list-group-item list-group-item-primary coowner__item">
               <p>{listitem.username} </p>
-              <span className="group-icons">
-                <Tooltip title="Demote to member">
-                  <IconButton className="detail__icon-container" onClick={() => demoteToMember(listitem._id)}>
-                    <EditIcon className="edit-icon" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Kick member">
-                  <IconButton className="detail__icon-container" onClick={() => kickAMember(listitem._id)}>
-                    <DeleteIcon className="delete-icon" />
-                  </IconButton>
-                </Tooltip>
-              </span>
+              {state.userId === owner._id ? (
+                <span className="group-icons">
+                  <Tooltip title="Demote to member">
+                    <IconButton className="detail__icon-container" onClick={() => demoteToMember(listitem._id)}>
+                      <EditIcon className="edit-icon" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Kick member">
+                    <IconButton className="detail__icon-container" onClick={() => kickAMember(listitem._id)}>
+                      <DeleteIcon className="delete-icon" />
+                    </IconButton>
+                  </Tooltip>
+                </span>
+              ) : (
+                ''
+              )}
             </li>
           ))}
         </ul>
         <h1>Members</h1>
         <ul className="group__list list-group">
           {members.listitems.map((listitem) => (
-            <li className="group__list-item list-group-item list-group-item-primary">
+            <li className="group__list-item list-group-item list-group-item-primary member__item">
               <span className="group__item-name">{listitem.username}</span>
-              <span className="group-icons">
-                <BsFillArchiveFill className="delete-icon" onClick={() => kickAMember(listitem._id)} /> <BsFillPencilFill className="edit-icon" onClick={() => promoteToCoowner(listitem._id)} />
-              </span>
+              {state.userId === owner._id ? (
+                <span className="group-icons">
+                  <Tooltip title="Promote to Co-owner">
+                    <IconButton className="detail__icon-container" onClick={() => promoteToCoowner(listitem._id)}>
+                      <EditIcon className="edit-icon" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Kick member">
+                    <IconButton className="detail__icon-container" onClick={() => kickAMember(listitem._id)}>
+                      <DeleteIcon className="delete-icon" />
+                    </IconButton>
+                  </Tooltip>
+                </span>
+              ) : (
+                ''
+              )}
             </li>
           ))}
         </ul>
@@ -142,13 +160,17 @@ const Groups = () => {
         <div>
           {presentation ? (
             // <button className="btn-group__email">{presentation.name}</button>
-            <PresentItem
-              // onClick={() => navigate(`../demo/${e._id}`)}
-              id={presentation._id}
-              name={presentation.name}
-              owner={`${presentation.owner.firstName} ${presentation.owner.lastName}`}
-              createdAt={presentation.createdAt}
-            ></PresentItem>
+            <>
+              <hr className="detail__line" />
+              <h1 className="detail__presentation">Presentations</h1>
+              <PresentItem
+                // onClick={() => navigate(`../demo/${e._id}`)}
+                id={presentation._id}
+                name={presentation.name}
+                owner={`${presentation.owner.firstName} ${presentation.owner.lastName}`}
+                createdAt={presentation.createdAt}
+              ></PresentItem>
+            </>
           ) : (
             <button className="btn-group__email" onClick={() => handleOnAddPresent()}>
               Add presentation +
