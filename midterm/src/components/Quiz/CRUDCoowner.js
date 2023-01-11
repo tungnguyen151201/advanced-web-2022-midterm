@@ -80,7 +80,7 @@ const CRUDCoowner = ({ idPresent }) => {
                 className='list-group-item list-group-item-primary'
                 key={index}
               >
-                {e}{' '}
+                {e.username}{' '}
                 <span className='group-icons'>
                   <BsFillArchiveFill
                     className='delete-icon'
