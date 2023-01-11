@@ -6,7 +6,7 @@ import { useEffect, useState, useContext } from 'react';
 import './ListAnswer.css';
 import AnswerItem from './AnswerItem';
 
-export default function ListAnswer() {
+export default function ListAnswer({ answers, options }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -16,7 +16,9 @@ export default function ListAnswer() {
       <Collapse in={open}>
         <div className="listAnswer__container">
           <p className="listAnswer__title">Analys the answers</p>
-          <AnswerItem />
+          {answers.map(answer =>
+            <AnswerItem answer={answer} options={options} />
+          )}
         </div>
       </Collapse>
     </>
