@@ -198,8 +198,6 @@ const Demo = () => {
         </Collapse>
         {presentation.questions.length !== 0 && <h1>List questions</h1>}
         <AccordionQuestion idPresent={id} questions={presentation.questions} />
-
-        {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
   ) : (
