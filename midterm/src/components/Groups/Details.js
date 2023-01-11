@@ -35,6 +35,7 @@ const Groups = () => {
         setMembers({ listitems: res.data.members });
         setCoowner({ listitems: res.data.coowner });
         setPresentation(res.data.presentation);
+        // console.log(res.data.presentation);
       });
   }, [id, state.token, members, coowner]);
 
@@ -101,13 +102,13 @@ const Groups = () => {
         </h1>
         <hr />
         {/* Check co-owner ko hoat dong */}
-        <h1>{coowner === null ? '' : `Co-owners`}</h1>
+        <h1>{coowner.listitems.length === 0 ? '' : `Co-owners`}</h1>
         <ul className="list-group">
           {coowner.listitems.map((listitem) => (
             <li className="list-group-item list-group-item-primary coowner__item">
               <p>{listitem.username} </p>
               <span className="group-icons">
-                <Tooltip title="Change to member">
+                <Tooltip title="Demote to member">
                   <IconButton
                     className="edit-icon"
                     onClick={() => demoteToMember(listitem._id)}
@@ -115,7 +116,7 @@ const Groups = () => {
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete">
+                <Tooltip title="Kick member">
                   <IconButton
                     className="delete-icon"
                     onClick={() => kickAMember(listitem._id)}
