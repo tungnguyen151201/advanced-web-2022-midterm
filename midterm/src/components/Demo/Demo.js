@@ -53,50 +53,50 @@ const Demo = () => {
     if (event.keyCode === 27) {
       // ESC
       navigate(`/quiz/${id}`);
-    if (event.keyCode === 27) {
-      // ESC
-      navigate(`/quiz/${id}`);
-    }
-    if (event.keyCode === 37) {
-      //previous
-      if (slide === 0) {
-        return;
+      if (event.keyCode === 27) {
+        // ESC
+        navigate(`/quiz/${id}`);
       }
-      setSlide((slide) => slide - 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 37) {
+        //previous
+        if (slide === 0) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide - 1);
-    }
-    if (event.keyCode === 39) {
-      //next
-      if (slide === presentation.slides.length - 1) {
-        return;
+        setSlide((slide) => slide - 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide - 1);
       }
-      setSlide((slide) => slide + 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 39) {
+        //next
+        if (slide === presentation.slides.length - 1) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide + 1);
+        setSlide((slide) => slide + 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide + 1);
+      }
     }
   };
-
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -137,22 +137,16 @@ const Demo = () => {
     return result;
   };
   return (
-    <div
-      className='demo__container'
-      onKeyDown={handleChangeSlide}
-      tabIndex={-1}
-    >
-      <div className='demo__content'>
-        <p className='demo__title'>Link the test</p>
-        <div className='demo__link'>
-          <input className='demo__input' value={link} />
-          <button className='btn__copy' onClick={handleCopy}>
+    <div className="demo__container" onKeyDown={handleChangeSlide} tabIndex={-1}>
+      <div className="demo__content">
+        <p className="demo__title">Link the test</p>
+        <div className="demo__link">
+          <input className="demo__input" value={link} />
+          <button className="btn__copy" onClick={handleCopy}>
             Copy link
           </button>
         </div>
-        <h1 className='demo__question'>
-          {presentation.slides[slide].question}
-        </h1>
+        <h1 className="demo__question">{presentation.slides[slide].question}</h1>
 
         <div className="demo__chart">
           <BarChart options={presentation.slides[slide].options} answers={countAnswers(presentation.slides[slide].answers)} />
@@ -161,16 +155,11 @@ const Demo = () => {
         <ListAnswer />
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
-        <Button
-          className='chat__btn'
-          onClick={() => setOpen(!open)}
-          aria-controls='example-collapse-text'
-          aria-expanded={open}
-        >
-          <BsFillChatTextFill className='chat__icon' />
+        <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
+          <BsFillChatTextFill className="chat__icon" />
         </Button>
         <Collapse in={open}>
-          <div id='example-collapse-text'>
+          <div id="example-collapse-text">
             <BoxChat></BoxChat>
           </div>
         </Collapse>
