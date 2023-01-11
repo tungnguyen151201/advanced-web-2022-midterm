@@ -4,6 +4,7 @@ const {
   editPresentaion,
   deletePresentation,
   loadMessage,
+  addCoowner,
   getMyPresentations,
 } = require('./presentationController');
 async function GetMyPresentations(req, res) {
@@ -59,11 +60,20 @@ async function LoadMessage(req, res) {
     throw error;
   }
 }
+async function AddCoowner(req, res) {
+  const promoteToCoownerRes = await addCoowner(
+    req.user,
+    req.body.username,
+    req.params.id
+  );
+  res.send(promoteToCoownerRes);
+}
 module.exports = {
   GetMyPresentations,
   GetPresentationById,
   CreatPresentation,
   EditPresentaion,
   LoadMessage,
+  AddCoowner,
   DeletePresentation,
 };
