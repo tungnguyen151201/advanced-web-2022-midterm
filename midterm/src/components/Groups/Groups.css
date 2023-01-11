@@ -29,10 +29,13 @@
   margin-right: 6px;
 }
 
+.detail__icon-container {
+  padding: unset !important;
+}
+
 .delete-icon,
 .edit-icon {
-  transition: all 0.2s linear;
-  padding: unset;
+  transition: all 1s linear;
 }
 
 .delete-icon:hover {

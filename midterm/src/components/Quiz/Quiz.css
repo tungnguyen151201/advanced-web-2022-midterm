@@ -21,12 +21,14 @@
   padding: 8px 12px;
   font-weight: 600;
   background-color: transparent;
+  transition: 0.2s all linear;
 }
 
 .quiz__btn--b {
   background-color: rgb(20, 86, 204);
   color: white;
 }
+
 
 .quiz__btn--g {
   background-color: rgb(175, 176, 180);
@@ -35,6 +37,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+.quiz__btn--b:hover {
+  background-color:  rgb(18, 76, 176);
+}
+.quiz__btn--g:hover {
+  background-color:  rgb(140, 140, 144);
 }
 
 .quiz__content {

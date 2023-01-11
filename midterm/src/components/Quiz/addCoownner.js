@@ -17,7 +17,7 @@ const AddCoownner = (idPresent) => {
   const [state] = useGlobalState();
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = useState(false);
-  const [coowners, setCoowners] = useState([{ username: '' }]);
+  const [username, setUsername] = useState();
 
   const handleClickToOpen = () => {
     setOpen(true);
@@ -29,10 +29,10 @@ const AddCoownner = (idPresent) => {
 
   const handleAddCoownner = async () => {
     try {
-      const res = await axios.patch(
-        `http://localhost:3001/presentation/edit/${idPresent}`,
+      const res = await axios.post(
+        `http://localhost:3001/presentation/addCoowner/${idPresent}`,
         {
-          coowners: coowners,
+          username,
         },
         {
           headers: {
@@ -40,25 +40,16 @@ const AddCoownner = (idPresent) => {
           },
         }
       );
-      setOpen(false);
-      setShow(true);
+      const { status } = res.data;
+      if (status) {
+        setOpen(false);
+        setShow(true);
+      }
     } catch (error) {
       console.error(error.message);
     }
   };
-  const handleAddMutiCoownner = () => {
-    setCoowners((arr) => [...arr, { username: '' }]);
-  };
-  const handleUsernameInput = (usernameInput, index) => {
-    const newArray = coowners.map((item, i) => {
-      if (i === index) {
-        return { username: usernameInput };
-      } else {
-        return item;
-      }
-    });
-    setCoowners(newArray);
-  };
+
   return state.token ? (
     <div>
       <button className="quiz__btn quiz__btn--g m-r" onClick={handleClickToOpen}>
@@ -67,13 +58,12 @@ const AddCoownner = (idPresent) => {
       <Dialog open={open} onClose={handleToClose}>
         <DialogTitle>{'Enter username'}</DialogTitle>
         <DialogContent>
-          {coowners.map((e, index) => {
-            return <input placeholder="e.g.user01" key={index} type="text" className="mypre__input m-u" onChange={(e) => handleUsernameInput(e.target.value, index)} />;
-          })}
-
-          <Button onClick={handleAddMutiCoownner} color="warning" autoFocus>
-            New +
-          </Button>
+          <input
+            placeholder='e.g.user01'
+            type='text'
+            className='mypre__input m-u'
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </DialogContent>
         <DialogActions className="mypr__dialog">
           <Button onClick={handleToClose} color="warning" autoFocus>

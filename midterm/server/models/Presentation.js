@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const PresentationSchema = new Schema({
   name: { type: String, require: true },
   owner: { type: mongoose.ObjectId, require: true, ref: 'User' },
-  coowners: [{ type: mongoose.ObjectId, require: true, ref: 'User' }],
+  coowners: [{ type: mongoose.ObjectId, ref: 'User' }],
   slides: [
     {
       question: { type: String, require: true },
@@ -18,7 +18,6 @@ const PresentationSchema = new Schema({
     },
   ],
   status: { type: Boolean },
-  groupId: { type: mongoose.ObjectId, unique: true, ref: 'Group' },
   createdAt: { type: Date, default: Date.now() },
 });
 const Presentation = mongoose.model('Presentation', PresentationSchema);

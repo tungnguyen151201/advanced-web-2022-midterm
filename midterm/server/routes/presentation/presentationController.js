@@ -1,4 +1,5 @@
-const { Presentation, Room } = require('../../models');
+const { Presentation, Room, User } = require('../../models');
+const _ = require('lodash');
 async function getMyPresentations(userId) {
   try {
     if (!userId) {
@@ -92,7 +93,7 @@ async function creatPresentation(presentationInfo, userId) {
   } catch (error) {
     return {
       status: false,
-      message: error,
+      message: error.message,
     };
   }
 }
@@ -158,6 +159,35 @@ async function loadMessage(idPresent) {
     };
   }
 }
+async function addCoowner(userInfo, username, PresentId) {
+  if (!PresentId || !username || !userInfo) {
+    return { status: false, message: 'Invalid User' };
+  }
+  const user = await User.findOne({ username }, '_id').lean();
+  if (!user) {
+    return { status: false, message: 'This user not exist!' };
+  }
+  const present = await Presentation.findOne(
+    {
+      _id: PresentId,
+    },
+    'coowners'
+  ).lean();
+
+  if (!present) {
+    return { status: false, message: 'not found present!' };
+  }
+  let { coowners } = present;
+  if (coowners.includes(user._id)) {
+    return { status: false, message: 'This user has already been coowner' };
+  }
+
+  coowners.push(user._id);
+
+  const res = await editPresentaion(PresentId, { coowners }, userInfo.id);
+
+  return res;
+}
 module.exports = {
   getMyPresentations,
   getPresentationById,
@@ -165,4 +195,5 @@ module.exports = {
   editPresentaion,
   deletePresentation,
   loadMessage,
+  addCoowner,
 };
