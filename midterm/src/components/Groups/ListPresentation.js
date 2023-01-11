@@ -28,11 +28,11 @@ const ListPresentations = (props) => {
     };
     fetchData();
   }, [state.token, myPresentations]);
-  const handleAddpresent = async (idPresent) => {
+  const handleAddpresent = async (presentationId) => {
     const res = await axios.patch(
-      `http://localhost:3001/presentation/edit/${idPresent}`,
+      `http://localhost:3001/groups/edit/${id}`,
       {
-        groupId: id,
+        presentationId,
       },
       {
         headers: {
@@ -40,21 +40,19 @@ const ListPresentations = (props) => {
         },
       }
     );
-    const { status, message } = res.data;
-    if (status) {
-      navigate(`/getGroups/${id}`);
-    }
+    console.log(res);
+    navigate(`/getGroups/${id}`);
   };
   return state.token ? (
-    <div className='mypre__container'>
-      <div className='mypre__list'>
-        <div className='mypre__titles'>
+    <div className="mypre__container">
+      <div className="mypre__list">
+        <div className="mypre__titles">
           <p>Name</p>
           <p>Owner</p>
           <p>Created</p>
         </div>
-        <hr className='mypre__line' />
-        <div className='mypre__items'>
+        <hr className="mypre__line" />
+        <div className="mypre__items">
           {myPresentations.map((e, index) => {
             return (
               <PresentItem

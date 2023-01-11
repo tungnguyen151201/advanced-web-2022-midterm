@@ -6,6 +6,7 @@ async function getGroupById(groupId) {
       .populate('owner')
       .populate('coowner')
       .populate('members')
+      .populate('presentation')
       .lean();
     if (!group) {
       return null;
