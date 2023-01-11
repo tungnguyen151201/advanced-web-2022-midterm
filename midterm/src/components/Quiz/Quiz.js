@@ -8,6 +8,7 @@ import { BsPlayFill } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router-dom';
 import InviteCoownner from './InviteCoownner';
 import ListCoowner from './ListCoowner';
+
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
