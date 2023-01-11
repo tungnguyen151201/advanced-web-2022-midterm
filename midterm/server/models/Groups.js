@@ -6,7 +6,7 @@ const GroupSchema = new Schema({
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   owner: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
   coowner: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  presentationId: { type: Schema.Types.ObjectId, ref: 'Presentation' },
+  presentation: { type: Schema.Types.ObjectId, ref: 'Presentation' },
   createdAt: { type: Date, default: Date.now() },
 });
 const Groups = mongoose.model('Group', GroupSchema);
