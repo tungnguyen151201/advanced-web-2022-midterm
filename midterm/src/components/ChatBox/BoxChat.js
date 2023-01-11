@@ -77,7 +77,7 @@ const BoxChat = () => {
 
   return (
     <div className="chat-composer">
-      {/* <ToastContainer className="chat__toast p-3" position="top-end">
+      <ToastContainer className="chat__toast p-3" position="top-end">
         <Toast show={notify === 1} bg="success" autohide>
           <Toast.Header closeButton={false}>
             <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
@@ -85,7 +85,7 @@ const BoxChat = () => {
           </Toast.Header>
           <Toast.Body className="text-white">You have new message!</Toast.Body>
         </Toast>
-      </ToastContainer> */}
+      </ToastContainer>
       <div className="chat-canvas" onScroll={handleScroll}>
         {loadMessage.map((value, index) => {
           return <Messages key={index} user={value.user} message={value.message}></Messages>;
@@ -103,7 +103,7 @@ const BoxChat = () => {
               }}
             />
           </form>
-          <button className="btn btn-primary m-2 sendmessage" onClick={handleSendMessage}>
+          <button className="btn btn-primary m-2 sendmessage" onSubmit={handleSendMessage}>
             Send
           </button>
         </div>
