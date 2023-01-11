@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useGlobalState from '../../context/useAuthState';
 
-const ThreeDotsMenu = ({ id }) => {
+const ThreeDotsMenu = ({ id, groupId }) => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,15 +28,22 @@ const ThreeDotsMenu = ({ id }) => {
 
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(`http://localhost:3001/presentation/delete/${id}`, {
-        headers: {
-          Authorization: state.token,
-        },
-      });
+      const res = await axios.delete(
+        `http://localhost:3001/presentation/delete/${id}`,
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
       console.log(res);
     } catch (error) {
       console.error(error.message);
     }
+  };
+
+  const handleAddAnother = async () => {
+    navigate(`../group/listPresentations/${groupId}`);
   };
 
   return (
@@ -50,8 +57,12 @@ const ThreeDotsMenu = ({ id }) => {
         <MoreVertIcon />
       </IconButton>
       <Menu anchorEl={anchorEl} keepMounted onClose={handleClose} open={open}>
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        {!groupId && <MenuItem onClick={handleEdit}>Edit</MenuItem>}
+        {groupId ? (
+          <MenuItem onClick={handleAddAnother}>Add another presentation</MenuItem>
+        ) : (
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        )}
       </Menu>
     </div>
   );

@@ -32,7 +32,7 @@ const MyPresentations = (props) => {
   const handleCreate = async () => {
     try {
       setOpen(false);
-      const res = await axios.post(
+      await axios.post(
         'http://localhost:3001/presentation/create',
         {
           name: nameInput,
@@ -49,7 +49,6 @@ const MyPresentations = (props) => {
           },
         }
       );
-      console.log(res);
     } catch (error) {
       console.error(error.message);
     }

@@ -8,9 +8,11 @@ import { BsPlayFill } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router-dom';
 import InviteCoownner from './InviteCoownner';
 import ListCoowner from './ListCoowner';
+import useGlobalState from '../../context/useAuthState';
 
 const Quiz = () => {
   const { PresentationId } = useParams();
+  const [state] = useGlobalState();
   const navigate = useNavigate();
   const [slides, setSlides] = useState([
     {
@@ -19,20 +21,32 @@ const Quiz = () => {
     },
   ]);
   const [slideIndex, setSlideIndex] = useState(0);
-
-  const token = 'Bearer ' + localStorage.getItem('token');
+  const [loadStatus, setLoadStatus] = useState({ status: false, message: '' });
 
   useEffect(() => {
     async function fetchData() {
-      const res = await axios.get(`http://localhost:3001/presentation/${PresentationId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setSlides(res.data.presentation.slides);
+      const res = await axios.get(
+        `http://localhost:3001/presentation/${PresentationId}`,
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
+      if (res.data.status) {
+        setLoadStatus({
+          status: true,
+        });
+        setSlides(res.data.presentation.slides);
+      } else {
+        setLoadStatus({
+          status: false,
+          message: res.data.message,
+        });
+      }
     }
     fetchData();
-  }, [PresentationId, token]);
+  }, [PresentationId, state.token]);
 
   const handleDemo = () => {
     navigate(`/demo/${PresentationId}`);
@@ -59,20 +73,24 @@ const Quiz = () => {
   };
 
   const handleSave = async () => {
-    await axios.patch(
+    const res = await axios.patch(
       `http://localhost:3001/presentation/edit/${PresentationId}`,
       {
         slides,
       },
       {
         headers: {
-          Authorization: token,
+          Authorization: state.token,
         },
       }
     );
-    alert('Save success!');
+    if (res.data.status) {
+      alert('Save success');
+    } else {
+      alert(res.data.message);
+    }
   };
-  return (
+  return loadStatus.status ? (
     <div className="quiz__container">
       <div className="quiz__header">
         <button className="quiz__btn quiz__btn--b " onClick={handleNewSlide}>
@@ -93,14 +111,25 @@ const Quiz = () => {
           <div className="slide__container">
             <div className="slide__nav">
               {slides.map((_, index) => {
-                return <Slide slideIndex={index} currentSlide={slideIndex} onClick={() => setSlideIndex(index)} />;
+                return (
+                  <Slide
+                    slideIndex={index}
+                    currentSlide={slideIndex}
+                    onClick={() => setSlideIndex(index)}
+                  />
+                );
               })}
             </div>
-            <Edit slideInfoDetail={slides[slideIndex]} setSlideInfoDetail={handleUpdateSlides} />
+            <Edit
+              slideInfoDetail={slides[slideIndex]}
+              setSlideInfoDetail={handleUpdateSlides}
+            />
           </div>
         </div>
       </main>
     </div>
+  ) : (
+    loadStatus.message
   );
 };
 

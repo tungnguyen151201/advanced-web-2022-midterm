@@ -16,9 +16,11 @@ import ListAnswer from '../ListAnswer/ListAnswer';
 const Demo = () => {
   const navigate = useNavigate();
   const [state] = useGlobalState();
-  const { id } = useParams();
+  const { id, groupId } = useParams();
   const socket = useContext(SocketContext);
   const [open, setOpen] = useState(false);
+
+  const [loadStatus, setLoadStatus] = useState({ status: false, message: '' });
 
   const [presentation, setPresentation] = useState({
     name: 'test',
@@ -41,7 +43,10 @@ const Demo = () => {
   });
   const [slide, setSlide] = useState(0);
 
-  const link = `http://localhost:3000/voting/${id}`;
+  const link = groupId
+    ? `http://localhost:3000/voting/${id}/group/${groupId}`
+    : `http://localhost:3000/voting/${id}`;
+
   socket.emit('join-room', id);
 
   const handleCopy = () => {
@@ -53,47 +58,50 @@ const Demo = () => {
     if (event.keyCode === 27) {
       // ESC
       navigate(`/quiz/${id}`);
-    }
-    if (event.keyCode === 37) {
-      //previous
-      if (slide === 0) {
-        return;
+      if (event.keyCode === 27) {
+        // ESC
+        navigate(`/quiz/${id}`);
       }
-      setSlide((slide) => slide - 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 37) {
+        //previous
+        if (slide === 0) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide - 1);
-    }
-    if (event.keyCode === 39) {
-      //next
-      if (slide === presentation.slides.length - 1) {
-        return;
+        setSlide((slide) => slide - 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide - 1);
       }
-      setSlide((slide) => slide + 1);
-      await axios.patch(
-        `http://localhost:3001/presentation/edit/${id}`,
-        {
-          ...presentation,
-        },
-        {
-          headers: {
-            Authorization: state.token,
-          },
+      if (event.keyCode === 39) {
+        //next
+        if (slide === presentation.slides.length - 1) {
+          return;
         }
-      );
-      socket.emit('change-slide', slide + 1);
+        setSlide((slide) => slide + 1);
+        await axios.patch(
+          `http://localhost:3001/presentation/edit/${id}`,
+          {
+            ...presentation,
+          },
+          {
+            headers: {
+              Authorization: state.token,
+            },
+          }
+        );
+        socket.emit('change-slide', slide + 1);
+      }
     }
   };
-
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -102,9 +110,19 @@ const Demo = () => {
         },
       })
       .then((res) => {
-        setPresentation(res.data.presentation);
+        if (res.data.status) {
+          setLoadStatus({
+            status: true,
+          });
+          setPresentation(res.data.presentation);
+        } else {
+          setLoadStatus({
+            status: false,
+            message: res.data.message,
+          });
+        }
       });
-  }, [id, state.token]);
+  }, [id, state.token, presentation]);
 
   useEffect(() => {
     socket.on('submit-answer', (data) => {
@@ -136,7 +154,8 @@ const Demo = () => {
     });
     return result;
   };
-  return (
+
+  return loadStatus.status ? (
     <div
       className='demo__container'
       onKeyDown={handleChangeSlide}
@@ -177,12 +196,14 @@ const Demo = () => {
             <BoxChat></BoxChat>
           </div>
         </Collapse>
-        <h1>List questions</h1>
+        {presentation.questions.length !== 0 && <h1>List questions</h1>}
         <AccordionQuestion idPresent={id} questions={presentation.questions} />
 
         {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
+  ) : (
+    loadStatus.message
   );
 };
 
