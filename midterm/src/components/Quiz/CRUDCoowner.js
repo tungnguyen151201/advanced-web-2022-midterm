@@ -7,45 +7,38 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
+import { BsFillArchiveFill } from 'react-icons/bs';
 import DialogContent from '@material-ui/core/DialogContent';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Button from '@material-ui/core/Button';
 import WarningLogin from '../WarningLogin/WarningLogin';
-const CRUDCoowner = (idPresent) => {
+const CRUDCoowner = ({ idPresent }) => {
   const [state] = useGlobalState();
   const [open, setOpen] = React.useState(false);
-  const [coowners, setCoowners] = useState([{ username: '' }]);
+  const [coowners, setCoowners] = useState([]);
   const [show, setShow] = useState(false);
-  const handleClickToOpen = () => {
+  const handleClickToOpen = async () => {
     setOpen(true);
+    axios
+      .get(`http://localhost:3001/presentation/${idPresent}`, {
+        headers: {
+          Authorization: state.token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setCoowners(res.data.presentation.coowners);
+      });
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('http://localhost:3001/presentation', {
-          headers: {
-            Authorization: state.token,
-          },
-        });
-        setCoowners(res.data.coowners);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-    fetchData();
-  }, [state.token, coowners]);
+
   const handleToClose = () => {
     setOpen(false);
   };
 
-  const kickAMember = (username) => {
+  const kickAMember = (index) => {
     let newArray = [...coowners];
-    for (let i = 0; i < newArray.length; i++) {
-      if (newArray[i] === username) {
-        newArray.splice(i, 1);
-      }
-    }
+    newArray.splice(index, 1);
     setCoowners(newArray);
   };
   const handleSave = async () => {
@@ -61,8 +54,11 @@ const CRUDCoowner = (idPresent) => {
           },
         }
       );
-      setOpen(false);
-      setShow(true);
+      const { status } = res.data;
+      if (status) {
+        setOpen(false);
+        setShow(true);
+      }
     } catch (error) {
       console.error(error.message);
     }
@@ -73,19 +69,22 @@ const CRUDCoowner = (idPresent) => {
         className='quiz__btn quiz__btn--b m-r'
         onClick={handleClickToOpen}
       >
-        Share
+        ListCoowner
       </button>
       <Dialog open={open} onClose={handleToClose}>
-        <DialogTitle>{'Enter username'}</DialogTitle>
+        <DialogTitle>{'List Coownners'}</DialogTitle>
         <DialogContent>
           {coowners.map((e, index) => {
             return (
-              <li className='list-group-item list-group-item-primary'>
-                {e.username}{' '}
+              <li
+                className='list-group-item list-group-item-primary'
+                key={index}
+              >
+                {e}{' '}
                 <span className='group-icons'>
                   <BsFillArchiveFill
                     className='delete-icon'
-                    onClick={() => kickAMember(e.username)}
+                    onClick={() => kickAMember(index)}
                   />{' '}
                 </span>
               </li>
@@ -117,9 +116,7 @@ const CRUDCoowner = (idPresent) => {
             />
             <strong className='me-auto'>Notify</strong>
           </Toast.Header>
-          <Toast.Body className='text-white'>
-            Add Coowners Successful!
-          </Toast.Body>
+          <Toast.Body className='text-white'>update Successful!</Toast.Body>
         </Toast>
       </ToastContainer>
     </div>

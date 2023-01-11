@@ -163,9 +163,14 @@ async function addCoowner(userInfo, username, PresentId) {
   if (!PresentId || !username || !userInfo) {
     return { status: false, message: 'Invalid User' };
   }
+
   const user = await User.findOne({ username }, '_id').lean();
+
   if (!user) {
     return { status: false, message: 'This user not exist!' };
+  }
+  if (user._id === userInfo.userId) {
+    return { status: false, message: 'Invalid User' };
   }
   const present = await Presentation.findOne(
     {

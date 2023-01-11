@@ -6,6 +6,7 @@ import Slide from '../Slide/Slide';
 import Edit from '../Edit/Edit';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddCoownner from './addCoownner';
+import CRUDCoowner from './CRUDCoowner';
 const Quiz = () => {
   const { PresentationId } = useParams();
   const navigate = useNavigate();
@@ -78,7 +79,9 @@ const Quiz = () => {
         <button className='quiz__btn quiz__btn--b m-r' onClick={handleNewSlide}>
           + New slide
         </button>
+
         <AddCoownner idPresent={PresentationId} />
+        <CRUDCoowner idPresent={PresentationId} />
         <button className='quiz__btn black' onClick={handleSave}>
           Save
         </button>
