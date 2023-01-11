@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import { BsShare } from 'react-icons/bs';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Button from '@material-ui/core/Button';
@@ -60,59 +61,36 @@ const AddCoownner = (idPresent) => {
   };
   return state.token ? (
     <div>
-      <button
-        className='quiz__btn quiz__btn--b m-r'
-        onClick={handleClickToOpen}
-      >
-        Share
+      <button className="quiz__btn quiz__btn--g m-r" onClick={handleClickToOpen}>
+        <BsShare /> Share
       </button>
       <Dialog open={open} onClose={handleToClose}>
         <DialogTitle>{'Enter username'}</DialogTitle>
         <DialogContent>
           {coowners.map((e, index) => {
-            return (
-              <input
-                placeholder='e.g.user01'
-                key={index}
-                type='text'
-                className='mypre__input m-u'
-                onChange={(e) => handleUsernameInput(e.target.value, index)}
-              />
-            );
+            return <input placeholder="e.g.user01" key={index} type="text" className="mypre__input m-u" onChange={(e) => handleUsernameInput(e.target.value, index)} />;
           })}
 
-          <Button onClick={handleAddMutiCoownner} color='warning' autoFocus>
+          <Button onClick={handleAddMutiCoownner} color="warning" autoFocus>
             New +
           </Button>
         </DialogContent>
-        <DialogActions className='mypr__dialog'>
-          <Button onClick={handleToClose} color='warning' autoFocus>
+        <DialogActions className="mypr__dialog">
+          <Button onClick={handleToClose} color="warning" autoFocus>
             Close
           </Button>
-          <Button onClick={handleAddCoownner} color='primary' autoFocus>
+          <Button onClick={handleAddCoownner} color="primary" autoFocus>
             Add
           </Button>
         </DialogActions>
       </Dialog>
-      <ToastContainer className='chat__toast p-3' position='bottom-center'>
-        <Toast
-          onClose={() => setShow(false)}
-          show={show}
-          bg='success'
-          delay={3000}
-          autohide
-        >
+      <ToastContainer className="chat__toast p-3" position="bottom-center">
+        <Toast onClose={() => setShow(false)} show={show} bg="success" delay={3000} autohide>
           <Toast.Header closeButton={false}>
-            <img
-              src='holder.js/20x20?text=%20'
-              className='rounded me-2'
-              alt=''
-            />
-            <strong className='me-auto'>Notify</strong>
+            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+            <strong className="me-auto">Notify</strong>
           </Toast.Header>
-          <Toast.Body className='text-white'>
-            Add Coowners Successful!
-          </Toast.Body>
+          <Toast.Body className="text-white">Add Coowners Successful!</Toast.Body>
         </Toast>
       </ToastContainer>
     </div>

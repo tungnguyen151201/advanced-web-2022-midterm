@@ -96,7 +96,7 @@ const BoxChat = () => {
         <div className="input__container">
           <form className="w-100 m-2 input-message">
             <input
-              className="form-control"
+              className="boxchat__input"
               placeholder="Enter message..."
               onChange={(e) => {
                 setMessage(e.target.value);
