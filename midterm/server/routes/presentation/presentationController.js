@@ -10,6 +10,7 @@ async function getMyPresentations(userId) {
       $or: [{ owner: userId }, { coowners: userId }],
     })
       .populate('owner')
+      .populate('coowners')
       .lean();
     if (presentations) {
       return {
@@ -40,7 +41,10 @@ async function getPresentationById(presentationId, userId) {
     const presentation = await Presentation.findOne({
       _id: presentationId,
       $or: [{ owner: userId }, { coowners: userId }],
-    }).lean();
+    })
+      .populate('owner')
+      .populate('coowners')
+      .lean();
     if (!presentation) {
       return {
         status: false,
@@ -163,9 +167,14 @@ async function addCoowner(userInfo, username, PresentId) {
   if (!PresentId || !username || !userInfo) {
     return { status: false, message: 'Invalid User' };
   }
+
   const user = await User.findOne({ username }, '_id').lean();
+
   if (!user) {
     return { status: false, message: 'This user not exist!' };
+  }
+  if (user._id === userInfo.userId) {
+    return { status: false, message: 'Invalid User' };
   }
   const present = await Presentation.findOne(
     {

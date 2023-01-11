@@ -13,7 +13,7 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Button from '@material-ui/core/Button';
 import WarningLogin from '../WarningLogin/WarningLogin';
-const AddCoownner = (idPresent) => {
+const AddCoownner = ({ idPresent }) => {
   const [state] = useGlobalState();
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = useState(false);
@@ -46,7 +46,7 @@ const AddCoownner = (idPresent) => {
         setShow(true);
       }
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
     }
   };
 

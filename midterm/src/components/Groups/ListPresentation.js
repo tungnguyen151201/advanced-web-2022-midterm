@@ -32,7 +32,7 @@ const ListPresentations = (props) => {
     const res = await axios.patch(
       `http://localhost:3001/groups/edit/${id}`,
       {
-        presentationId,
+        presentation: presentationId,
       },
       {
         headers: {

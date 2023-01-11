@@ -6,7 +6,12 @@ async function getGroupById(groupId) {
       .populate('owner')
       .populate('coowner')
       .populate('members')
-      .populate('presentation')
+      .populate({
+        path: 'presentation',
+        populate: {
+          path: 'owner coowners',
+        },
+      })
       .lean();
     if (!group) {
       return null;
@@ -30,6 +35,12 @@ async function myGroup(userId) {
       .populate('members')
       .populate('coowner')
       .populate('owner')
+      .populate({
+        path: 'presentation',
+        populate: {
+          path: 'owner coowners',
+        },
+      })
       .lean();
     return { status: true, message: 'get success!', myGroups };
   } catch (error) {

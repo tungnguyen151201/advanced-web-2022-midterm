@@ -35,6 +35,7 @@ const Groups = () => {
         setMembers({ listitems: res.data.members });
         setCoowner({ listitems: res.data.coowner });
         setPresentation(res.data.presentation);
+        // console.log(res.data.presentation);
       });
   }, [id, state.token, members, coowner]);
 
@@ -101,7 +102,7 @@ const Groups = () => {
         </h1>
         <hr />
         {/* Check co-owner ko hoat dong */}
-        <h1>{coowner === null ? '' : `Co-owners`}</h1>
+        <h1>{coowner.listitems.length === 0 ? '' : `Co-owners`}</h1>
         <ul className="list-group">
           {coowner.listitems.map((listitem) => (
             <li className="list-group-item list-group-item-primary coowner__item">
