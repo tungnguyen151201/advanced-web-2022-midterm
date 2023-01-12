@@ -56,7 +56,7 @@ const Voting = () => {
         }
       });
   };
-  const handleAnswer = () => {
+  const handleAnswer = (event) => {
     answers.forEach((answer) => {
       if (answer.classList.contains('active')) {
         socket.emit('submit-answer', {
@@ -65,7 +65,10 @@ const Voting = () => {
         });
       }
     });
+    alert('Your answer was saved!');
+    event.currentTarget.disabled = true;
   };
+
   const [presentation, setPresentation] = useState({
     name: 'test',
     owner: 'test',
@@ -127,7 +130,6 @@ const Voting = () => {
           }
         });
     } else {
-      console.log(2);
       axios
         .get(`http://localhost:3001/presentation/getForVoting/${id}`, {
           headers: {
@@ -179,60 +181,42 @@ const Voting = () => {
       <div className="voting__answers">
         {presentation.slides[slide].options.map((value, index) => {
           return (
-            <div className='voting__answer' key={index} id={index}>
+            <div className="voting__answer" key={index} id={index}>
               {value}
             </div>
           );
         })}
       </div>
-      <div className='voting__submit' onClick={handleAnswer}>
+      <div className="voting__submit" onClick={handleAnswer}>
         Submit
       </div>
-      <Button
-        className="chat__btn"
-        onClick={() => setOpen(!open)}
-        aria-controls="example-collapse-text"
-        aria-expanded={open}
-      >
+      <Button className="chat__btn" onClick={() => setOpen(!open)} aria-controls="example-collapse-text" aria-expanded={open}>
         <BsFillChatTextFill className="chat__icon" />
       </Button>
       <Collapse in={open}>
-        <div id='example-collapse-text'>
+        <div id="example-collapse-text">
           <BoxChat></BoxChat>
         </div>
       </Collapse>
-      <h1 className='voting__post-question'>Have an question?</h1>
-      <div className='voting__post-container'>
+      <h1 className="voting__post-question">Have an question?</h1>
+      <div className="voting__post-container">
         <input
-          type='text'
-          placeholder='Enter your question'
-          className='voting__input'
+          type="text"
+          placeholder="Enter your question"
+          className="voting__input"
           onChange={(e) => {
             setQuestion(e.target.value);
           }}
         />
-        <BsCursorFill
-          className='voting__post-btn'
-          onClick={handleCreateQuestion}
-        />
+        <BsCursorFill className="voting__post-btn" onClick={handleCreateQuestion} />
       </div>
-      <ToastContainer className='chat__toast p-3' position='bottom-center'>
-        <Toast
-          onClose={() => setShow(false)}
-          show={show}
-          bg='success'
-          delay={3000}
-          autohide
-        >
+      <ToastContainer className="chat__toast p-3" position="bottom-center">
+        <Toast onClose={() => setShow(false)} show={show} bg="success" delay={3000} autohide>
           <Toast.Header closeButton={false}>
-            <img
-              src='holder.js/20x20?text=%20'
-              className='rounded me-2'
-              alt=''
-            />
-            <strong className='me-auto'>Notify</strong>
+            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+            <strong className="me-auto">Notify</strong>
           </Toast.Header>
-          <Toast.Body className='text-white'>update Successful!</Toast.Body>
+          <Toast.Body className="text-white">Send question success!</Toast.Body>
         </Toast>
       </ToastContainer>
     </div>

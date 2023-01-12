@@ -52,10 +52,12 @@
   font-size: 22px;
   font-weight: 700;
   color: white;
+  transition: all 0.2s linear;
 }
 
 .voting__submit:hover {
   cursor: pointer;
+  background-color: rgb(141, 143, 148);
 }
 
 .chat__btn {

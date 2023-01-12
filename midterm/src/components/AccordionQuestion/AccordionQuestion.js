@@ -73,7 +73,7 @@ function AccordionQuestion({ idPresent, questions }) {
             <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
             <strong className="me-auto">Notify</strong>
           </Toast.Header>
-          <Toast.Body className="text-white">Mark question successful!</Toast.Body>
+          <Toast.Body className="text-white">Mark question success!</Toast.Body>
         </Toast>
       </ToastContainer>
     </div>
