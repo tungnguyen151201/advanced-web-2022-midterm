@@ -163,12 +163,25 @@ const Groups = () => {
               <hr className="detail__line" />
               <h1 className="detail__presentation">Presentations</h1>
               <PresentItem
-                onClick={() => navigate(`../demo/${presentation._id}/group/${id}`)}
+                onClick={async () => {
+                  await axios.patch(
+                    `http://localhost:3001/presentation/edit/${presentation._id}`,
+                    {
+                      status: true,
+                    },
+                    {
+                      headers: {
+                        Authorization: state.token,
+                      },
+                    }
+                  );
+                  navigate(`../demo/${presentation._id}/group/${id}`);
+                }}
                 id={presentation._id}
                 name={presentation.name}
-                owner={`${presentation.owner.firstName} ${presentation.owner.lastName}`}             
+                status={presentation.status}
                 createdAt={presentation.createdAt}
-              groupId={id}
+                groupId={id}
               ></PresentItem>
             </>
           ) : (

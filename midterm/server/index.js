@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-const app = require('../app');
+const app = require('./app');
 const http = require('http');
 // const { Server } = require('socket.io');
-const chatServer = require('../routes/chat/createServer');
+const chatServer = require('./routes/chat/createServer');
 /**
  * Get port from environment and store in Express.
  */

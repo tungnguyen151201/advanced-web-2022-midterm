@@ -43,7 +43,9 @@ const Demo = () => {
   });
   const [slide, setSlide] = useState(0);
 
-  const link = groupId ? `http://localhost:3000/voting/${id}/group/${groupId}` : `http://localhost:3000/voting/${id}`;
+  const link = groupId
+    ? `http://localhost:3000/voting/${id}/group/${groupId}`
+    : `http://localhost:3000/voting/${id}`;
 
   socket.emit('join-room', id);
 
@@ -55,51 +57,58 @@ const Demo = () => {
   const handleChangeSlide = async (event) => {
     if (event.keyCode === 27) {
       // ESC
+      await axios.patch(
+        `http://localhost:3001/presentation/edit/${id}`,
+        {
+          status: false,
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
       navigate(`/quiz/${id}`);
-      if (event.keyCode === 27) {
-        // ESC
-        navigate(`/quiz/${id}`);
+    }
+    if (event.keyCode === 37) {
+      //previous
+      if (slide === 0) {
+        return;
       }
-      if (event.keyCode === 37) {
-        //previous
-        if (slide === 0) {
-          return;
-        }
-        setSlide((slide) => slide - 1);
-        await axios.patch(
-          `http://localhost:3001/presentation/edit/${id}`,
-          {
-            ...presentation,
+      setSlide((slide) => slide - 1);
+      await axios.patch(
+        `http://localhost:3001/presentation/edit/${id}`,
+        {
+          ...presentation,
+        },
+        {
+          headers: {
+            Authorization: state.token,
           },
-          {
-            headers: {
-              Authorization: state.token,
-            },
-          }
-        );
-        socket.emit('change-slide', slide - 1);
-      }
-      if (event.keyCode === 39) {
-        //next
-        if (slide === presentation.slides.length - 1) {
-          return;
         }
-        setSlide((slide) => slide + 1);
-        await axios.patch(
-          `http://localhost:3001/presentation/edit/${id}`,
-          {
-            ...presentation,
-          },
-          {
-            headers: {
-              Authorization: state.token,
-            },
-          }
-        );
-        socket.emit('change-slide', slide + 1);
+      );
+      socket.emit('change-slide', slide - 1);
+    }
+    if (event.keyCode === 39) {
+      //next
+      if (slide === presentation.slides.length - 1) {
+        return;
       }
-    };
-  }
+      setSlide((slide) => slide + 1);
+      await axios.patch(
+        `http://localhost:3001/presentation/edit/${id}`,
+        {
+          ...presentation,
+        },
+        {
+          headers: {
+            Authorization: state.token,
+          },
+        }
+      );
+      socket.emit('change-slide', slide + 1);
+    }
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:3001/presentation/${id}`, {
@@ -120,17 +129,17 @@ const Demo = () => {
           });
         }
       });
-  }, [id, state.token, presentation]);
+  }, [id, state.token]);
 
   useEffect(() => {
-    socket.on('submit-answer', (data) => {
+    socket.on('submit-answer', async (data) => {
       setPresentation((presentation) => ({
         ...presentation,
         slides: presentation.slides.map((s, index) => {
           if (index === slide) {
             return {
               ...s,
-              answers: [...s.answers, data],
+              answers: [...s.answers, { _id: data.userId, answer: data.answer }],
             };
           } else return s;
         }),
@@ -142,7 +151,10 @@ const Demo = () => {
   }, [slide, socket]);
 
   const countAnswers = (answers) => {
-    let result = Array.from({ length: presentation.slides[slide].options.length }, (v) => (v = 0));
+    let result = Array.from(
+      { length: presentation.slides[slide].options.length },
+      (v) => (v = 0)
+    );
 
     answers.forEach((e) => {
       result[parseInt(e.answer)] += 1;
@@ -152,36 +164,39 @@ const Demo = () => {
 
   return loadStatus.status ? (
     <div
-      className="demo__container"
+      className='demo__container'
       onKeyDown={handleChangeSlide}
       tabIndex={-1}
     >
-      <div className="demo__content">
-        <p className="demo__title">Link the test</p>
-        <div className="demo__link">
-          <input className="demo__input" value={link} />
-          <button className="btn__copy" onClick={handleCopy}>
+      <div className='demo__content'>
+        <p className='demo__title'>Link the test</p>
+        <div className='demo__link'>
+          <input className='demo__input' value={link} />
+          <button className='btn__copy' onClick={handleCopy}>
             Copy link
           </button>
         </div>
-        <h1 className="demo__question">
+        <h1 className='demo__question'>
           {presentation.slides[slide].question}
         </h1>
 
-        <div className="demo__chart">
-          <BarChart options={presentation.slides[slide].options} answers={countAnswers(presentation.slides[slide].answers)} />
+        <div className='demo__chart'>
+          <BarChart
+            options={presentation.slides[slide].options}
+            answers={countAnswers(presentation.slides[slide].answers)}
+          />
         </div>
 
-        <ListAnswer />
+        <ListAnswer answers={presentation.slides[slide].answers} options={presentation.slides[slide].options} />
 
         {/* <Alert hidden={notify === 0}> Have new message{notify}</Alert> */}
         <Button
-          className="chat__btn"
+          className='chat__btn'
           onClick={() => setOpen(!open)}
-          aria-controls="example-collapse-text"
+          aria-controls='example-collapse-text'
           aria-expanded={open}
         >
-          <BsFillChatTextFill className="chat__icon" />
+          <BsFillChatTextFill className='chat__icon' />
         </Button>
         <Collapse in={open}>
           <div id="example-collapse-text">
@@ -191,11 +206,11 @@ const Demo = () => {
         {presentation.questions.length !== 0 && <h1>List questions</h1>}
         
         <AccordionQuestion idPresent={id} questions={presentation.questions} />
-
-        {/* <NotifyMessage notify={notify}></NotifyMessage> */}
       </div>
     </div>
-  ) : loadStatus.message;
+  ) : (
+    loadStatus.message
+  );
 };
 
 export default Demo;

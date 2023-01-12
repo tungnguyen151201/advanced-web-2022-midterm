@@ -215,6 +215,23 @@ async function UpdateNewPassword(email, newPassword) {
     };
   }
 }
+async function GetUserById(userId) {
+  try {
+    if (!userId) {
+      return { status: false, message: 'Invalid Information!' };
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return { status: false, message: 'Not found' };
+    }
+    return { status: true, message: 'Get Profile successful!', user };
+  } catch (error) {
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+}
 module.exports = {
   Register,
   Login,
@@ -225,4 +242,5 @@ module.exports = {
   UpdateEmailToken,
   UpdateNewPassword,
   JoinGroup,
+  GetUserById,
 };
